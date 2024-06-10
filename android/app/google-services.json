@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "536628202723",
+    "project_id": "epicureo-b71d4",
+    "storage_bucket": "epicureo-b71d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536628202723:android:d5d09332000250160649d6",
+        "android_client_info": {
+          "package_name": "com.facultad.epicureo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdJjpBghIjb6yLtvC9H-TyYbdeep-0aZ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

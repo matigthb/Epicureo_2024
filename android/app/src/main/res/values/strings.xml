@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Epicúreo</string>
+    <string name="title_activity_main">Epicúreo</string>
+    <string name="package_name">com.facultad.epicureo</string>
+    <string name="custom_url_scheme">com.facultad.epicureo</string>
+</resources>

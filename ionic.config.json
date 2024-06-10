@@ -1,0 +1,7 @@
+{
+  "name": "Epicúreo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
