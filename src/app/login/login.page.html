@@ -36,19 +36,60 @@
         </button>
         <button ion-button class="circle-button2" [disabled]="this.credentials.value.email== 'admin@admin.com' &&
         this.credentials.value.password == '111111'" [ngClass]="{'disabled': this.credentials.value.email== 'admin@admin.com' &&
-        this.credentials.value.password == '111111'}"(click)="fast1()" >
+        this.credentials.value.password == '111111'}"(click)="menu()" >
           <ion-icon class="icono" name="person-outline"></ion-icon>
         </button>
         <button ion-button class="circle-button3" [disabled]="this.credentials.value.email== 'invitado@invitado.com' &&
         this.credentials.value.password == '222222'" 
         [ngClass]="{'disabled': this.credentials.value.email== 'invitado@invitado.com' &&
+        this.credentials.value.password == '222222'}"(click)="menu2()">
+          <ion-icon class="icono" name="person-outline"></ion-icon>
+        </button>
+        <!--<button ion-button class="circle-button4" [disabled]="this.credentials.value.email== 'invitado@invitado.com' &&
+        this.credentials.value.password == '222222'" 
+        [ngClass]="{'disabled': this.credentials.value.email== 'invitado@invitado.com' &&
+        this.credentials.value.password == '222222'}"(click)="fast1()">
+          <ion-icon class="icono" name="person-outline"></ion-icon>
+        </button>
+        <button ion-button class="circle-button5" [disabled]="this.credentials.value.email== 'invitado@invitado.com' &&
+        this.credentials.value.password == '222222'" 
+        [ngClass]="{'disabled': this.credentials.value.email== 'invitado@invitado.com' &&
         this.credentials.value.password == '222222'}"(click)="fast2()">
           <ion-icon class="icono" name="person-outline"></ion-icon>
+        </button>-->
+
+        <button ion-button class="botonLogin" [disabled]="this.credentials.value.email== 'dueño@dueño.com' &&
+        this.credentials.value.password == '111111'" 
+        [ngClass]="{'disabled': this.credentials.value.email== 'dueño@dueño.com' &&
+        this.credentials.value.password == '111111'}"(click)="fastDueno()">
+          Dueño
         </button>
-        <button ion-button class="circle-button4" [disabled]="credentials.value.email === 'tester@tester.com' && credentials.value.password === '555555'"
-        [ngClass]="{'disabled': credentials.value.email === 'tester@tester.com' && credentials.value.password === '555555'}" (click)="fast3()">
-          <ion-icon class="icono" name="person-outline"></ion-icon>
+        <button ion-button class="botonLogin" [disabled]="this.credentials.value.email== 'super@super.com' &&
+        this.credentials.value.password == '222222'" 
+        [ngClass]="{'disabled': this.credentials.value.email== 'super@super.com' &&
+        this.credentials.value.password == '222222'}"(click)="fastSup()">
+          Supervisor
         </button>
+        
+        <!-- Menú emergente de botones -->
+        <div class="menu" [ngClass]="{'show': showMenu, 'hide': !showMenu}" [style.display]="showMenu ? 'block' : 'none'" *ngIf="bandera1">
+          <ion-button class="menu-button" (click)="fastRegistrado()"><img src="../../assets/register.png"></ion-button>
+          <h2>Registrado</h2>
+          <ion-button class="menu-button" (click)="fastAnon()"><img src="../../assets/anonymous.png"></ion-button>
+          <h2>Anónimo</h2>
+        </div>
+
+        <!-- Menú emergente de botones -->
+        <div class="menu2" [ngClass]="{'show': showMenu2, 'hide': !showMenu2}" [style.display]="showMenu2 ? 'block' : 'none'" *ngIf="bandera2">
+          <ion-button class="menu-button2" (click)="fastMaitre()"><ion-icon class="icono" name="person-outline"></ion-icon></ion-button>
+          <h2>Maitre</h2>
+          <ion-button class="menu-button2 img2" (click)="fastMozo()"><ion-icon class="icono" name="person-outline"></ion-icon></ion-button>
+          <h2>Mozo</h2>
+          <ion-button class="menu-button2 img3" (click)="fastCocinero()"><ion-icon class="icono" name="person-outline"></ion-icon></ion-button>
+          <h2>Cocinero</h2>
+          <ion-button class="menu-button2 img4" (click)="fastBartender()"><ion-icon class="icono" name="person-outline"></ion-icon></ion-button>
+          <h2>Bartender</h2>
+        </div>
       </div>
     </form>
   </div>

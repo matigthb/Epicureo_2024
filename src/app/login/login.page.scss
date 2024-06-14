@@ -21,7 +21,7 @@ ion-content {
   }
 
   ion-item {
-    --background: #847650; /* Set the background color */
+    --background: #644e3b; /* Set the background color */
     border-radius: 10px; /* Add border radius for rounded corners */
   }
   
@@ -93,23 +93,24 @@ ion-content {
     align-items: center;
     justify-content: center;
     color: white;
-    background-color: #847650;
+    background-color: #644e3b;
   }
   
+  .circle-button5,
   .circle-button4,
   .circle-button3,
   .circle-button2{
     position: absolute;
     bottom: 20px;
     border-radius: 50%;
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    background-color: #847650;
+    background-color: #644e3b;
   }
   
   .disabled{
@@ -117,14 +118,142 @@ ion-content {
   }
   
   .circle-button2{
-    right: 100px;
+    left: 129px;
   }
   
   .circle-button3{
-    right: 185px;
+    left: 29px;
+    //bottom: 120px;
   }
   
-  
   .circle-button4{
-    right: 270px;
+    right: 10px;
+    bottom: 180px;
+  }
+
+  .circle-button5{
+    right: 10px;
+    bottom: 80px;
+  }
+
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 105px;
+    left: 125px;
+    padding: 5px;
+    background-color: #644e3b;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1; /* Asegura que los botones del menú aparezcan encima del botón principal */
+    overflow: hidden; /* Oculta los botones del menú cuando no están visibles */
+    transition: all 0.3s ease-in-out; /* Add transition for smooth animation */
+  }
+  
+  .menu-button {
+    height: 70px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 5px;
+    width: 70px;
+    border-radius: 50%;
+    text-align: center;
+    --background: #550C18;
+  }
+  
+  .hide {
+    transform: translateY(100%);
+  }
+  
+  .main-button2 {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 75px;
+    height: 60px;
+    border-radius: 5px;
+    --background: #644e3b;
+  }
+  
+  img{
+    object-fit: cover;
+  }
+  
+  .menu2 {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 105px;
+    left: 25px;
+    padding: 5px;
+    background-color: #644e3b;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1; /* Asegura que los botones del menú aparezcan encima del botón principal */
+    overflow: hidden; /* Oculta los botones del menú cuando no están visibles */
+    transition: all 0.3s ease-in-out; /* Add transition for smooth animation */
+  }
+
+  /* Keyframes for sliding up animation */
+@keyframes slideUp {
+  from {
+    transform: translateY(20px); /* Adjust this value as needed */
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Keyframes for sliding down animation */
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(20px); /* Adjust this value as needed */
+    opacity: 0;
+  }
+}
+
+
+  .hide {
+    animation: slideDown 0.6s forwards;
+  }
+
+  .show {
+    animation: slideUp 0.6s forwards;
+  }
+
+
+  h2{
+    color: #ecc961;
+    margin-top: -2px;
+    font-size: 14px;
+  }
+  
+  .menu-button2 {
+    height: 70px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 5px;
+    width: 70px;
+    border-radius: 50%;
+    text-align: center;
+    --background: #550C18;
+  }
+  
+  .botonLogin{
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 30%;
+    --background: #847650;
+    background-color: #847650;
+    height: 40px;
+    font-size: 1.05em;
   }
