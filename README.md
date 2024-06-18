@@ -18,7 +18,7 @@ Paleta de colores de nuestra app:
 Logo de Epicúreo:
 ![Icono](https://github.com/matigthb/Epicureo_2024/assets/98900532/b2cbc8cf-78c3-47e4-9811-4e78d8bd0070)
 
-Contamos con una página de inicio de sesión que se ve de esta manera:
+Contamos con una página de inicio de sesión que se ve de esta manera:<br>
 ![image](https://github.com/matigthb/Epicureo_2024/assets/98900532/8b9e2d80-2e6a-41d7-af3f-3a984ef6d930)
 
 
