@@ -12,11 +12,11 @@ import { AuthService } from '../services/auth.service';
 export class LoginPage implements OnInit {
   credentials!: FormGroup;
   showPassword = false;
-
-  d1 : boolean = false;
-  d2: boolean = false;
-  d3 : boolean = false;
-
+  showMenu: boolean = false;
+  showMenu2: boolean = false;
+  bandera1: boolean = false;
+  bandera2: boolean = false;
+  
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -72,28 +72,72 @@ export class LoginPage implements OnInit {
   }
 
 
-  fast1() {
-    this.credentials.controls['email'].setValue('admin@admin.com');
+  fastDueno() {
+    this.showMenu = false;
+    this.showMenu2 = false;
+    this.credentials.controls['email'].setValue('dueno@dueno.com');
     this.credentials.controls['password'].setValue('111111');
-    this.d1 = true;
-    this.d2 = false;
-    this.d3 = false;
   }
   
-  fast2() {
-    this.credentials.controls['email'].setValue('invitado@invitado.com');
+  fastSup() {
+    this.showMenu = false;
+    this.showMenu2 = false;
+    this.credentials.controls['email'].setValue('super@super.com');
     this.credentials.controls['password'].setValue('222222');
-    this.d1 = false;
-    this.d2 = true;
-    this.d3 = false;
   }
   
-  fast3() {
-    this.credentials.controls['email'].setValue('tester@tester.com');
+  fastMaitre() {
+    this.showMenu = false;
+    this.showMenu2 = false;
+    this.credentials.controls['email'].setValue('maitre@maitre.com');
     this.credentials.controls['password'].setValue('555555');
-    this.d1 = false;
-    this.d2 = false;
-    this.d3 = true;
+  }
+
+  fastMozo() {
+    this.showMenu = false;
+    this.showMenu2 = false;
+    this.credentials.controls['email'].setValue('mozo@mozo.com');
+    this.credentials.controls['password'].setValue('555555');
+  }
+
+  fastCocinero() {
+    this.showMenu = false;
+    this.showMenu2 = false;
+    this.credentials.controls['email'].setValue('cocinero@cocinero.com');
+    this.credentials.controls['password'].setValue('555555');
+  }
+
+  fastBartender() {
+    this.showMenu = false;
+    this.showMenu2 = false;
+    this.credentials.controls['email'].setValue('bartender@bartender.com');
+    this.credentials.controls['password'].setValue('555555');
+  }
+
+  fastRegistrado() {
+    this.showMenu = false;
+    this.showMenu2 = false;
+    this.credentials.controls['email'].setValue('registrado@registrado.com');
+    this.credentials.controls['password'].setValue('555555');
+  }
+
+  fastAnon() {
+    this.showMenu = false;
+    this.showMenu2 = false;
+    this.credentials.controls['email'].setValue('anonimo@anonimo.com');
+    this.credentials.controls['password'].setValue('555555');
+  }
+
+  menu(){
+    this.showMenu = !this.showMenu;
+    this.showMenu2 = false;
+    this.bandera1= true;
+  }
+
+  menu2(){
+    this.showMenu = false;
+    this.showMenu2 = !this.showMenu2;
+    this.bandera2= true;
   }
   
 }
