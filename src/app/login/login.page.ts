@@ -75,7 +75,7 @@ export class LoginPage implements OnInit {
   fastDueno() {
     this.showMenu = false;
     this.showMenu2 = false;
-    this.credentials.controls['email'].setValue('dueño@dueño.com');
+    this.credentials.controls['email'].setValue('dueno@dueno.com');
     this.credentials.controls['password'].setValue('111111');
   }
   
@@ -127,8 +127,6 @@ export class LoginPage implements OnInit {
     this.credentials.controls['email'].setValue('anonimo@anonimo.com');
     this.credentials.controls['password'].setValue('555555');
   }
-
-  
 
   menu(){
     this.showMenu = !this.showMenu;
