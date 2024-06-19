@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +21,7 @@ export class HomePage implements OnInit {
   interval: any;
   holdTime: number = 0;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private auth : AuthService) { }
 
   ngOnInit(): void {
     this.startTextLoop();
@@ -84,5 +85,10 @@ export class HomePage implements OnInit {
 
   goJuegos(){
     this.router.navigateByUrl('/juegos');
+  }
+
+  logout(){
+    this.auth.logout();
+    this.router.navigateByUrl('/login')
   }
 }
