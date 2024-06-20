@@ -1,0 +1,31 @@
+/* Estilos para el formulario de registro */
+ion-content {
+    --ion-background-color: #f0f0f0; /* Color de fondo del contenido */
+  }
+  
+  ion-card {
+    max-width: 400px; /* Ancho máximo del card */
+    margin: auto; /* Centrar el card en la pantalla */
+    padding: 20px; /* Espaciado interno */
+    background-color: #fff; /* Color de fondo del card */
+    border-radius: 10px; /* Borde redondeado */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  ion-item {
+    margin-bottom: 15px; /* Espacio entre cada ion-item */
+  }
+  
+  ion-label {
+    font-weight: bold; /* Texto en negrita para las etiquetas */
+  }
+  
+  ion-button[type="submit"] {
+    margin-top: 20px; /* Espacio superior para el botón */
+  }
+  

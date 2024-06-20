@@ -25,6 +25,10 @@ const routes: Routes = [
     path: 'splash',
     loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
   },
+  {
+    path: 'registro',
+    loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
+  },
   
  
 >>>>>>> 364ca968c3a7041b4a9351a0a903c575b74a943b
