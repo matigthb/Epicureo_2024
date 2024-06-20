@@ -17,7 +17,12 @@ const routes: Routes = [
   {
     path: 'splash',
     loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
+  },  {
+    path: 'pendientes',
+    loadChildren: () => import('./pendientes/pendientes.module').then( m => m.PendientesPageModule)
   },
+
+  
   
  
 ];

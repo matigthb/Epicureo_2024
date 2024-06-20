@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  selector: 'app-pendientes',
+  templateUrl: './pendientes.page.html',
+  styleUrls: ['./pendientes.page.scss'],
 })
-export class HomePage implements OnInit {
+export class PendientesPage implements OnInit {
 
   texts: string[] = [
     'Epicúreo',
@@ -70,27 +70,8 @@ export class HomePage implements OnInit {
     clearInterval(this.interval);
   }
 
-  goAltas(){
-    this.router.navigateByUrl('/altas');
+  goBack(){
+    this.router.navigateByUrl('/home');
   }
 
-  goPendientes(){
-    this.router.navigateByUrl('/pendientes');
-  }
-  goQR(){
-    this.router.navigateByUrl('/qrs');
-  }
-
-  goEncuestas(){
-    this.router.navigateByUrl('/encuestas');
-  }
-
-  goJuegos(){
-    this.router.navigateByUrl('/juegos');
-  }
-
-  logout(){
-    this.auth.logout();
-    this.router.navigateByUrl('/login')
-  }
 }
