@@ -4,11 +4,8 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-<<<<<<< HEAD
-    loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)
-=======
     loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
->>>>>>> 364ca968c3a7041b4a9351a0a903c575b74a943b
+
   },
   {
     path: 'login',
@@ -17,9 +14,8 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-<<<<<<< HEAD
   }
-=======
+
   },
   {
     path: 'splash',
@@ -29,9 +25,11 @@ const routes: Routes = [
     path: 'registro',
     loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
   },
-  
- 
->>>>>>> 364ca968c3a7041b4a9351a0a903c575b74a943b
+  {
+    path: 'pendientes',
+    loadChildren: () => import('./pendientes/pendientes.module').then( m => m.PendientesPageModule)
+  },
+
 ];
 @NgModule({
   imports: [
@@ -40,3 +38,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
+

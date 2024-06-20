@@ -11,6 +11,8 @@ export class AuthService {
 
   constructor(private afAuth: AngularFireAuth) {}
 
+  rol : string = "no logueado";
+
   async login(email: string, password: string): Promise<any> {
     try {
       const result = await this.afAuth.signInWithEmailAndPassword(email, password);
