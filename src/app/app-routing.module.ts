@@ -5,6 +5,7 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
+
   },
   {
     path: 'login',
@@ -13,18 +14,22 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+  }
+
   },
   {
     path: 'splash',
     loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
-  },  {
+  },
+  {
+    path: 'registro',
+    loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
+  },
+  {
     path: 'pendientes',
     loadChildren: () => import('./pendientes/pendientes.module').then( m => m.PendientesPageModule)
   },
 
-  
-  
- 
 ];
 @NgModule({
   imports: [
@@ -33,3 +38,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
+

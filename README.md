@@ -1,4 +1,5 @@
 EPICÚREO<br>
+
 Tu camino directo a una experiencia culinaria sin complicaciones. 
 Nuestra aplicación brinda varios beneficios para nuestros clientes, los cuales facilitan la realización de pedidos, asignaciones de mesas, y organización de entregas a domicilio. Con una interfaz intuitiva, nunca fue tan simple el salir a comer sin preocupación alguna. A su vez, el recibo de notificaciones a tiempo real, y la velocidad de nuestro servicio, minimiza el tiempo entre el que usted llega al establecimiento, y se retira con la panza llena.
 Para nuestros empleados, Epicúreo ofrece una potente herramienta de gestión que simplifica todas las operaciones del restaurante. Los empleados pueden manejar pedidos, asignar mesas, y permite una comunicación fluida entre clientela y trabajadores, asegurando que cada plato llegue a la mesa de manera oportuna y perfecta.
@@ -20,5 +21,3 @@ Logo de Epicúreo:
 
 Contamos con una página de inicio de sesión que se ve de esta manera:<br>
 ![image](https://github.com/matigthb/Epicureo_2024/assets/98900532/8b9e2d80-2e6a-41d7-af3f-3a984ef6d930)
-
-
