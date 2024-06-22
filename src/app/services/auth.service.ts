@@ -39,6 +39,18 @@ export class AuthService {
     }
   }
 
+  async getUserUid(): Promise<string | null> {
+    return new Promise<string | null>((resolve, reject) => {
+      this.afAuth.authState.subscribe(user => {
+        if (user) {
+          resolve(user.uid);
+        } else {
+          resolve(null);
+        }
+      });
+    });
+  }
+
   getUser() {
     return this.afAuth.authState;
   }
