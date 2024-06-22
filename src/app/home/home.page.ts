@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { Usuario } from '../clases/usuario';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-home',
@@ -21,10 +23,22 @@ export class HomePage implements OnInit {
   interval: any;
   holdTime: number = 0;
 
-  constructor(private router: Router, public auth : AuthService) { }
+  clientesPendientes : Usuario[] = [];
+
+  constructor(private router: Router, public auth : AuthService, private data : DataService) { }
 
   ngOnInit(): void {
     this.startTextLoop();
+    this.cargarUsuarios();
+  }
+
+  cargarUsuarios(): void {
+    this.data.getUsuarios().subscribe((data: Usuario[]) => {
+      this.clientesPendientes = data;
+      console.log(data);
+    }, error => {
+      console.error('Error al cargar usuarios:', error);
+    });
   }
 
   startTextLoop(): void {

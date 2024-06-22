@@ -10,5 +10,23 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  
+  <div class="container" *ngIf="usuarios.length > 0">
+    <div *ngFor="let cliente of usuarios; let i = index" class="card">
+      <div class="card-content pt-serif-regular">
+        <img [src]="cliente.foto" alt="{{ cliente.nombre }}" class="card-image">
+        <div class="card-details">
+          <h2>{{ cliente.nombre }} {{ cliente.apellido }}</h2>
+          <p>DNI: {{ cliente.DNI }}</p>
+          <div class="botones">
+            <button class="boton rechazar" (click)="rechazarCliente(cliente.id)">
+              <ion-icon name="ban-outline"></ion-icon>
+            </button>
+            <button class="boton aceptar" (click)="aceptarCliente(cliente)">
+              <ion-icon name="checkmark-outline"></ion-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>  
