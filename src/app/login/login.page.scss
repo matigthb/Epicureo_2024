@@ -1,0 +1,277 @@
+* {
+    font-family: 'Belleza', sans-serif !important;
+    font-weight: bold;
+  }
+  
+  /* style.css */
+ion-content {
+    --background: none;
+    background: url('../../assets/fondito.jpg') no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    overflow: hidden; /* Prevents the content from exceeding its boundaries */
+  }
+
+  ion-item {
+    --background: #644e3b; /* Set the background color */
+    border-radius: 10px; /* Add border radius for rounded corners */
+  }
+  
+  .iconosuperprime{
+    width: 200px;
+  }
+  
+  .colorblack{
+    color: #847650;
+    font-weight: bold;
+    font-size: 1.4em;
+  }
+  
+  .containerimg
+  {
+    margin-bottom: 50px;
+    margin-top: -200px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .margen{
+    margin-top: 20px;
+    border-radius: 30px;
+  }
+  
+  .ojito{
+    margin-top: 20px;
+  }
+  
+  .margen2{
+    margin-top: 8px;
+  }
+  
+  .fab-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+    }
+  
+  .login-container{
+      margin-top:250px;
+      padding:20px;
+  }
+  
+  .login{
+      margin-top: 20px;
+  }
+  
+  .icono{
+    width: 50px;
+    height: 50px;
+  }
+  
+  .icono2{
+    width: 40px;
+    height: 40px;
+  }
+  
+  .circle-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: #644e3b;
+  }
+  
+  .circle-button5,
+  .circle-button4,
+  .circle-button3,
+  .circle-button2{
+    position: absolute;
+    bottom: 20px;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: #644e3b;
+  }
+  
+  .disabled{
+    background-color: #797878;
+  }
+  
+  .circle-button2{
+    left: 110px;
+    bottom: 50px;
+  }
+  
+  .circle-button3{
+    left: 15px;
+    bottom: 50px;
+    //bottom: 120px;
+  }
+  
+  .circle-button4{
+    left: 200px;
+    bottom: 50px;
+
+  }
+
+  .circle-button5{
+    left: 290px;
+    bottom: 50px;
+  }
+
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 135px;
+    left: 105px;
+    padding: 5px;
+    background-color: #644e3b;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1; /* Asegura que los botones del menú aparezcan encima del botón principal */
+    overflow: hidden; /* Oculta los botones del menú cuando no están visibles */
+    transition: all 0.3s ease-in-out; /* Add transition for smooth animation */
+  }
+  
+  .menu-button {
+    height: 70px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 5px;
+    width: 70px;
+    border-radius: 50%;
+    text-align: center;
+    --background: #550C18;
+  }
+  
+  .hide {
+    transform: translateY(100%);
+  }
+  
+  .main-button2 {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 75px;
+    height: 60px;
+    border-radius: 5px;
+    --background: #644e3b;
+  }
+  
+  .labels{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 10px;
+    left: 16px;
+    h3{
+      font-size: 14px;
+      color:#847650;
+      background-color: #550C18;
+      border-radius: 10px;
+      padding: 5px;
+    }
+  }
+
+  img{
+    object-fit: cover;
+  }
+  
+  .menu2 {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 135px;
+    left: 13px;
+    padding: 5px;
+    background-color: #644e3b;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1; /* Asegura que los botones del menú aparezcan encima del botón principal */
+    overflow: hidden; /* Oculta los botones del menú cuando no están visibles */
+    transition: all 0.3s ease-in-out; /* Add transition for smooth animation */
+  }
+
+  /* Keyframes for sliding up animation */
+@keyframes slideUp {
+  from {
+    transform: translateY(20px); /* Adjust this value as needed */
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Keyframes for sliding down animation */
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(20px); /* Adjust this value as needed */
+    opacity: 0;
+  }
+}
+
+
+  .hide {
+    animation: slideDown 0.6s forwards;
+  }
+
+  .show {
+    animation: slideUp 0.6s forwards;
+  }
+
+
+  h2{
+    color: #ecc961;
+    margin-top: -2px;
+    font-size: 14px;
+  }
+  
+  .menu-button2 {
+    height: 70px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 5px;
+    width: 70px;
+    border-radius: 50%;
+    text-align: center;
+    --background: #550C18;
+  }
+  
+  .botonLogin{
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 80%;
+    --background: #847650;
+    background-color: #847650;
+    height: 40px;
+    font-size: 1.05em;
+  }

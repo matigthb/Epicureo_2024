@@ -1,0 +1,37 @@
+
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <div class="text-container">
+        <span class="text fuente" *ngFor="let char of currentTextArray; let i = index" [style.opacity]="getOpacity(i)">
+          <ng-container *ngIf="char !== ' '; else space">{{ char }}</ng-container>
+          <ng-template #space>&nbsp;</ng-template>
+        </span>
+      </div>
+      <ion-buttons slot="primary">
+        <ion-button (click)="logout()">
+          <ion-icon name="exit-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content [fullscreen]="true">
+    <div class="button-container">
+      <ion-button class="button-main" (click)="goAltas()">
+        <h2 class="pt-serif-bold">Altas</h2>
+      </ion-button>
+      <ion-button class="button-main" (click)="goPendientes()">
+        <h2 class="pt-serif-bold">Aceptar Clientes</h2>
+      </ion-button>
+      <ion-button class="button-main pt-serif-bold" (click)="goQR()">
+        <h2 class="pt-serif-bold">Códigos QR</h2><ion-icon name="qr-code-outline" ></ion-icon>
+      </ion-button>
+      <ion-button class="button-main pt-serif-bold" (click)="goEncuestas()">
+        <h2 class="pt-serif-bold">Encuestas</h2><ion-icon name="help-circle-outline" ></ion-icon>
+      </ion-button>
+      <ion-button class="button-main pt-serif-bold" (click)="goJuegos()">
+        <h2 class="pt-serif-bold">Juegos</h2><ion-icon name="game-controller-outline" ></ion-icon>
+      </ion-button>
+    </div>
+    
+  </ion-content>  
