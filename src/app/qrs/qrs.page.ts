@@ -38,7 +38,7 @@ export class QrsPage implements OnDestroy {
 
       if (bodyElement) {
         bodyElement.classList.add('scanner-active');
-      }
+      }  
 
       const result = await BarcodeScanner.startScan();
       console.log(result);
