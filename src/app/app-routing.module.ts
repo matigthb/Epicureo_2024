@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'pendientes',
     loadChildren: () => import('./pendientes/pendientes.module').then( m => m.PendientesPageModule)
   },
+  {
+    path: 'qrs',
+    loadChildren: () => import('./qrs/qrs.module').then( m => m.QrsPageModule)
+  },
 
 ];
 @NgModule({
@@ -36,4 +40,3 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
-
