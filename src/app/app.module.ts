@@ -13,8 +13,11 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> cacc406d9b6dcdcb7e0ce33d717d64bc7ba86c2b
 @NgModule({
   declarations: [AppComponent],
   imports: [
