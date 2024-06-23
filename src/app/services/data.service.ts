@@ -35,7 +35,7 @@ export class DataService {
 
         if (credential && credential.user) {
           // Agregar los datos del cliente a Firestore
-          await this.firestore.collection('clientesPendientes').doc(credential.user.uid).set({
+          await this.firestore.collection('usuarios').doc(credential.user.uid).set({
             nombre: cliente.nombre || '',
             apellido: cliente.apellido || '',
             DNI: cliente.DNI || '',

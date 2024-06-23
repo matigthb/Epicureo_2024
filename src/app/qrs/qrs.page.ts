@@ -1,4 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
+
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { ToastController } from '@ionic/angular';
@@ -13,6 +14,7 @@ export class QrsPage implements OnDestroy {
   scannedResult: any;
 
   constructor(private router : Router, private toast : ToastController) { }
+
 
   async checkPermission(): Promise<boolean> {
     try {
@@ -31,6 +33,7 @@ export class QrsPage implements OnDestroy {
     try {
       const permission = await this.checkPermission();
       if (!permission) {
+
         let toast = this.toast.create({
           message: "No se cuenta con los permisos.",
           duration: 3000,
@@ -39,6 +42,7 @@ export class QrsPage implements OnDestroy {
           color: 'danger'
         });
         (await toast).present();
+
         return;
       }
 
