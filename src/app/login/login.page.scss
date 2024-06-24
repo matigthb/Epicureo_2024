@@ -20,6 +20,14 @@ ion-content {
     overflow: hidden; /* Prevents the content from exceeding its boundaries */
   }
 
+  ion-footer {
+    position: fixed;
+    top: 780px;
+    left: 0;
+    right: 0;
+
+  }
+
   ion-item {
     --background: #644e3b; /* Set the background color */
     border-radius: 10px; /* Add border radius for rounded corners */
@@ -273,5 +281,16 @@ ion-content {
     --background: #847650;
     background-color: #847650;
     height: 40px;
+    font-size: 1.05em;
+  }
+
+  .botonReg{
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 40%;
+    --background: #d8a61b;
+    background-color: #644e3b;
+    height: 30px;
     font-size: 1.05em;
   }
