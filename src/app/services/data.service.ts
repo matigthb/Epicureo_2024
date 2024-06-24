@@ -6,6 +6,10 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { ToastController } from '@ionic/angular';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +18,11 @@ export class DataService {
 
   constructor(
     private afAuth: AngularFireAuth,
+
     private firestore: AngularFirestore,
     private auth : AuthService,
-    private toast : ToastController
+    private toast : ToastController,
+    private storage: AngularFireStorage
   ) { }
 
   getUsuarios(): Observable<Usuario[]> {
@@ -116,4 +122,5 @@ export class DataService {
   }
 
   // Otros métodos del servicio según tus necesidades
+
 }

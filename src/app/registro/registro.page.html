@@ -47,11 +47,23 @@
           <ion-label position="stacked">Confirmar Contraseña</ion-label>
           <ion-input type="password" formControlName="confirmarContrasena" required></ion-input>
         </ion-item>
+        <div *ngIf="registroForm.get('confirmarContrasena')?.invalid && (registroForm.get('confirmarContrasena')?.dirty || registroForm.get('confirmarContrasena')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('confirmarContrasena')?.errors?.['required']">La confirmación de la contraseña es requerida.</ion-text>
+        </div>
+
 
         <!-- Agregar campo para subir foto -->
         <ion-item>
           <ion-label position="stacked">Foto</ion-label>
-          <ion-input type="file" formControlName="foto"></ion-input>
+          <ion-button (click)="tomarFoto()">Tomar Foto</ion-button>
+        </ion-item>
+        <div *ngIf="registroForm.get('foto')?.invalid && (registroForm.get('foto')?.dirty || registroForm.get('foto')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('foto')?.errors?.['required']">La foto es requerida.</ion-text>
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">scan</ion-label>
+          <ion-button (click)="escanearDNI()">Escanear DNI</ion-button>
         </ion-item>
 
         <ion-button expand="full" type="submit" [disabled]="!registroForm.valid">Registrarse</ion-button>
