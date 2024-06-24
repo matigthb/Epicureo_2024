@@ -1,0 +1,17 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="pt-serif-bold">
+  <ion-button class="button-main pt-serif-bold" expand="full" (click)="startScan()"><h2>Escanear Código QR</h2></ion-button>
+
+    <ion-item *ngIf="scannedResult">
+        <ion-label class="ion-text-wrap"> Resultado del escaneo: {{scannedResult}}</ion-label>
+    </ion-item>
+</ion-content>

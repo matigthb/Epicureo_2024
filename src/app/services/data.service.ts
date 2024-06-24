@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Usuario } from '../clases/usuario';
-<<<<<<< Updated upstream
-=======
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
->>>>>>> Stashed changes
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +17,21 @@ export class DataService {
 
   constructor(
     private afAuth: AngularFireAuth,
-<<<<<<< Updated upstream
-    private firestore: AngularFirestore
-=======
+
     private firestore: AngularFirestore,
     private auth : AuthService,
-    private storage: AngularFireStorage, 
->>>>>>> Stashed changes
+    private storage: AngularFireStorage
   ) { }
+
+  getUsuarios(): Observable<Usuario[]> {
+    return this.firestore.collection<Usuario>('clientesPendientes').snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Usuario;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+  }
 
   async registrarCliente(cliente: Usuario, password: string) {
     try {
@@ -34,7 +41,7 @@ export class DataService {
 
         if (credential && credential.user) {
           // Agregar los datos del cliente a Firestore
-          await this.firestore.collection('clientesPendientes').doc(credential.user.uid).set({
+          await this.firestore.collection('usuarios').doc(credential.user.uid).set({
             nombre: cliente.nombre || '',
             apellido: cliente.apellido || '',
             DNI: cliente.DNI || '',
@@ -58,8 +65,6 @@ export class DataService {
     }
   }
 
-<<<<<<< Updated upstream
-=======
   async aceptarCliente(cliente: any) {
     try {
       // Agregar los datos del cliente a Firestore
@@ -81,7 +86,7 @@ export class DataService {
   async rechazarCliente(docId: string) {
     return this.firestore.collection("clientesPendientes").doc(docId).delete();
   }
->>>>>>> Stashed changes
+
   // Otros métodos del servicio según tus necesidades
 
 }

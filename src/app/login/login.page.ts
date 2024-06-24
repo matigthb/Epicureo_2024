@@ -121,11 +121,20 @@ export class LoginPage implements OnInit {
     this.credentials.controls['password'].setValue('555555');
   }
 
-  fastAnon() {
+  async fastAnon() {
+    let asdasd : boolean = true;
     this.showMenu = false;
     this.showMenu2 = false;
-    this.credentials.controls['email'].setValue('anonimo@anonimo.com');
-    this.credentials.controls['password'].setValue('555555');
+    const loading = await this.loadingController.create();
+    await loading.present();
+    this.credentials.controls['email'].setValue('');
+    this.credentials.controls['password'].setValue('');
+    setTimeout(() => {
+      loading.dismiss();
+      this.router.navigateByUrl('/home');
+    }, 2000);
+    
+    this.authService.rol = "anon";
   }
 
   menu(){

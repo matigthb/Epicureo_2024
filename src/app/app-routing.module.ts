@@ -5,6 +5,7 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
+
   },
   {
     path: 'login',
@@ -22,8 +23,15 @@ const routes: Routes = [
     path: 'registro',
     loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
   },
-  
- 
+  {
+    path: 'pendientes',
+    loadChildren: () => import('./pendientes/pendientes.module').then( m => m.PendientesPageModule)
+  },
+  {
+    path: 'qrs',
+    loadChildren: () => import('./qrs/qrs.module').then( m => m.QrsPageModule)
+  },
+
 ];
 @NgModule({
   imports: [
