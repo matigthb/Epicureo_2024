@@ -12,8 +12,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/compat/firestore';
-
-
+import { provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,9 +29,10 @@ import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/compat/f
       appId: "1:536628202723:web:9dd6b02ed0767e860649d6"
     }),
     AngularFirestoreModule,// Add this for Firestore
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    
   ],
-  providers: [
+  providers: [provideHttpClient(),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent],
