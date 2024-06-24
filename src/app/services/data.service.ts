@@ -7,9 +7,6 @@ import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { ToastController } from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
