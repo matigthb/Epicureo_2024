@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="primary">
+      <ion-button (click)="logout()">
+        <ion-icon name="exit-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="button-container">
+    <ion-button class="button-main" (click)="goAltaEmpleado()">
+      <h2 class="pt-serif-bold">Alta empleado</h2>
+    </ion-button>
+    <ion-button class="button-main pt-serif-bold" (click)="goAltaDuenoSuper()">
+      <h2 class="pt-serif-bold">Alta dueño - supervisor</h2>
+    </ion-button>
+    <ion-button class="button-main pt-serif-bold" (click)="goAltaProducto()">
+      <h2 class="pt-serif-bold">Alta producto</h2>
+    </ion-button>
+    <ion-button class="button-main pt-serif-bold" (click)="goAltaMesa()">
+      <h2 class="pt-serif-bold">Alta mesa</h2>
+    </ion-button>
+  </div>
+  
+</ion-content>  

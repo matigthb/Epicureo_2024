@@ -34,6 +34,26 @@ const routes: Routes = [
     path: 'productos',
     loadChildren: () => import('./productos/productos.module').then( m => m.ProductosPageModule)
   },
+  {
+    path: 'altas',
+    loadChildren: () => import('./altas/altas.module').then( m => m.AltasPageModule)
+  },
+  {
+    path: 'alta-empleado',
+    loadChildren: () => import('./alta-empleado/alta-empleado.module').then( m => m.AltaEmpleadoPageModule)
+  },
+  {
+    path: 'alta-dueno-super',
+    loadChildren: () => import('./alta-dueno-super/alta-dueno-super.module').then( m => m.AltaDuenoSuperPageModule)
+  },
+  {
+    path: 'alta-producto',
+    loadChildren: () => import('./alta-producto/alta-producto.module').then( m => m.AltaProductoPageModule)
+  },
+  {
+    path: 'alta-mesa',
+    loadChildren: () => import('./alta-mesa/alta-mesa.module').then( m => m.AltaMesaPageModule)
+  },
 
 
 ];

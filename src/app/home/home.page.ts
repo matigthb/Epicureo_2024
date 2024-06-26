@@ -85,7 +85,7 @@ export class HomePage implements OnInit {
   }
 
   goAltas(){
-    this.router.navigateByUrl('/registro');
+    this.router.navigateByUrl('/altas');
   }
 
   goPendientes(){

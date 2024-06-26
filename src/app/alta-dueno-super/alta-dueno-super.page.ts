@@ -1,24 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DataService } from '../services/data.service';
-import { Usuario } from '../clases/usuario';
-import { Platform } from '@ionic/angular';
-import { PushNotifications } from '@capacitor/push-notifications';
 import { AuthService } from '../services/auth.service';
-import { Capacitor } from '@capacitor/core';
-import { NotificationService } from '../services/notification.service';
 import { Router } from '@angular/router';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
-import { Plugins } from '@capacitor/core';
+import { DataService } from '../services/data.service';
 import { CustomValidators } from '../validators/custom-validators';
+import { Usuario } from '../clases/usuario';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Plugins } from '@capacitor/core';
+import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 
 @Component({
-  selector: 'app-registro',
-  templateUrl: './registro.page.html',
-  styleUrls: ['./registro.page.scss'],
+  selector: 'app-alta-dueno-super',
+  templateUrl: './alta-dueno-super.page.html',
+  styleUrls: ['./alta-dueno-super.page.scss'],
 })
-export class RegistroPage implements OnInit {
+export class AltaDuenoSuperPage implements OnInit {
 
   registroForm: FormGroup;
   usandoQR: boolean = false;
@@ -28,7 +24,7 @@ export class RegistroPage implements OnInit {
   constructor(
     
     private fb: FormBuilder,
-    private notificationService : NotificationService,
+    //private notificationService : NotificationService,
     private authService : AuthService,
     private router : Router,
     private dataService: DataService // Inyecta el servicio DataService
@@ -37,9 +33,11 @@ export class RegistroPage implements OnInit {
       nombre: ['', [Validators.required, CustomValidators.noNumbers, CustomValidators.minLength(3)]],
       apellido: ['', [Validators.required, CustomValidators.noNumbers, CustomValidators.minLength(3)]],
       dni: ['', [Validators.required, Validators.pattern("[0-9]{8}")]],
+      cuil: ['', [Validators.required, Validators.pattern("[0-9]{11}")]],
       correo: ['', [Validators.required, Validators.email]],
       contrasena: ['', [Validators.required, Validators.minLength(6)]],
-      confirmarContrasena: ['', Validators.required]
+      confirmarContrasena: ['', Validators.required],
+      rol: ['', Validators.required]
     });
   }
   ngOnInit() {
@@ -53,42 +51,36 @@ export class RegistroPage implements OnInit {
     console.log(this.registroForm.value.correo);
     console.log(this.registroForm.value.contrasena);
     console.log(this.registroForm.value.confirmarContrasena);
+    console.log(this.registroForm.value.rol);
     console.log(this.registroForm.value.foto);
     console.log(this.registroForm.valid);
   }
   
-  async registrarCliente() {
-
-    if(this.registroForm.value.contrasena !== this.registroForm.value.confirmarContrasena)
-    { 
+  async registrarEmpleado() {
+    if(this.registroForm.value.contrasena !== this.registroForm.value.confirmarContrasena) {
       this.dataService.mandarToast("Las contraseñas no coinciden.", "danger");
       return;
     }
-
+  
     if (this.registroForm.valid) {
-      const cliente: Usuario = {
+      const empleado: Usuario = {
         nombre: this.registroForm.value.nombre,
         apellido: this.registroForm.value.apellido,
         DNI: this.registroForm.value.dni,
+        CUIL: this.registroForm.value.cuil,
         correo: this.registroForm.value.correo,
-        foto: this.imageUrl // Ajusta cómo manejas la foto si es necesario
+        foto: this.imageUrl, // Ajusta cómo manejas la foto si es necesario
+        rol: this.registroForm.value.rol
       };
-
+  
       const password = this.registroForm.value.contrasena;
-
+  
       try {
-        const resultado = await this.dataService.registrarCliente(cliente, password);
-
+        const resultado = await this.dataService.registrarEmpleado(empleado, password);
+  
         this.UID = resultado;
-        
-        console.log(Capacitor.isNativePlatform())
-        if (Capacitor.isNativePlatform()){
-          this.dataService.mandarToast("Enviando noti sesu", "success");
-          this.sendRoleNotification(); // ENVIA NOTIFICACION PUSH A DUEÑO Y SUPERVISOR
-          ///this.sendMail();
-        }
         this.router.navigateByUrl("/login");
-        this.dataService.mandarToast("Registrado correctamente, aguarde aprobación.", "success")
+        this.dataService.mandarToast("Registrado correctamente", "success");
         // Aquí puedes manejar el éxito del registro, como redirigir a otra página o mostrar un mensaje
       } catch (error) {
         console.error('Error en el componente de registro:', error);
@@ -99,30 +91,7 @@ export class RegistroPage implements OnInit {
     }
   }
 
-  /*sendMail(){
-    this.notificationService.sendMail(true, this.registroForm.value.nombre, this.registroForm.value.correo).subscribe(
-      (response) => {
-        this.dataService.mandarToast('Mail sent successfully' + " " + JSON.stringify(response));
-      },
-      (error) => {
-        this.dataService.mandarToast('Mail ERROR' + " " + JSON.stringify(error));
-      }
-    );
-  }*/
-
-  /**sendRoleNotification(rol : string) {
-    const title = 'Bienvenido!';
-    const body = 'Notificacion prueba de bienvenida.';
-    
-    this.dataService.getDevice(uid).subscribe(async device => {
-      if (device?.token) {
-        this.notificationService.sendRoleNotification(device.token, title, body);
-      } else {
-        this.dataService.mandarToast("No se encontró el token");
-      }
-    });
-  }*/
-  sendRoleNotification() {
+  /*sendRoleNotification() {
     const title = 'Tenemos un nuevo cliente!';
     const body = 'Hay un nuevo cliente pendiente de aprobación.';
     
@@ -134,7 +103,7 @@ export class RegistroPage implements OnInit {
         this.dataService.mandarToast('Noti ERROR' + " " + JSON.stringify(error),"error");
       }
     );;
-  }
+  }*/
 
   goBack(){
     this.router.navigateByUrl('/login');
@@ -246,4 +215,6 @@ async escanearDNI() {
   
     return datosDNI;
   }
+
+
 }

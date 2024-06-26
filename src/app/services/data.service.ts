@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { ToastController } from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class DataService {
 
   constructor(
     private afAuth: AngularFireAuth,
-
+    private toast : ToastController,
     private firestore: AngularFirestore,
     private auth : AuthService,
     private toast : ToastController,
@@ -160,6 +161,38 @@ export class DataService {
     (await toast).present();
   }
 
-  // Otros métodos del servicio según tus necesidades
-
+  async registrarEmpleado(empleado: Usuario, password: string) {
+    try {
+      if (empleado.correo) {
+        // Registrar el usuario en Firebase Authentication
+        const credential = await this.afAuth.createUserWithEmailAndPassword(empleado.correo, password);
+  
+        if (credential && credential.user) {
+          // Agregar los datos del empleado a Firestore
+          const foto = await this.uploadImage(empleado.foto || "", "usuarios");
+  
+          await this.firestore.collection('usuarios').doc(credential.user.uid).set({
+            nombre: empleado.nombre || '',
+            apellido: empleado.apellido || '',
+            DNI: empleado.DNI || '',
+            CUIL: empleado.CUIL || '',
+            correo: empleado.correo,
+            foto: foto || '',
+            rol: empleado.rol || ''
+          });
+          
+          // Retornar el ID del usuario creado
+          return credential.user.uid;
+        } else {
+          throw new Error('No se pudo crear el usuario');
+        }
+      } else {
+        throw new Error('Correo electrónico no definido');
+      }
+  
+    } catch (error) {
+      console.error('Error al registrar el empleado:', error);
+      throw error;
+    }
+  }
 }
