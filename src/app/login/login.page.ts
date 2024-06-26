@@ -109,32 +109,59 @@ export class LoginPage implements OnInit {
 
       if(user){
         let uid = await this.authService.getUserUid() || "";
-        this.data.getUserRole(uid).subscribe(async user => {
-          this.authService.rol = user?.rol;
-          console.log(Capacitor.isNativePlatform())
-          if (Capacitor.isNativePlatform()){
-            await this.addListeners(uid,this.authService.rol);
-            await this.registerNotifications();
+        this.checkUser().then(isUserUnique => {
+          if(!isUserUnique)
+          {
+            this.data.mandarToast("Su cuenta aún no fue aprobada.", "danger");
+            this.credentials.controls['email'].setValue('');
+            this.credentials.controls['password'].setValue('');
+            loading.dismiss();
+            return;
+          }
+          else
+          {
+            this.data.getUserRole(uid).subscribe(async user => {
+              this.authService.rol = user?.rol;
+              console.log(Capacitor.isNativePlatform())
+              if (Capacitor.isNativePlatform()){
+                await this.addListeners(uid,this.authService.rol);
+                await this.registerNotifications();
+              }
+            });
+    
+            this.credentials.controls['email'].setValue('');
+            this.credentials.controls['password'].setValue('');
+            loading.dismiss();
+            this.router.navigateByUrl('/home');
           }
         });
-
-        this.credentials.controls['email'].setValue('');
-        this.credentials.controls['password'].setValue('');
-        loading.dismiss();
-        this.router.navigateByUrl('/home');
       }
       else
       {
-        console.log("provide correct values");
+        this.data.mandarToast("No encontramos ninguna cuenta con esas credenciales.", "danger");
       }
     }
     else
     {
       loading.dismiss();
-      console.log("provide correct values");
+      this.data.mandarToast("Debe ingresar credenciales válidas para iniciar sesión.", "danger");
       this.credentials.controls['email'].setValue('');
       this.credentials.controls['password'].setValue('');
     }
+  }
+
+  checkUser(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.data.getUserByEmail(this.credentials.value.email).subscribe(users => {
+        if (users.length > 0) {
+          resolve(false); // User exists
+        } else {
+          resolve(true); // User does not exist
+        }
+      }, error => {
+        reject(error); // Handle errors if needed
+      });
+    });
   }
 
   // Getter for easy access to form fields

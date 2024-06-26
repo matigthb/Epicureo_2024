@@ -40,15 +40,17 @@ export class DataService {
 
         if (credential && credential.user) {
           // Agregar los datos del cliente a Firestore
-          await this.firestore.collection('usuarios').doc(credential.user.uid).set({
+          const foto = await this.uploadImage(cliente.foto || "", "usuarios");
+
+          await this.firestore.collection('clientesPendientes').doc(credential.user.uid).set({
             nombre: cliente.nombre || '',
             apellido: cliente.apellido || '',
             DNI: cliente.DNI || '',
             correo: cliente.correo,
-            foto: cliente.foto || '',
+            foto: foto || '',
             rol: "cliente"
           });
-
+          
           // Retornar el ID del usuario creado
           return credential.user.uid;
         } else {
@@ -99,6 +101,46 @@ export class DataService {
     }
   }
 
+  async uploadImage(imagePath: string, tabla : string): Promise<string> {
+    try {
+      const fileRef = this.storage.ref(tabla).child(`${new Date().getTime()}`);
+      const imageFile = await this.readFile(imagePath);
+      const uploadTask = fileRef.putString(imageFile, 'data_url');
+
+      return new Promise((resolve, reject) => {
+        uploadTask.snapshotChanges().subscribe(snapshot => {
+          if(snapshot)
+            {
+              if (snapshot.state === 'success') {
+                fileRef.getDownloadURL().subscribe(downloadURL => {
+                  resolve(downloadURL);
+                });
+              }
+            }
+        }, error => {
+          reject(error);
+        });
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  getUserByEmail(email: string): Observable<any[]> {
+    return this.firestore.collection('clientesPendientes', ref => ref.where('correo', '==', email)).valueChanges();
+  }
+  
+  private async readFile(path: string): Promise<string> {
+    const response = await fetch(path);
+    const blob = await response.blob();
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(blob);
+    });
+  }
+
   getUserRole(docId: string): Observable<any> {
     return this.firestore.collection('usuarios').doc(docId).valueChanges();
   }
@@ -107,13 +149,13 @@ export class DataService {
     return this.firestore.collection('devices').doc(docId).valueChanges();
   }
 
-  async mandarToast(mensaje : string){
+  async mandarToast(mensaje : string, color : string){
     let toast = this.toast.create({
       message: mensaje,
       duration: 3000,
       position: 'top',
       icon: 'alert-outline',
-      color: 'danger'
+      color: color
     });
     (await toast).present();
   }
