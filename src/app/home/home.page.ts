@@ -100,7 +100,7 @@ export class HomePage implements OnInit {
   }
 
   goJuegos(){
-    this.router.navigateByUrl('/juegos');
+    console.log(this.auth.rol);
   }
 
   logout(){

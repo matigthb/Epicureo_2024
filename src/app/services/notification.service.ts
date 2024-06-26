@@ -7,7 +7,7 @@ import { ToastController } from '@ionic/angular';
   providedIn: 'root'
 })
 export class NotificationService {
-  private serverUrl = 'https://5015-200-122-89-151.ngrok-free.app'; // Replace with your server URL
+  private serverUrl = 'https://d381-200-122-89-151.ngrok-free.app'; // Replace with your server URL
 
   constructor(private http: HttpClient, private toast : ToastController) { }
 

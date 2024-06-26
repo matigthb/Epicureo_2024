@@ -17,14 +17,14 @@
   
   <ion-content [fullscreen]="true">
     <div class="button-container">
-      <ion-button class="button-main" (click)="goAltas()">
+      <ion-button class="button-main" (click)="goAltas()" *ngIf="this.auth.rol == 'dueño' || this.auth.rol == 'supervisor'">
         <h2 class="pt-serif-bold">Altas</h2>
       </ion-button>
-      <ion-button class="button-main" (click)="goPendientes()" *ngIf="this.clientesPendientes.length > 0">
+      <ion-button class="button-main" (click)="goPendientes()" *ngIf="this.clientesPendientes.length > 0 && (this.auth.rol == 'dueño' || this.auth.rol == 'supervisor')">
         <h2 class="pt-serif-bold">Aceptar Clientes</h2>
       </ion-button>
       <ion-button class="button-main pt-serif-bold" (click)="goQR()">
-        <h2 class="pt-serif-bold">Códigos QR</h2><ion-icon name="qr-code-outline" ></ion-icon>
+        <h2 class="pt-serif-bold">QR de ingreso</h2><ion-icon name="qr-code-outline" ></ion-icon>
       </ion-button>
       <ion-button class="button-main pt-serif-bold" (click)="goEncuestas()">
         <h2 class="pt-serif-bold">Encuestas</h2><ion-icon name="help-circle-outline" ></ion-icon>
