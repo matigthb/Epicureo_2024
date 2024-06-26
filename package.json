@@ -26,12 +26,17 @@
     "@capacitor-community/barcode-scanner": "^4.0.1",
     "@capacitor/android": "^6.0.0",
     "@capacitor/app": "6.0.0",
+<<<<<<< Updated upstream
     "@capacitor/core": "^5.0.0",
 =======
     "@capacitor/android": "^6.0.0",
     "@capacitor/app": "6.0.0",
     "@capacitor/core": "6.0.0",
 >>>>>>> cacc406d9b6dcdcb7e0ce33d717d64bc7ba86c2b
+=======
+    "@capacitor/camera": "^6.0.1",
+    "@capacitor/core": "^6.0.0",
+>>>>>>> Stashed changes
     "@capacitor/haptics": "6.0.0",
     "@capacitor/keyboard": "6.0.0",
     "@capacitor/status-bar": "6.0.0",
