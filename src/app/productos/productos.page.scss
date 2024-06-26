@@ -1,0 +1,50 @@
+:host {
+    // Definición de colores
+    --background-color: #F3DFA2;
+    --primary-color: #E8B02F;
+    --accent-color: #550C18;
+    --text-color: #550C18;
+
+    ion-content{
+        --ion-background-color: #644e3b;
+    
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+    }
+  
+    ion-header {
+        background-color: var(--primary-color);
+        ion-toolbar {
+          color: var(--text-color);
+          ion-title {
+            font-weight: bold;
+            color: var(--text-color);
+          }
+        }
+      }
+
+    ion-content {
+      background-color: var(--background-color);
+      ion-list {
+        margin-top: 1rem;
+        .product-item {
+          background-color: var(--primary-color);
+          color: var(--text-color);
+          margin: 0.5rem;
+          border-radius: 10px;
+          padding: 1rem;
+          font-size: 1.2rem;
+          font-weight: bold;
+          text-align: center;
+          transition: background-color 0.3s;
+  
+          &:hover {
+            background-color: var(--accent-color);
+            color: var(--background-color);
+          }
+        }
+      }
+    }
+  }
