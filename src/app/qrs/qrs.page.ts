@@ -1,5 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-qrs',
@@ -7,10 +9,12 @@ import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
   styleUrls: ['./qrs.page.scss'],
 })
 export class QrsPage implements OnDestroy {
-
   scannedResult: any;
+  isScanning = false;
 
-  constructor() { }
+  constructor(private router: Router, private toast: ToastController) { 
+    this.startScan();
+  }
 
   async checkPermission(): Promise<boolean> {
     try {
@@ -30,29 +34,25 @@ export class QrsPage implements OnDestroy {
     try {
       const permission = await this.checkPermission();
       if (!permission) {
-        console.error('Permission not granted');
+        const toast = await this.toast.create({
+          message: 'No se cuenta con los permisos.',
+          duration: 3000,
+          position: 'top',
+          icon: 'alert-outline',
+          color: 'danger',
+        });
+        await toast.present();
         return;
       }
 
       await BarcodeScanner.hideBackground();
-      const bodyElement = document.querySelector('body');
-
-      if (bodyElement) {
-        bodyElement.classList.add('scanner-active');
-      }  
+      this.isScanning = true;
 
       const result = await BarcodeScanner.startScan();
-      console.log(result);
-
       if (result?.hasContent) {
         this.scannedResult = result.content;
+        this.isScanning = false;
         await BarcodeScanner.showBackground();
-
-        if (bodyElement) {
-          bodyElement.classList.remove('scanner-active');
-        }
-
-        console.log(this.scannedResult);
       }
     } catch (e) {
       console.error('Scan failed:', e);
@@ -63,7 +63,11 @@ export class QrsPage implements OnDestroy {
   stopScan() {
     BarcodeScanner.showBackground();
     BarcodeScanner.stopScan();
-    document.querySelector('body')?.classList.remove('scanner-active');
+    this.isScanning = false;
+  }
+
+  goBack() {
+    this.router.navigateByUrl('/home');
   }
 
   ngOnDestroy(): void {

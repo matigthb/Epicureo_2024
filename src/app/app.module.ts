@@ -12,17 +12,8 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { provideHttpClient } from '@angular/common/http';
 
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-
-
-=======
->>>>>>> cacc406d9b6dcdcb7e0ce33d717d64bc7ba86c2b
-=======
-
-
->>>>>>> Stashed changes
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -38,16 +29,10 @@ import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/compat/f
       appId: "1:536628202723:web:9dd6b02ed0767e860649d6"
     }),
     AngularFirestoreModule,// Add this for Firestore
-<<<<<<< Updated upstream
     AngularFireAuthModule
-  ],
-  providers: [
-=======
-    AngularFireAuthModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA], // Agregar CUSTOM_ELEMENTS_SCHEMA aquí
   providers: [provideHttpClient(),
->>>>>>> Stashed changes
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent],

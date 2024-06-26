@@ -66,7 +66,7 @@ export class HomePage implements OnInit {
           return;
         }
         this.holdTime = 0;
-        this.isDeleting = true;
+        this.isDeleting = true; 
       }
     }
     this.currentTextArray = currentText.slice(0, this.charIndex).split('');
@@ -100,7 +100,7 @@ export class HomePage implements OnInit {
   }
 
   goJuegos(){
-    this.router.navigateByUrl('/juegos');
+    console.log(this.auth.rol);
   }
 
   logout(){

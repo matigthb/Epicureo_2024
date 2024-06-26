@@ -29,11 +29,13 @@ export class PendientesPage implements OnInit {
 
   aceptarCliente(cliente : any){
     this.data.aceptarCliente(cliente);
+    this.data.mandarToast("Cliente aceptado.", "success");
   }
 
   rechazarCliente(clienteId : string)
   {
     this.data.rechazarCliente(clienteId);
+    this.data.mandarToast("Cliente rechazado.", "danger");
   }
 
   goBack(){

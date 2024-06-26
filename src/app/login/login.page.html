@@ -30,56 +30,64 @@
           La contraseña debe ser de al menos 3 caracteres
         </ion-text>
       </div>
-      <div class="button-container">
-        <button ion-button class="circle-button2" [disabled]="this.credentials.value.email== 'admin@admin.com' &&
-        this.credentials.value.password == '111111'" [ngClass]="{'disabled': this.credentials.value.email== 'admin@admin.com' &&
-        this.credentials.value.password == '111111'}"(click)="menu()" >
-          <ion-icon class="icono" name="person-outline"></ion-icon>
-        </button>
-        <button ion-button class="circle-button3" [disabled]="this.credentials.value.email== 'invitado@invitado.com' &&
-        this.credentials.value.password == '222222'" 
-        [ngClass]="{'disabled': this.credentials.value.email== 'invitado@invitado.com' &&
-        this.credentials.value.password == '222222'}"(click)="menu2()">
-          <ion-icon class="icono" name="person-outline"></ion-icon>
-        </button>
 
-        <button ion-button class="circle-button4" [disabled]="this.credentials.value.email== 'dueno@dueno.com' &&
-        this.credentials.value.password == '111111'" 
-        [ngClass]="{'disabled': this.credentials.value.email== 'dueno@dueno.com' &&
-        this.credentials.value.password == '111111'}"(click)="fastDueno()">
-          <ion-icon class="icono" name="person-outline"></ion-icon>
-        </button>
+      <button ion-button class="botonLogin" (click)="login()">
+        Iniciar sesión
+      </button>
 
-        <button ion-button class="circle-button5" [disabled]="this.credentials.value.email== 'super@super.com' &&
-        this.credentials.value.password == '222222'" 
-        [ngClass]="{'disabled': this.credentials.value.email== 'super@super.com' &&
-        this.credentials.value.password == '222222'}"(click)="fastSup()">
-          <ion-icon class="icono" name="person-outline"></ion-icon>
-        </button>
-        <!--<button ion-button class="circle-button4" [disabled]="this.credentials.value.email== 'invitado@invitado.com' &&
-        this.credentials.value.password == '222222'" 
-        [ngClass]="{'disabled': this.credentials.value.email== 'invitado@invitado.com' &&
-        this.credentials.value.password == '222222'}"(click)="fast1()">
-          <ion-icon class="icono" name="person-outline"></ion-icon>
-        </button>
-        <button ion-button class="circle-button5" [disabled]="this.credentials.value.email== 'invitado@invitado.com' &&
-        this.credentials.value.password == '222222'" 
-        [ngClass]="{'disabled': this.credentials.value.email== 'invitado@invitado.com' &&
-        this.credentials.value.password == '222222'}"(click)="fast2()">
-          <ion-icon class="icono" name="person-outline"></ion-icon>
-        </button>-->
+      <button ion-button class="botonReg" (click)="reg()">
+        Registrarme
+      </button>
+      
+      <ion-footer>
+        <div class="button-container">
+          <button ion-button class="circle-button2" [disabled]="this.credentials.value.email== 'admin@admin.com' &&
+          this.credentials.value.password == '111111'" [ngClass]="{'disabled': this.credentials.value.email== 'admin@admin.com' &&
+          this.credentials.value.password == '111111'}"(click)="menu()" >
+            <ion-icon class="icono" name="person-outline"></ion-icon>
+          </button>
+          <button ion-button class="circle-button3" [disabled]="this.credentials.value.email== 'invitado@invitado.com' &&
+          this.credentials.value.password == '222222'" 
+          [ngClass]="{'disabled': this.credentials.value.email== 'invitado@invitado.com' &&
+          this.credentials.value.password == '222222'}"(click)="menu2()">
+            <ion-icon class="icono" name="person-outline"></ion-icon>
+          </button>
 
-        <button ion-button class="botonLogin" (click)="login()">
-          Iniciar sesión
-        </button>
-        
-        <div class="labels">
-          <h3>Empleado</h3>
-          <h3 style="margin-left: 28px;">Cliente</h3>
-          <h3 style="margin-left: 35px;">Dueño</h3>
-          <h3 style="margin-left: 23px;">Supervisor</h3>
+          <button ion-button class="circle-button4" [disabled]="this.credentials.value.email== 'dueno@dueno.com' &&
+          this.credentials.value.password == '111111'" 
+          [ngClass]="{'disabled': this.credentials.value.email== 'dueno@dueno.com' &&
+          this.credentials.value.password == '111111'}"(click)="fastDueno()">
+            <ion-icon class="icono" name="person-outline"></ion-icon>
+          </button>
+
+          <button ion-button class="circle-button5" [disabled]="this.credentials.value.email== 'super@super.com' &&
+          this.credentials.value.password == '222222'" 
+          [ngClass]="{'disabled': this.credentials.value.email== 'super@super.com' &&
+          this.credentials.value.password == '222222'}"(click)="fastSup()">
+            <ion-icon class="icono" name="person-outline"></ion-icon>
+          </button>
+          <!--<button ion-button class="circle-button4" [disabled]="this.credentials.value.email== 'invitado@invitado.com' &&
+          this.credentials.value.password == '222222'" 
+          [ngClass]="{'disabled': this.credentials.value.email== 'invitado@invitado.com' &&
+          this.credentials.value.password == '222222'}"(click)="fast1()">
+            <ion-icon class="icono" name="person-outline"></ion-icon>
+          </button>
+          <button ion-button class="circle-button5" [disabled]="this.credentials.value.email== 'invitado@invitado.com' &&
+          this.credentials.value.password == '222222'" 
+          [ngClass]="{'disabled': this.credentials.value.email== 'invitado@invitado.com' &&
+          this.credentials.value.password == '222222'}"(click)="fast2()">
+            <ion-icon class="icono" name="person-outline"></ion-icon>
+          </button>-->
+
+          
+          <div class="labels">
+            <h3>Empleado</h3>
+            <h3 style="margin-left: 28px;">Cliente</h3>
+            <h3 style="margin-left: 35px;">Dueño</h3>
+            <h3 style="margin-left: 23px;">Supervisor</h3>
+          </div>
         </div>
-        
+        </ion-footer>
         <!-- Menú emergente de botones -->
         <div class="menu" [ngClass]="{'show': showMenu, 'hide': !showMenu}" [style.display]="showMenu ? 'block' : 'none'" *ngIf="bandera1">
           <ion-button class="menu-button" [disabled]="this.credentials.value.email== 'super@super.com' &&
@@ -117,7 +125,7 @@
           this.credentials.value.password == '555555'}"(click)="fastBartender()"><ion-icon class="icono" name="person-outline"></ion-icon></ion-button>
           <h2>Bartender</h2>
         </div>
-      </div>
+      
     </form>
   </div>
 </ion-content>

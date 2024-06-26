@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, Platform, ToastController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
+import { PushNotifications } from '@capacitor/push-notifications';
+import { NotificationService } from '../services/notification.service';
+import { DataService } from '../services/data.service';
+import { Capacitor } from '@capacitor/core';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 @Component({
   selector: 'app-login',
@@ -16,11 +21,16 @@ export class LoginPage implements OnInit {
   showMenu2: boolean = false;
   bandera1: boolean = false;
   bandera2: boolean = false;
+  rol: any;
   
   constructor(
+    private notificationService: NotificationService,
+    private plt : Platform,
     private fb: FormBuilder,
     private authService: AuthService,
+    private data : DataService,
     private alertController: AlertController,
+    private toast : ToastController,
     private router: Router,
     private loadingController: LoadingController
   ) {}
@@ -29,6 +39,61 @@ export class LoginPage implements OnInit {
     this.credentials = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+    });
+  }
+
+  async registerNotifications() {
+    let permStatus = await PushNotifications.checkPermissions();
+
+    if (permStatus.receive === 'prompt') {
+      permStatus = await PushNotifications.requestPermissions();
+    }
+    
+    if (permStatus.receive !== 'granted') { 
+      console.log('User denied permissions!');
+    }
+
+    await PushNotifications.register();
+  }
+  
+  async addListeners(uid : string, rol : string) {
+    await PushNotifications.addListener('registration', async (token) => {
+      await this.data.registerDevice(token.value, uid, rol);
+    });
+
+    await PushNotifications.addListener('registrationError', async (err) => { 
+      let toast = this.toast.create({
+        message: err.error,
+        duration: 3000,
+        position: 'top',
+        icon: 'alert-outline',
+        color: 'danger'
+      });
+      (await toast).present();
+
+      console.error('Registration error: ', err.error);
+    });
+
+    await PushNotifications.addListener('pushNotificationReceived', async (notification) => {
+      let toast = this.toast.create({
+        message: "Push notification received",
+        duration: 1000,
+        position: 'top',
+        icon: 'alert-outline',
+        color: 'success'
+      });
+      (await toast).present();
+
+      
+    console.log('Push notification received: ', notification);
+    });
+
+    await PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
+      console.log(
+      'Push notification action performed',
+      notification.actionId,
+      notification.inputValue
+      );
     });
   }
 
@@ -43,23 +108,60 @@ export class LoginPage implements OnInit {
       })
 
       if(user){
-        this.credentials.controls['email'].setValue('');
-        this.credentials.controls['password'].setValue('');
-        loading.dismiss();
-        this.router.navigateByUrl('/home');
+        let uid = await this.authService.getUserUid() || "";
+        this.checkUser().then(isUserUnique => {
+          if(!isUserUnique)
+          {
+            this.data.mandarToast("Su cuenta aún no fue aprobada.", "danger");
+            this.credentials.controls['email'].setValue('');
+            this.credentials.controls['password'].setValue('');
+            loading.dismiss();
+            return;
+          }
+          else
+          {
+            this.data.getUserRole(uid).subscribe(async user => {
+              this.authService.rol = user?.rol;
+              console.log(Capacitor.isNativePlatform())
+              if (Capacitor.isNativePlatform()){
+                await this.addListeners(uid,this.authService.rol);
+                await this.registerNotifications();
+              }
+            });
+    
+            this.credentials.controls['email'].setValue('');
+            this.credentials.controls['password'].setValue('');
+            loading.dismiss();
+            this.router.navigateByUrl('/home');
+          }
+        });
       }
       else
       {
-        console.log("provide correct values");
+        this.data.mandarToast("No encontramos ninguna cuenta con esas credenciales.", "danger");
       }
     }
     else
     {
       loading.dismiss();
-      console.log("provide correct values");
+      this.data.mandarToast("Debe ingresar credenciales válidas para iniciar sesión.", "danger");
       this.credentials.controls['email'].setValue('');
       this.credentials.controls['password'].setValue('');
     }
+  }
+
+  checkUser(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.data.getUserByEmail(this.credentials.value.email).subscribe(users => {
+        if (users.length > 0) {
+          resolve(false); // User exists
+        } else {
+          resolve(true); // User does not exist
+        }
+      }, error => {
+        reject(error); // Handle errors if needed
+      });
+    });
   }
 
   // Getter for easy access to form fields
@@ -149,4 +251,7 @@ export class LoginPage implements OnInit {
     this.bandera2= true;
   }
   
+  reg(){
+    this.router.navigateByUrl("/registro");
+  }
 }

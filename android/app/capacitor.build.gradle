@@ -9,13 +9,13 @@ android {
 
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
-<<<<<<< HEAD
     implementation project(':capacitor-community-barcode-scanner')
-=======
->>>>>>> cacc406d9b6dcdcb7e0ce33d717d64bc7ba86c2b
     implementation project(':capacitor-app')
+    implementation project(':capacitor-camera')
     implementation project(':capacitor-haptics')
     implementation project(':capacitor-keyboard')
+    implementation project(':capacitor-local-notifications')
+    implementation project(':capacitor-push-notifications')
     implementation project(':capacitor-status-bar')
 
 }

@@ -1,5 +1,4 @@
-<<<<<<< Updated upstream
-=======
+
 .scanner-active {
   display: none;
 }
@@ -20,6 +19,62 @@ ion-content{
 
 // <uniquifier>: Use a unique and descriptive class name
 // <weight>: Use a value from 100 to 400
+.scanner-active {
+  --ion-background-color: transparent !important;
+  --background: none !important;
+  opacity: 0;
+  display: none;
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: none;
+  z-index: 1000;
+}
+
+.hide-content {
+  --ion-background-color: transparent !important;
+  --background: none !important;
+  background-color: none;
+  background: none;
+  opacity: 0;
+  display: none;
+}
+
+ion-content {
+  --ion-background-color: #644e3b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.layout {
+  height: 19%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.botonCam {
+  width: 70px;
+  height: 70px;
+  border-radius: 15px;
+  background-color: #f3dfa2;
+  color: #550c18;
+  ion-icon {
+    font-size: 40px;
+  }
+  max-height: 19vh;
+}
+
+.qr {
+  width: 100%;
+  height: 80%;
+}
+
 .pt-serif-regular {
   font-family: "PT Serif", serif;
   font-weight: 400;
@@ -44,7 +99,6 @@ ion-content{
   font-style: italic;
 }
 
-
 .fuente {
   font-family: "Playwrite IE", cursive;
   font-optical-sizing: auto;
@@ -59,7 +113,6 @@ ion-toolbar {
   --border-color: #550C18;
   --border-width: 4px 0;
   --border-style: double;
-
   --min-height: 60px;
   --padding-top: 20px;
   --padding-bottom: 20px;
@@ -91,4 +144,23 @@ ion-toolbar {
       padding: 20px;
       overflow: hidden;
     }
->>>>>>> Stashed changes
+
+  color: #550c18;
+  transition: opacity 0.5s;
+}
+
+.button-main {
+  --background: #f3dfa2;
+  position: relative;
+  width: 100%;
+  height: 40%;
+
+  h2 {
+    color: #550c18;
+    font-size: 40px;
+  }
+
+  padding: 20px;
+  overflow: hidden;
+}
+
