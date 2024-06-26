@@ -20,6 +20,7 @@ export class QrsPage implements OnDestroy {
     try {
       const status = await BarcodeScanner.checkPermission({ force: true });
       if (status.granted) {
+        await BarcodeScanner.hideBackground();
         return true;
       }
       return false;

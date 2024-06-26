@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Productos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let producto of productos">
+      <ion-label>
+        <h2>{{ producto.nombre }}</h2>
+        <p>{{ producto.descripcion }}</p>
+        <p>Precio: ${{ producto.precio }}</p>
+        <p>Tiempo de espera: {{ producto.tiempo}}</p>
+
+        <ion-slides [options]="slideOpts">
+          <ion-slide *ngFor="let imagenes of producto.imagenes">
+            <img [src]="imagenes" />
+          </ion-slide>
+        </ion-slides>
+        
+      <ion-button> Añadir al carrito </ion-button>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,6 +1,6 @@
 // src/app/app.module.ts
 
-import { NgModule } from '@angular/core';
+import { NgModule , CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -29,9 +29,9 @@ import { provideHttpClient } from '@angular/common/http';
       appId: "1:536628202723:web:9dd6b02ed0767e860649d6"
     }),
     AngularFirestoreModule,// Add this for Firestore
-    AngularFireAuthModule,
-    
+    AngularFireAuthModule
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA], // Agregar CUSTOM_ELEMENTS_SCHEMA aquí
   providers: [provideHttpClient(),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
