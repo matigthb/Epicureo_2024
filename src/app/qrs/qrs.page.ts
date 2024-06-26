@@ -1,5 +1,4 @@
 import { Component, OnDestroy } from '@angular/core';
-
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { ToastController } from '@ionic/angular';
@@ -10,16 +9,18 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./qrs.page.scss'],
 })
 export class QrsPage implements OnDestroy {
-
   scannedResult: any;
+  isScanning = false;
 
-  constructor(private router : Router, private toast : ToastController) { }
-
+  constructor(private router: Router, private toast: ToastController) { 
+    this.startScan();
+  }
 
   async checkPermission(): Promise<boolean> {
     try {
       const status = await BarcodeScanner.checkPermission({ force: true });
       if (status.granted) {
+        await BarcodeScanner.hideBackground();
         return true;
       }
       return false;
@@ -33,38 +34,25 @@ export class QrsPage implements OnDestroy {
     try {
       const permission = await this.checkPermission();
       if (!permission) {
-
-        let toast = this.toast.create({
-          message: "No se cuenta con los permisos.",
+        const toast = await this.toast.create({
+          message: 'No se cuenta con los permisos.',
           duration: 3000,
           position: 'top',
           icon: 'alert-outline',
-          color: 'danger'
+          color: 'danger',
         });
-        (await toast).present();
-
+        await toast.present();
         return;
       }
 
       await BarcodeScanner.hideBackground();
-      const bodyElement = document.querySelector('ion-content');
-
-      if (bodyElement) {
-        bodyElement.classList.add('scanner-active');
-      }  
+      this.isScanning = true;
 
       const result = await BarcodeScanner.startScan();
-      console.log(result);
-
       if (result?.hasContent) {
         this.scannedResult = result.content;
+        this.isScanning = false;
         await BarcodeScanner.showBackground();
-
-        if (bodyElement) {
-          bodyElement.classList.remove('scanner-active');
-        }
-
-        console.log(this.scannedResult);
       }
     } catch (e) {
       console.error('Scan failed:', e);
@@ -75,10 +63,10 @@ export class QrsPage implements OnDestroy {
   stopScan() {
     BarcodeScanner.showBackground();
     BarcodeScanner.stopScan();
-    document.querySelector('ion-content')?.classList.remove('scanner-active');
+    this.isScanning = false;
   }
 
-  goBack(){
+  goBack() {
     this.router.navigateByUrl('/home');
   }
 

@@ -1,6 +1,6 @@
 // src/app/app.module.ts
 
-import { NgModule } from '@angular/core';
+import { NgModule , CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -12,8 +12,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/compat/firestore';
-
-
+import { provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,7 +31,8 @@ import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/compat/f
     AngularFirestoreModule,// Add this for Firestore
     AngularFireAuthModule
   ],
-  providers: [
+  schemas: [CUSTOM_ELEMENTS_SCHEMA], // Agregar CUSTOM_ELEMENTS_SCHEMA aquí
+  providers: [provideHttpClient(),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent],

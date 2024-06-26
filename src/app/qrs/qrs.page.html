@@ -8,10 +8,12 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="pt-serif-bold">
-  <ion-button class="button-main pt-serif-bold" expand="full" (click)="startScan()"><h2>Escanear Código QR</h2></ion-button>
+<ion-content [class.scanner-active]="isScanning" class="pt-serif-bold">
 
+  <div [class.hide-content]="isScanning">
     <ion-item *ngIf="scannedResult">
-        <ion-label class="ion-text-wrap"> Resultado del escaneo: {{scannedResult}}</ion-label>
+      <h2>Esperando...</h2>
     </ion-item>
+  </div>
+  
 </ion-content>

@@ -5,6 +5,7 @@ import { Usuario } from '../clases/usuario';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
+import { ToastController } from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { ToastController } from '@ionic/angular';
 
@@ -18,6 +19,7 @@ export class DataService {
     private toast : ToastController,
     private firestore: AngularFirestore,
     private auth : AuthService,
+    private toast : ToastController,
     private storage: AngularFireStorage
   ) { }
 
@@ -39,15 +41,17 @@ export class DataService {
 
         if (credential && credential.user) {
           // Agregar los datos del cliente a Firestore
-          await this.firestore.collection('usuarios').doc(credential.user.uid).set({
+          const foto = await this.uploadImage(cliente.foto || "", "usuarios");
+
+          await this.firestore.collection('clientesPendientes').doc(credential.user.uid).set({
             nombre: cliente.nombre || '',
             apellido: cliente.apellido || '',
             DNI: cliente.DNI || '',
             correo: cliente.correo,
-            foto: cliente.foto || '',
+            foto: foto || '',
             rol: "cliente"
           });
-
+          
           // Retornar el ID del usuario creado
           return credential.user.uid;
         } else {
@@ -67,7 +71,7 @@ export class DataService {
     try {
       // Agregar los datos del cliente a Firestore
       await this.rechazarCliente(cliente.id);
-      await this.firestore.collection('Usuarios').doc(cliente.id).set({
+      await this.firestore.collection('usuarios').doc(cliente.id).set({
         nombre: cliente.nombre || '',
         apellido: cliente.apellido || '',
         DNI: cliente.DNI || '',
@@ -191,5 +195,4 @@ export class DataService {
       throw error;
     }
   }
-
 }
