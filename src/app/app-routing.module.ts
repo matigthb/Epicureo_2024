@@ -31,6 +31,26 @@ const routes: Routes = [
     path: 'qrs',
     loadChildren: () => import('./qrs/qrs.module').then( m => m.QrsPageModule)
   },
+  {
+    path: 'altas',
+    loadChildren: () => import('./altas/altas.module').then( m => m.AltasPageModule)
+  },
+  {
+    path: 'alta-empleado',
+    loadChildren: () => import('./alta-empleado/alta-empleado.module').then( m => m.AltaEmpleadoPageModule)
+  },
+  {
+    path: 'alta-dueno-super',
+    loadChildren: () => import('./alta-dueno-super/alta-dueno-super.module').then( m => m.AltaDuenoSuperPageModule)
+  },
+  {
+    path: 'alta-producto',
+    loadChildren: () => import('./alta-producto/alta-producto.module').then( m => m.AltaProductoPageModule)
+  },
+  {
+    path: 'alta-mesa',
+    loadChildren: () => import('./alta-mesa/alta-mesa.module').then( m => m.AltaMesaPageModule)
+  },
 
 ];
 @NgModule({

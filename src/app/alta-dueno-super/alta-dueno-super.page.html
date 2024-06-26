@@ -1,0 +1,114 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [class.scanner-active]="usandoQR" [fullscreen]="true">
+  <ion-card class="pt-serif-regular">
+    <ion-card-content>
+      <ion-label position="stacked">Escanear DNI</ion-label>
+      <ion-button  class="button-cam" (click)="escanearDNI()"><ion-icon name="qr-code-outline"></ion-icon></ion-button>
+      <form class="pt-serif-regular" [formGroup]="registroForm" (ngSubmit)="registrarEmpleado()">
+        <ion-item>
+          <ion-label position="stacked">Nombre</ion-label>
+          <ion-input type="text" formControlName="nombre" required></ion-input>
+        </ion-item>
+        <div *ngIf="registroForm.get('nombre')?.invalid && (registroForm.get('nombre')?.dirty || registroForm.get('nombre')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('nombre')?.errors?.['required']">El nombre es requerido.</ion-text>
+          <ion-text color="danger" *ngIf="registroForm.get('nombre')?.errors?.['noNumbers']">El nombre no debe contener números.</ion-text>
+          <ion-text color="danger" *ngIf="registroForm.get('nombre')?.errors?.['minLength']">El nombre debe tener al menos 3 caracteres.</ion-text>
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">Apellido</ion-label>
+          <ion-input type="text" formControlName="apellido" required></ion-input>
+        </ion-item>
+        <div *ngIf="registroForm.get('apellido')?.invalid && (registroForm.get('apellido')?.dirty || registroForm.get('apellido')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('apellido')?.errors?.['required']">El apellido es requerido.</ion-text>
+          <ion-text color="danger" *ngIf="registroForm.get('apellido')?.errors?.['noNumbers']">El apellido no debe contener números.</ion-text>
+          <ion-text color="danger" *ngIf="registroForm.get('apellido')?.errors?.['minLength']">El apellido debe tener al menos 3 caracteres.</ion-text>
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">DNI</ion-label>
+          <ion-input type="text" formControlName="dni" required></ion-input>
+        </ion-item>
+        <div *ngIf="registroForm.get('dni')?.invalid && (registroForm.get('dni')?.dirty || registroForm.get('dni')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('dni')?.errors?.['required']">El DNI es requerido.</ion-text>
+          <ion-text color="danger" *ngIf="registroForm.get('dni')?.errors?.['pattern']">El DNI debe tener 8 dígitos numéricos.</ion-text>
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">CUIL</ion-label>
+          <ion-input type="text" formControlName="cuil" required></ion-input>
+        </ion-item>
+        <div *ngIf="registroForm.get('cuil')?.invalid && (registroForm.get('cuil')?.dirty || registroForm.get('cuil')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('cuil')?.errors?.['required']">El CUIL es requerido.</ion-text>
+          <ion-text color="danger" *ngIf="registroForm.get('cuil')?.errors?.['pattern']">El DNI debe tener 11 dígitos numéricos.</ion-text>
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">Correo Electrónico</ion-label>
+          <ion-input type="email" formControlName="correo" required></ion-input>
+        </ion-item>
+        <div *ngIf="registroForm.get('correo')?.invalid && (registroForm.get('correo')?.dirty || registroForm.get('correo')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('correo')?.errors?.['required']">El correo electrónico es requerido.</ion-text>
+          <ion-text color="danger" *ngIf="registroForm.get('correo')?.errors?.['email']">El formato del correo electrónico es incorrecto.</ion-text>
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">Contraseña</ion-label>
+          <ion-input type="password" formControlName="contrasena" required></ion-input>
+        </ion-item>
+        <div *ngIf="registroForm.get('contrasena')?.invalid && (registroForm.get('contrasena')?.dirty || registroForm.get('contrasena')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('contrasena')?.errors?.['required']">La contraseña es requerida.</ion-text>
+          <ion-text color="danger" *ngIf="registroForm.get('contrasena')?.errors?.['minLength']">La contraseña debe tener al menos 6 caracteres.</ion-text>
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">Confirmar contraseña</ion-label>
+          <ion-input type="password" formControlName="confirmarContrasena" required></ion-input>
+        </ion-item>
+        <div *ngIf="registroForm.get('confirmarContrasena')?.invalid && (registroForm.get('contrasena')?.dirty || registroForm.get('confirmarContrasena')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('confirmarContrasena')?.errors?.['required']">Confirmar la contraseña es requerido.</ion-text>
+          <ion-text color="danger" *ngIf="registroForm.get('confirmarContrasena')?.errors?.['minLength']">La contraseña debe tener al menos 6 caracteres.</ion-text>
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">Perfil</ion-label>
+          <ion-select formControlName="rol" placeholder="Selecciona un perfil" required>
+            <ion-select-option value="dueño">Dueño</ion-select-option>
+            <ion-select-option value="supervisor">Supervisor</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="registroForm.get('rol')?.invalid && (registroForm.get('rol')?.dirty || registroForm.get('rol')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('rol')?.errors?.['required']">El perfil es requerido.</ion-text>
+        </div>
+
+
+        <!-- Agregar campo para subir foto -->
+        <ion-item class="foto">
+          <ion-label position="stacked">Foto de perfil</ion-label>
+          <div class ="fotos" *ngIf="this.imageUrl == ''">
+            <ion-button class="button-main" (click)="tomarFoto()">Tomar Foto</ion-button>
+            <ion-button class="button-main" (click)="tomarFoto()">Seleccionar Foto</ion-button>
+          </div>
+          <div class="tilde" *ngIf="this.imageUrl != ''">
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+            <ion-button class="button-main" slot="end" (click)="tomarFoto()">Cambiar foto elegida</ion-button>
+          </div>
+        </ion-item>
+        <div *ngIf="registroForm.get('foto')?.invalid && (registroForm.get('foto')?.dirty || registroForm.get('foto')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('foto')?.errors?.['required']">La foto es requerida.</ion-text>
+        </div>
+
+        <ion-button class="button-main" expand="full" (click)="registrarEmpleado()">Registrarme!</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
