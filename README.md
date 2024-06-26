@@ -36,8 +36,8 @@ Vista de DUEÑO:<br>
 Tanto el DUEÑO como el SUPERVISOR tienen la opción de "Aceptar clientes", la cual despliega un menú con los clientes pendientes de aprobación, realizado por Matías (ALFA).<br>
 ![image](https://github.com/matigthb/Epicureo_2024/assets/98900532/59e326af-b15c-48c7-af8d-4cb61727b5db)<br>
 
-La app cuenta con un LECTOR DE CODIGOS QR, que facilita la entrada a la lista de espera (que sigue en desarrollo) de los ingresantes al restaurante.
-![image](https://github.com/matigthb/Epicureo_2024/assets/98900532/809cf220-2d15-4d3e-926c-a28ca5eda748)
+La app cuenta con un LECTOR DE CODIGOS QR, que facilita la entrada a la lista de espera (que sigue en desarrollo) de los ingresantes al restaurante.<br>
+![image](https://github.com/matigthb/Epicureo_2024/assets/98900532/809cf220-2d15-4d3e-926c-a28ca5eda748)<br>
 
 Y proximamente... LA POSIBILIDAD DE REALIZAR TU PEDIDO DIRECTAMENTE DESDE LA APP! sin levantarte de tu mesa. ESTATE ATENTO!!!!!!! 😉
 
