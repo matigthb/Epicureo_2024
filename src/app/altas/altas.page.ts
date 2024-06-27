@@ -11,12 +11,23 @@ import { DataService } from '../services/data.service';
 export class AltasPage implements OnInit {
 
   constructor(private router: Router, public auth : AuthService, private data : DataService) { }
-  
+
   ngOnInit() {
   }
 
-  go(url : string){
-    this.router.navigateByUrl(url);
+  goAltaEmpleado(){
+    this.router.navigateByUrl('/alta-empleado');
+  }
+  goAltaDuenoSuper(){
+    this.router.navigateByUrl('/alta-dueno-super');
+  }
+
+  goAltaProducto(){
+    this.router.navigateByUrl('/alta-producto');
+  }
+
+  goAltaMesa(){
+    this.router.navigateByUrl('/alta-mesa');
   }
 
   logout(){

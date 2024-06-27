@@ -97,9 +97,24 @@ export class HomePage implements OnInit {
   ngOnDestroy(): void {
     clearInterval(this.interval);
   }
+  
+  goAltas(){
+    this.router.navigateByUrl('/altas');
+  }
 
-  go(url : string){
-    this.router.navigateByUrl(url);
+  goPendientes(){
+    this.router.navigateByUrl('/pendientes');
+  }
+  goQR(){
+    this.router.navigateByUrl('/qrs');
+  }
+
+  goEncuestas(){
+    this.router.navigateByUrl('/encuestas');
+  }
+
+  goJuegos(){
+    console.log(this.auth.rol);
   }
 
   logout(){
