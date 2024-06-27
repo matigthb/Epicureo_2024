@@ -13,6 +13,11 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { provideHttpClient } from '@angular/common/http';
+import { register } from 'swiper/element/bundle';
+import { CartService } from './services/cart.service'; 
+
+
+register();
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,7 +38,7 @@ import { provideHttpClient } from '@angular/common/http';
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA], // Agregar CUSTOM_ELEMENTS_SCHEMA aquí
   providers: [provideHttpClient(),
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy  }
   ],
   bootstrap: [AppComponent],
 })

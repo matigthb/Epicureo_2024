@@ -1,53 +1,20 @@
-/* Estilos generales para el contenido del modal */
-ion-content {
-  padding: 20px;
+.swiper-container {
+  width: 100%;
+  height: 200px; /* Ajusta la altura según sea necesario */
+  margin-top: 10px; /* Espacio entre el texto y el carrusel */
 }
 
-/* Estilos para el encabezado del modal */
-ion-header {
-  ion-toolbar {
-    --background: #550C18; /* Color de fondo del toolbar */
-    color: white; /* Color del texto */
-  }
-  ion-title {
-    font-size: 1.5rem; /* Tamaño de la fuente del título */
-  }
+.swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* Estilos para el contenido del modal */
-ion-list {
-  ion-item {
-    ion-label {
-      h2 {
-        font-size: 1.2rem; /* Tamaño de la fuente del título del producto */
-        color: #550C18; /* Color del título del producto */
-      }
-      p {
-        font-size: 1rem; /* Tamaño de la fuente del texto de descripción y precio */
-        margin-bottom: 10px;
-      }
-    }
-    img {
-      max-width: 100%; /* Imagen ajustada al ancho máximo disponible */
-      height: auto; /* Altura automática para mantener la proporción */
-    }
-  }
+.ion-label {
+  display: block;
+  width: 100%;
 }
 
-/* Estilos para los slides */
-ion-slides {
-    height: 200px; /* Altura de los slides, ajusta según sea necesario */
-    .swiper-wrapper {
-      display: flex;
-      flex-direction: row; /* Asegúrate de que los slides se coloquen en fila */
-    }
-    .swiper-slide {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      img {
-        max-width: 100%; /* Imagen ajustada al ancho máximo del slide */
-        height: auto; /* Altura automática para mantener la proporción */
-      }
-    }
-  }
+ion-button {
+  margin-top: 10px; /* Espacio entre el carrusel y el botón */
+}

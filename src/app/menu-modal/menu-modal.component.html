@@ -12,18 +12,26 @@
     <ion-item *ngFor="let producto of productos">
       <ion-label>
         <h2>{{ producto.nombre }}</h2>
+        <h2>Precio: ${{ producto.precio }}</h2>
         <p>{{ producto.descripcion }}</p>
-        <p>Precio: ${{ producto.precio }}</p>
         <p>Tiempo de espera: {{ producto.tiempo}}</p>
 
-        <ion-slides [options]="slideOpts">
-          <ion-slide *ngFor="let imagenes of producto.imagenes">
+        <swiper-container #swiper [options]="{ autoplay: '3000', loop: true  }">
+          <swiper-slide *ngFor="let imagenes of producto.imagenes">
             <img [src]="imagenes" />
-          </ion-slide>
-        </ion-slides>
+          </swiper-slide>
+        </swiper-container>
         
-      <ion-button> Añadir al carrito </ion-button>
+        <ion-button (click)="addToCart(producto)"> Añadir al carrito </ion-button>
+        <ion-button (click)="removeFromCart(producto)"> Quitar del carrito </ion-button>
       </ion-label>
     </ion-item>
   </ion-list>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>Total: ${{ total }}</ion-title>
+    
+  </ion-toolbar>
+</ion-footer>
