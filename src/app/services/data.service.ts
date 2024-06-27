@@ -32,6 +32,16 @@ export class DataService {
     );
   }
 
+  getListaEspera(): Observable<Usuario[]> {
+    return this.firestore.collection<Usuario>('lista-de-espera').snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Usuario;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+  }
+
   async registrarCliente(cliente: Usuario, password: string) {
     try {
       if (cliente.correo) {
@@ -145,6 +155,10 @@ export class DataService {
     return this.firestore.collection('usuarios').doc(docId).valueChanges();
   }
 
+  getListaDeEspera(): Observable<any> {
+    return this.firestore.collection('lista-de-espera').valueChanges();
+  }
+
   getDevice(docId: string): Observable<any> {
     return this.firestore.collection('devices').doc(docId).valueChanges();
   }
@@ -158,6 +172,27 @@ export class DataService {
       color: color
     });
     (await toast).present();
+  }
+
+
+  async ingresarCliente(id : string){
+    const fecha = new Date();
+
+    console.log(fecha);
+    console.log(id);
+
+    await this.firestore.collection('lista-de-espera').doc(id).set({
+      id: id,
+      assignedTable: 0, // Use null if there's no table assigned yet
+      fecha: fecha.toISOString(), // Ensure fecha is stored as a string
+    });
+  }
+
+  async entrarMesa(mesanro : string, id : string){
+    return this.firestore.collection('mesas').doc(mesanro).update({
+      sentado: id,
+      pedido: "stand-by",
+    });
   }
 
   // Otros métodos del servicio según tus necesidades

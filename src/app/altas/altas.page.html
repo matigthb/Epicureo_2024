@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="go('/home')">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="button-container">
+    <ion-button class="button-main" (click)="go('/registro')">
+      <h2 class="pt-serif-bold">Mesa</h2>
+    </ion-button>
+    <ion-button class="button-main" (click)="go('/pendientes')">
+      <h2 class="pt-serif-bold">Aceptar Clientes</h2>
+    </ion-button>
+    <ion-button class="button-main" (click)="go('/alta-mesas')">
+      <h2 class="pt-serif-bold">Asignar Mesas</h2>
+    </ion-button>
+    <ion-button class="button-main pt-serif-bold" (click)="go('/qrs')">
+      <h2 class="pt-serif-bold">QR de ingreso</h2><ion-icon name="qr-code-outline" ></ion-icon>
+    </ion-button>
+    <ion-button class="button-main pt-serif-bold" (click)="go('/encuestas')">
+      <h2 class="pt-serif-bold">Encuestas</h2><ion-icon name="help-circle-outline" ></ion-icon>
+    </ion-button>
+  </div>
+  
+</ion-content>  
