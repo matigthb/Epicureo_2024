@@ -1,13 +1,70 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>altaMesa</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">altaMesa</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-card class="pt-serif-regular">
+    <ion-card-content>
+      <form class="pt-serif-regular" [formGroup]="registroForm">
+        <ion-item>
+          <ion-label position="stacked">Número</ion-label>
+          <ion-input type="text" formControlName="numero" required></ion-input>
+        </ion-item>
+        <div *ngIf="registroForm.get('numero')?.invalid && (registroForm.get('numero')?.dirty || registroForm.get('numero')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('numero')?.errors?.['required']">El número de mesa es requerido.</ion-text>
+          <ion-text color="danger" *ngIf="registroForm.get('numero')?.errors?.['pattern']">Ingrese solamente caractéres numéricos.</ion-text>
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">Comensales</ion-label>
+          <ion-input type="text" formControlName="comensales" required></ion-input>
+        </ion-item>
+        <div *ngIf="registroForm.get('comensales')?.invalid && (registroForm.get('comensales')?.dirty || registroForm.get('comensales')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('comensales')?.errors?.['required']">El número de comensales es requerido.</ion-text>
+          <ion-text color="danger" *ngIf="registroForm.get('comensales')?.errors?.['pattern']">Ingrese solamente caractéres numéricos.</ion-text>
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">Tipo</ion-label>
+          <ion-select formControlName="tipo" placeholder="Selecciona un tipo" required>
+            <ion-select-option value="estandar">Estándar</ion-select-option>
+            <ion-select-option value="vip">VIP</ion-select-option>
+            <ion-select-option value="discapacitados">Para discapacitados</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="registroForm.get('tipo')?.invalid && (registroForm.get('tipo')?.dirty || registroForm.get('tipo')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('tipo')?.errors?.['required']">El tipo es requerido.</ion-text>
+        </div>
+
+
+        <!-- Agregar campo para subir foto -->
+        <ion-item class="foto">
+          <ion-label position="stacked">Foto de la mesa</ion-label>
+          <div class ="fotos" *ngIf="this.imageUrl == ''">
+            <ion-button class="button-main" (click)="tomarFoto()">Tomar Foto</ion-button>
+            <ion-button class="button-main" (click)="tomarFoto()">Seleccionar Foto</ion-button>
+          </div>
+          <div class="tilde" *ngIf="this.imageUrl != ''">
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+            <ion-button class="button-main" slot="end" (click)="tomarFoto()">Cambiar foto elegida</ion-button>
+          </div>
+        </ion-item>
+        <div *ngIf="registroForm.get('foto')?.invalid && (registroForm.get('foto')?.dirty || registroForm.get('foto')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('foto')?.errors?.['required']">La foto es requerida.</ion-text>
+        </div>
+
+        <ion-item *ngIf="qrCodeData != '' && !registroForm.get('numero')?.errors?.['pattern'] && !registroForm.get('numero')?.errors?.['required']" class="qr">
+          <img [src]="qrCodeData" alt="Generated QR Code">
+        </ion-item>
+        
+        <ion-button class="button-main" expand="full" (click)="registrarMesa()">Crear mesa!</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

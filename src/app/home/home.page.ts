@@ -23,18 +23,29 @@ export class HomePage implements OnInit {
   interval: any;
   holdTime: number = 0;
 
+  currentUser : any = null;
+
   clientesPendientes : Usuario[] = [];
   listaDeEspera : any[] = [];
 
   constructor(private router: Router, public auth : AuthService, private data : DataService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    const uid = await this.auth.getUserUid() || "";
+    this.cargarUser(uid);
     this.startTextLoop();
     this.cargarUsuarios();
-    if(this.auth.rol == "maitre")
-    {
-      this.cargarClientes();
-    }
+    console.log("ASJHDASJHDJHAS");
+    this.cargarClientes();
+  }
+
+  cargarUser(uid : string){
+    this.data.getUserRole(uid).subscribe(data => {
+      this.currentUser = data;
+      console.log(data);
+    }, error => {
+      console.error('Error al cargar usuario:', error);
+    });
   }
 
   cargarClientes(){
@@ -98,23 +109,8 @@ export class HomePage implements OnInit {
     clearInterval(this.interval);
   }
   
-  goAltas(){
-    this.router.navigateByUrl('/altas');
-  }
-
-  goPendientes(){
-    this.router.navigateByUrl('/pendientes');
-  }
-  goQR(){
-    this.router.navigateByUrl('/qrs');
-  }
-
-  goEncuestas(){
-    this.router.navigateByUrl('/encuestas');
-  }
-
-  goJuegos(){
-    console.log(this.auth.rol);
+  go(url : string){
+    this.router.navigateByUrl(url);
   }
 
   logout(){

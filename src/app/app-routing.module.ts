@@ -55,6 +55,10 @@ const routes: Routes = [
     path: 'alta-mesa',
     loadChildren: () => import('./alta-mesa/alta-mesa.module').then( m => m.AltaMesaPageModule)
   },
+  {
+    path: 'mesas',
+    loadChildren: () => import('./mesas/mesas.module').then( m => m.MesasPageModule)
+  },
 
 
 ];

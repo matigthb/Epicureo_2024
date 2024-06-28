@@ -4,7 +4,7 @@
       <img class="iconosuperprime" src="../../assets/icono.jpg">
     </div>
     <form [formGroup]="credentials">
-      <ion-item class="margen">
+      <ion-item class="margen marron">
         <ion-label class="margen2" position="floating">Correo</ion-label>
         <ion-input type="email" formControlName="email"></ion-input>
       </ion-item>
@@ -16,7 +16,7 @@
           El correo es requerido!
         </ion-text>
       </div>
-      <ion-item class="margen">
+      <ion-item class="margen marron">
         <ion-label class="margen2" position="floating">Contraseña</ion-label>
         <ion-input type="{{ showPassword ? 'text' : 'password' }}" formControlName="password"></ion-input>
         <ion-icon class="ojito" [name]="showPassword ? 'eye-outline' : 'eye-off-outline'" slot="end"
@@ -37,6 +37,10 @@
 
       <button ion-button class="botonReg" (click)="reg()">
         Registrarme
+      </button>
+
+      <button ion-button id="open-modal" class="botonReg" (click)="anon()">
+        Modo anónimo
       </button>
       
       <ion-footer>
@@ -127,5 +131,39 @@
         </div>
       
     </form>
+
+    <ion-modal #modal trigger="open-modal" [enterAnimation]="enterAnimation">
+      <ng-template>
+        <ion-header [translucent]="true">
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-button (click)="goBack()">
+                <ion-icon name="arrow-back-outline"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+
+        <body id="contentmodal">
+          <div class="anonDiv">
+            <h2>Ingresá estos datos mínimos para iniciar sesión como anónimo:</h2>
+            <img class="anonpic" [src]="imageUrl">
+
+            <ion-button class="anonButton" (click)="tomarFoto()">Tomar foto</ion-button>
+
+            <ion-item class="margen">
+              <ion-label class="margen2" position="floating">Nombre</ion-label>
+              <ion-input [(ngModel)]="nombreAnon"></ion-input>
+            </ion-item>
+
+            <ion-item class="margen">
+              <ion-label class="margen2" position="floating">Apellido</ion-label>
+              <ion-input [(ngModel)]="apellidoAnon"></ion-input>
+            </ion-item>
+            <ion-button *ngIf="nombreAnon != '' && apellidoAnon != ''" class="anonButton" (click)="iniciarAnonimo()">Iniciar sesión</ion-button>
+          </div>
+        </body>
+      </ng-template>
+    </ion-modal>
   </div>
 </ion-content>
