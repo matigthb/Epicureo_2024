@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="pt-serif-bold">Encuesta</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="pt-serif-regular" >
+  <ion-card class="pt-serif-regular">
+
+    <form (ngSubmit)="enviarRespuestas()">
+      <div *ngFor="let pregunta of encuesta.preguntas">
+        <ion-item>
+          <ion-label>{{ pregunta.pregunta }}</ion-label>
+
+            <ion-radio-group *ngIf="pregunta.tipo === 'radio'" [(ngModel)]="encuesta.respuestas[pregunta.id.toString()]" name="respuesta{{pregunta.id}}">
+            <ion-item *ngFor="let opcion of pregunta.opciones">
+              <ion-label>{{ opcion }}</ion-label>
+              <ion-radio slot="start" [value]="opcion"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+
+          <ion-range aria-label="Range with ticks" [ticks]="true" [snaps]="true" [min]="0" [max]="5" *ngIf="pregunta.tipo === 'scale'" [(ngModel)]="encuesta.respuestas[pregunta.id.toString()]" name="respuesta{{pregunta.id}}">
+            <ion-label slot="start">1</ion-label>
+            <ion-label slot="end">5</ion-label>
+          </ion-range>
+
+        <ion-select *ngIf="pregunta.tipo === 'multiple'" [(ngModel)]="encuesta.respuestas[pregunta.id.toString()]" name="respuesta{{pregunta.id}}">
+          <ion-select-option *ngFor="let opcion of (pregunta.opciones || [])">{{ opcion }}</ion-select-option>
+        </ion-select>
+
+      </ion-item>
+      <ion-segment *ngIf="pregunta.tipo === 'emoji'" [(ngModel)]="encuesta.respuestas[pregunta.id.toString()]" name="respuesta{{pregunta.id}}">
+        <ion-segment-button value="happy">
+          <ion-icon name="happy-outline"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="sad">
+          <ion-icon name="sad-outline"></ion-icon>
+        </ion-segment-button>
+        </ion-segment>
+      </div>
+    <ion-button  expand="full" type="submit">Enviar</ion-button>
+  </form>
+</ion-card>
+</ion-content>
+
