@@ -8,7 +8,6 @@ import { AuthService } from './auth.service';
 import { ToastController } from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -16,7 +15,6 @@ export class DataService {
 
   constructor(
     private afAuth: AngularFireAuth,
-    private toast : ToastController,
     private firestore: AngularFirestore,
     private storage: AngularFireStorage
   ) { }
