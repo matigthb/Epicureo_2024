@@ -13,8 +13,10 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { provideHttpClient } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { register } from 'swiper/element/bundle';
+import { DateFormatPipe } from './pipes/date-format.pipe';
+import { ChatPage } from './chat/chat.page';
 import { CartService } from './services/cart.service'; 
 
 

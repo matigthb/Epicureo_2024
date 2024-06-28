@@ -55,4 +55,17 @@ export class AuthService {
   getUser() {
     return this.afAuth.authState;
   }
+
+  getCurrentUser(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.afAuth.onAuthStateChanged(
+        (user) => {
+          resolve(user);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+  }
 }
