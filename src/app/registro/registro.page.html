@@ -76,7 +76,7 @@
           <ion-label position="stacked">Foto de perfil</ion-label>
           <div class ="fotos" *ngIf="this.imageUrl == ''">
             <ion-button class="button-main" (click)="tomarFoto()">Tomar Foto</ion-button>
-            <ion-button class="button-main" (click)="tomarFoto()">Seleccionar Foto</ion-button>
+            <ion-button class="button-main" (click)="seleccionarFoto()">Seleccionar Foto</ion-button>
           </div>
           <div class="tilde" *ngIf="this.imageUrl != ''">
             <ion-icon name="checkmark-circle-outline"></ion-icon>

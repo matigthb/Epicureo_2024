@@ -115,6 +115,7 @@ export class QrsPage implements OnDestroy, OnInit {
               this.isScanning = false;
               await BarcodeScanner.showBackground();
               this.data.entrarMesa(`${this.mesa}`, this.uid);
+              this.router.navigate(['/productos'], { queryParams: { mesa: this.mesa } });
             }
             else
             {

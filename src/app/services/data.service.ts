@@ -16,7 +16,8 @@ export class DataService {
   constructor(
     private afAuth: AngularFireAuth,
     private firestore: AngularFirestore,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private toast: ToastController
   ) { }
 
   getUsuarios(): Observable<Usuario[]> {
@@ -28,11 +29,21 @@ export class DataService {
       }))
     );
   }
-  
-  getMesas(): Observable<Usuario[]> {
-    return this.firestore.collection<Usuario>('mesas', ref => ref.where('sentado', '==', 'nadie')).snapshotChanges().pipe(
+
+  getProductos(): Observable<any[]> {
+    return this.firestore.collection<any>('productos').snapshotChanges().pipe(
       map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as Usuario;
+        const data = a.payload.doc.data() as any;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+  }
+  
+  getMesas(): Observable<any[]> {
+    return this.firestore.collection<any>('mesas', ref => ref.where('sentado', '==', 'nadie')).snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
         const id = a.payload.doc.id;
         return { id, ...data };
       }))
@@ -174,6 +185,19 @@ export class DataService {
     }
   }
 
+  async confirmarPedido(carrito : any[], mesanro: string, uid : string) {
+    try {
+      // Agregar los datos del device a Firestore
+      await this.firestore.collection('pedidosPendientes').doc(mesanro).set({
+        user: uid,
+        pedido: carrito
+      });
+    } catch (error) {
+      console.error('Error al registrar el device:', error);
+      throw error;
+    }
+  }
+
   async uploadImage(imagePath: string, tabla : string): Promise<string> {
     try {
       const fileRef = this.storage.ref(tabla).child(`${new Date().getTime()}`);
@@ -259,6 +283,8 @@ export class DataService {
     });
   }
 
+
+
   // Otros métodos del servicio según tus necesidades
 
   async registrarEmpleado(empleado: Usuario, password: string) {
@@ -317,6 +343,34 @@ export class DataService {
   
     } catch (error) {
       console.error('Error al registrar el empleado:', error);
+      throw error;
+    }
+  }
+
+  async agregarProducto(producto : any) {
+    try {
+      if (producto) {
+        const foto1 = await this.uploadImage(producto.imagenes[0] || "", "productos");
+        const foto2 = await this.uploadImage(producto.imagenes[1] || "", "productos");
+        const foto3 = await this.uploadImage(producto.imagenes[2]|| "", "productos");
+
+        await this.firestore.collection('productos').doc().set({
+          categoria: producto.categoria,
+          nombre: producto.nombre || '',
+          descripcion: producto.descripcion || '',
+          precio: producto.precio,
+          tiempoEstimado: producto.tiempoEstimado,
+          foto1: foto1,
+          foto2: foto2,
+          foto3: foto3,
+        });
+        
+      } else {
+        throw new Error('No se pudo crear el producto');
+      }
+  
+    } catch (error) {
+      console.error('Error al registrar el producto:', error);
       throw error;
     }
   }

@@ -6,7 +6,7 @@ import { AuthService } from '../services/auth.service';
 import { PushNotifications } from '@capacitor/push-notifications';
 import { NotificationService } from '../services/notification.service';
 import { DataService } from '../services/data.service';
-import { Capacitor } from '@capacitor/core';
+import { Capacitor, Plugins } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
@@ -67,11 +67,21 @@ export class LoginPage implements OnInit {
       .addAnimation([backdropAnimation, wrapperAnimation]);
   };
 
-  ngOnInit() {
+  async ngOnInit() {
     this.credentials = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
+
+    const { LocalNotifications } = Plugins;
+    
+    // Request permission to show notifications
+    const result = await LocalNotifications['requestPermissions']();
+    if (result.display === 'granted') {
+      console.log('Notification permission granted');
+    } else {
+      console.log('Notification permission not granted');
+    }
   }
 
   
@@ -115,27 +125,37 @@ export class LoginPage implements OnInit {
     });
 
     await PushNotifications.addListener('registrationError', async (err) => { 
-      let toast = this.toast.create({
-        message: err.error,
-        duration: 3000,
-        position: 'top',
-        icon: 'alert-outline',
-        color: 'danger'
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            title: "Title",
+            body: "Body",
+            id: 1,
+            schedule: { at: new Date(Date.now() + 1000 * 5) }, // Schedule notification for 5 seconds later
+            actionTypeId: "",
+            extra: null
+          }
+        ]
       });
-      (await toast).present();
 
       console.error('Registration error: ', err.error);
     });
 
     await PushNotifications.addListener('pushNotificationReceived', async (notification) => {
-      let toast = this.toast.create({
-        message: "Push notification received",
-        duration: 1000,
-        position: 'top',
-        icon: 'alert-outline',
-        color: 'success'
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            title: notification.title || "Title",
+            body: notification.body ||"Body",
+            id: 1,
+            schedule: { at: new Date(Date.now() + 1000 * 1) }, // Schedule notification for 5 seconds later
+            actionTypeId: "",
+            smallIcon: "icono__1_",
+            largeIcon: "icono__1_",
+            extra: null
+          }
+        ]
       });
-      (await toast).present();
 
       
     console.log('Push notification received: ', notification);

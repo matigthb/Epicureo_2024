@@ -29,9 +29,18 @@ export class PendientesPage implements OnInit {
   }
 
   aceptarCliente(cliente : any){
-    this.data.aceptarCliente(cliente);
-    this.notification.sendMail(true, cliente.nombre, cliente.correo);
-    this.data.mandarToast("Cliente aceptado.", "success");
+    //this.data.aceptarCliente(cliente);
+    this.notification.sendMail(true, cliente.nombre, cliente.correo).subscribe(
+      response => {
+        // Handle success response
+        this.data.mandarToast("Cliente aceptado.", "success");
+      },
+      error => {
+        // Handle error response
+        console.error('Error sending mail:', error);
+        this.data.mandarToast("Failed to accept client. Please try again.", "danger");
+      }
+    );
   }
 
   rechazarCliente(cliente : any)

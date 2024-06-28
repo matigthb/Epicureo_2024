@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Usuario } from '../clases/usuario';
 import { DataService } from '../services/data.service';
+import { Plugins } from '@capacitor/core';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,7 @@ export class HomePage implements OnInit {
 
   texts: string[] = [
     'Epicúreo',
-    'Sabores infinitos.'
+    'Disfrutá.'
   ];
   
   currentTextArray: string[] = [];
@@ -37,6 +38,8 @@ export class HomePage implements OnInit {
     this.cargarUsuarios();
     console.log("ASJHDASJHDJHAS");
     this.cargarClientes();
+
+    
   }
 
   cargarUser(uid : string){
