@@ -1,7 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { IonicModule } from '@ionic/angular';
-
+import { CartService } from '../services/cart.service';
 
 interface Producto {
   tipo: string;
@@ -17,26 +16,40 @@ interface Producto {
   templateUrl: './menu-modal.component.html',
   styleUrls: ['./menu-modal.component.scss'],
 })
-export class MenuModalComponent {
+export class MenuModalComponent implements OnInit {
 
-  @Input() productos!: any[];
-  
+  @Input() productos!: Producto[];
 
+  @ViewChild('swiper', { static: true }) swiperRef!: ElementRef;
 
-  slideOpts = {
-    initialSlide: 1,
+  total: number = 0;
 
-    speed: 400,
-    loop: true,
-    autoplay: {
-      delay: 3000, // Deslizar cada 3 segundos
-    },
+  constructor(
+    private modalController: ModalController,
+    private cartService: CartService
+  ) {}
 
-  };
-
-  constructor(private modalController: ModalController) {}
+  ngOnInit() {
+    this.total = this.cartService.getTotal();
+  }
 
   dismissModal() {
     this.modalController.dismiss();
   }
+
+  addToCart(producto: Producto) {
+    this.cartService.addToCart(producto);
+    this.total = this.cartService.getTotal();
+  }
+
+  removeFromCart(producto: Producto) {
+    this.cartService.removeFromCart(producto);
+    this.total = this.cartService.getTotal();
+  }
+  
+
+  logActiveIndex() {
+    console.log(this.swiperRef.nativeElement.swiper.activeIndex);
+  }
+
 }

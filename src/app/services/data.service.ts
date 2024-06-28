@@ -15,7 +15,6 @@ export class DataService {
 
   constructor(
     private afAuth: AngularFireAuth,
-    private toast : ToastController,
     private firestore: AngularFirestore,
     private storage: AngularFireStorage
   ) { }
