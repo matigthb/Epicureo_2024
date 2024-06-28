@@ -1,0 +1,224 @@
+//ion-content{
+    //--background: linear-gradient(0deg,rgba(0,0,0,0.7), rgba(0,0,0,0.1)),
+    //url("../../assets/fondo.jpg") no-repeat center center / cover;
+//}
+
+
+.info{
+    position: relative;
+    float:right;
+    font-size: 9px;
+    margin-bottom: 0px;
+    color: rgb(150, 149, 150);
+}
+
+#sendButton{
+    position: relative;
+    float: right;
+    font-size: 200%;
+    transform: translate(3px);
+    margin-top: 3px;
+    margin-right: 5px;
+}
+
+.fondo {
+    --background:#927e4b;
+}
+
+
+//mios
+/* Estilos para el campo de entrada de chat */
+.input-chat {
+    border: none; /* Quita el borde predeterminado */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 10px 15px; /* Espaciado interno */
+    background-color: white; /* Color de fondo */
+    width: 100%; /* Ancho personalizado */
+    margin: 10px;
+    font-size: 16px; /* Tamaño de fuente */
+    outline: none; /* Quita el resaltado de enfoque */
+    color: black;
+}
+
+/* Estilos similares a WhatsApp */
+.cardHeader {
+    text-align: left;
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 2px;
+  }
+  
+  
+
+.round-button {
+    width: 60px; /* Ajusta el tamaño del botón según tus necesidades */
+    height: 60px;
+    border-radius: 50%; /* Hace que el botón sea redondo */
+    background-color: #ffa900; /* Cambia el color de fondo según tu diseño */
+    border: none; /* Elimina el borde del botón */
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Agrega una transición suave al color de fondo */
+    right: 100px;
+  }
+  
+  .round-button:hover {
+    background-color: #ff8500; /* Cambia el color de fondo al pasar el mouse por encima (opcional) */
+  }
+  
+  .round-button i {
+    font-size: 24px; /* Ajusta el tamaño del icono según tus necesidades */
+    color: white; /* Cambia el color del icono según tu diseño */
+  }
+
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F3DFA2;
+    --background: #F3DFA2;
+}
+
+/* Estilos para el chat */
+.chat-container {
+    position: fixed;
+    max-width: 300px;
+    height: 100%
+}
+
+.chat {
+    background-color: #F3DFA2;
+    border: 1px solid #644e3b;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.chat-header {
+    background-color: #ffa900; /* Verde de WhatsApp */
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+.chat h2 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.chat-messages {
+    max-height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 10px;
+}
+
+.message {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 10px;
+    max-width: 70%;
+    word-wrap: break-word; /* Permite que los mensajes largos se colapsen hacia abajo */
+}
+
+.senderUno {
+    background-color: #e8b02f; /* Verde claro de WhatsApp */
+    color: #000;
+    text-align: right;
+    align-self: flex-end;
+    margin-left: auto; /* Empuja los mensajes de los remitentes a la derecha */
+}
+
+.senderDos {
+    background-color: #550C18; /* Verde claro de WhatsApp */
+    color: #000;
+    text-align: right;
+    align-self: flex-end;
+    margin-left: auto; /* Empuja los mensajes de los remitentes a la derecha */
+}
+
+.receiver {
+    background-color: #F3DFA2;
+    color: #000;
+    text-align: left;
+    align-self: flex-start;
+    margin-right: auto; /* Empuja los mensajes de los receptores a la izquierda */
+}
+
+.message .time {
+    font-size: 0.8rem;
+    color: #000;
+    margin-left: 10px;
+}
+
+.chat-input {
+    display: flex;
+    padding: 10px;
+}
+
+.chat-input input {
+    flex-grow: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    margin-right: 10px;
+    font-size: 0.9rem;
+    width: 50%;
+}
+
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .chat-container {
+        right: 10px;
+    }
+}
+
+.navA{
+    --background: #550C18;
+    color: #F3DFA2;
+}
+
+.navB{
+    --background: #FFEE88;
+}
+
+.botonB{
+    color: #000
+}
+
+.navB h1 {
+    color: #000
+}
+
+
+
+/* Estilos para el botón de cierre */
+.close-button {
+    background-color: transparent;
+    border: none;
+    color: #19202e; /* Color de enlace de WhatsApp */
+    cursor: pointer;
+    font-size: 0.9rem;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.close-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #19202e; /* Color de fondo del círculo */
+    color: #fff; /* Color del icono */
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.close-icon:hover {
+    background-color: #0056b3; /* Cambia el color de fondo al pasar el cursor */
+}

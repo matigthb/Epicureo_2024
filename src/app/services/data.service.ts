@@ -18,9 +18,14 @@ export class DataService {
     private afAuth: AngularFireAuth,
     private toast : ToastController,
     private firestore: AngularFirestore,
+<<<<<<< Updated upstream
     private auth : AuthService,
     private toast : ToastController,
     private storage: AngularFireStorage
+=======
+    private storage: AngularFireStorage,
+    private toast : ToastController
+>>>>>>> Stashed changes
   ) { }
 
   getUsuarios(): Observable<Usuario[]> {

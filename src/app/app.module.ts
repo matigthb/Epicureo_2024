@@ -13,6 +13,16 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { provideHttpClient } from '@angular/common/http';
+<<<<<<< Updated upstream
+=======
+import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
+import { register } from 'swiper/element/bundle';
+import { DateFormatPipe } from './pipes/date-format.pipe';
+import { ChatPage } from './chat/chat.page';
+
+
+register();
+>>>>>>> Stashed changes
 
 @NgModule({
   declarations: [AppComponent],
