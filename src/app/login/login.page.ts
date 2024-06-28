@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController, LoadingController, Platform, ToastController } from '@ionic/angular';
+import { AlertController, AnimationController, IonModal, LoadingController, Platform, ToastController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 import { PushNotifications } from '@capacitor/push-notifications';
 import { NotificationService } from '../services/notification.service';
 import { DataService } from '../services/data.service';
-import { Capacitor } from '@capacitor/core';
+import { Capacitor, Plugins } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,12 @@ export class LoginPage implements OnInit {
   bandera2: boolean = false;
   rol: any;
   
+  imageUrl = "../../assets/anonymous.png"
+  @ViewChild("modal") modal: IonModal | undefined ;
+  nombreAnon : string = "";
+  apellidoAnon : string = "";
+
+  
   constructor(
     private notificationService: NotificationService,
     private plt : Platform,
@@ -32,14 +39,70 @@ export class LoginPage implements OnInit {
     private alertController: AlertController,
     private toast : ToastController,
     private router: Router,
+    private animationCtrl: AnimationController,
     private loadingController: LoadingController
   ) {}
 
-  ngOnInit() {
+  enterAnimation = (baseEl: HTMLElement) => {
+    const root = baseEl.shadowRoot;
+
+    const backdropAnimation = this.animationCtrl
+      .create()
+      .addElement(root?.querySelector('ion-backdrop')!)
+      .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
+
+    const wrapperAnimation = this.animationCtrl
+      .create()
+      .addElement(root?.querySelector('.modal-wrapper')!)
+      .keyframes([
+        { offset: 0, opacity: '0', transform: 'scale(0)' },
+        { offset: 1, opacity: '1', transform: 'scale(1)' },
+      ]);
+
+    return this.animationCtrl
+      .create()
+      .addElement(baseEl)
+      .easing('ease-out')
+      .duration(500)
+      .addAnimation([backdropAnimation, wrapperAnimation]);
+  };
+
+  async ngOnInit() {
     this.credentials = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
+
+    const { LocalNotifications } = Plugins;
+    
+    // Request permission to show notifications
+    const result = await LocalNotifications['requestPermissions']();
+    if (result.display === 'granted') {
+      console.log('Notification permission granted');
+    } else {
+      console.log('Notification permission not granted');
+    }
+  }
+
+  
+  async tomarFoto() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Uri, // Use Uri instead of Base64
+      source: CameraSource.Camera
+    });
+  
+    const fecha = new Date(); // replace with actual date
+    const uidUser = await this.authService.getUserUid() || '';
+  
+    if (image.webPath) {
+      console.log("TENGO");
+      this.imageUrl = image.webPath;
+      //this.uploadImage(image.webPath, fecha, uidUser);
+    } else {
+      console.log("NO TENGO");
+    }
   }
 
   async registerNotifications() {
@@ -62,27 +125,37 @@ export class LoginPage implements OnInit {
     });
 
     await PushNotifications.addListener('registrationError', async (err) => { 
-      let toast = this.toast.create({
-        message: err.error,
-        duration: 3000,
-        position: 'top',
-        icon: 'alert-outline',
-        color: 'danger'
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            title: "Title",
+            body: "Body",
+            id: 1,
+            schedule: { at: new Date(Date.now() + 1000 * 5) }, // Schedule notification for 5 seconds later
+            actionTypeId: "",
+            extra: null
+          }
+        ]
       });
-      (await toast).present();
 
       console.error('Registration error: ', err.error);
     });
 
     await PushNotifications.addListener('pushNotificationReceived', async (notification) => {
-      let toast = this.toast.create({
-        message: "Push notification received",
-        duration: 1000,
-        position: 'top',
-        icon: 'alert-outline',
-        color: 'success'
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            title: notification.title || "Title",
+            body: notification.body ||"Body",
+            id: 1,
+            schedule: { at: new Date(Date.now() + 1000 * 1) }, // Schedule notification for 5 seconds later
+            actionTypeId: "",
+            smallIcon: "icono__1_",
+            largeIcon: "icono__1_",
+            extra: null
+          }
+        ]
       });
-      (await toast).present();
 
       
     console.log('Push notification received: ', notification);
@@ -122,13 +195,15 @@ export class LoginPage implements OnInit {
           {
             this.data.getUserRole(uid).subscribe(async user => {
               this.authService.rol = user?.rol;
+              this.authService.isLogging = false;
               console.log(Capacitor.isNativePlatform())
               if (Capacitor.isNativePlatform()){
                 await this.addListeners(uid,this.authService.rol);
                 await this.registerNotifications();
               }
             });
-    
+            
+            
             this.credentials.controls['email'].setValue('');
             this.credentials.controls['password'].setValue('');
             loading.dismiss();
@@ -173,6 +248,64 @@ export class LoginPage implements OnInit {
     return this.credentials.get('password');
   }
 
+  anon(){
+    this.modal?.present();
+  }
+
+  generateRandomEmail() {
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let randomString = '';
+    for (let i = 0; i < 8; i++) {
+      randomString += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    const randomEmail = `${randomString}@example.com`;
+    return randomEmail;
+  }
+
+  async iniciarAnonimo(){
+    if(this.imageUrl == "../../assets/anonymous.png")
+    {
+      this.data.mandarToast("Debe tomar una foto de perfil.", "danger");
+      return;
+    }
+
+    const loading = await this.loadingController.create();
+    await loading.present();
+
+    const anon = {
+      DNI: "anonimo",
+      apellido: this.apellidoAnon,
+      correo: this.generateRandomEmail(),
+      foto: this.imageUrl,
+      nombre: this.nombreAnon,
+      rol: "anonimo"
+    }
+
+    await this.data.ingresarAnonimo(anon);
+
+    const user = await this.authService.login(anon.correo, "anonimo").catch((error) =>{
+      console.log(error);
+      loading.dismiss();
+    })
+    if(user){
+      let uid = await this.authService.getUserUid() || "";
+          this.authService.rol = "anonimo";
+          this.authService.isLogging = false;
+          console.log(Capacitor.isNativePlatform())
+          if (Capacitor.isNativePlatform()){
+            await this.addListeners(uid,this.authService.rol);
+            await this.registerNotifications();
+          }
+          this.modal?.dismiss();
+          loading.dismiss();
+          this.router.navigateByUrl('/home');
+      }
+    
+  }
+
+  goBack(){
+    this.modal?.dismiss();
+  }
 
   fastDueno() {
     this.showMenu = false;
@@ -224,19 +357,26 @@ export class LoginPage implements OnInit {
   }
 
   async fastAnon() {
-    let asdasd : boolean = true;
     this.showMenu = false;
     this.showMenu2 = false;
     const loading = await this.loadingController.create();
     await loading.present();
-    this.credentials.controls['email'].setValue('');
-    this.credentials.controls['password'].setValue('');
-    setTimeout(() => {
+    const user = await this.authService.login("ja6pc4kg@example.com", "anonimo").catch((error) =>{
+      console.log(error);
       loading.dismiss();
-      this.router.navigateByUrl('/home');
-    }, 2000);
-    
-    this.authService.rol = "anon";
+    })
+    if(user){
+      let uid = await this.authService.getUserUid() || "";
+          this.authService.rol = "anonimo";
+          this.authService.isLogging = false;
+          console.log(Capacitor.isNativePlatform())
+          if (Capacitor.isNativePlatform()){
+            await this.addListeners(uid,this.authService.rol);
+            await this.registerNotifications();
+          }
+          loading.dismiss();
+          this.router.navigateByUrl('/home');
+      }
   }
 
   menu(){

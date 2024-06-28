@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Usuario } from '../clases/usuario';
 import { DataService } from '../services/data.service';
+import { NotificationService } from '../services/notification.service';
 @Component({
   selector: 'app-pendientes',
   templateUrl: './pendientes.page.html',
@@ -12,7 +13,7 @@ export class PendientesPage implements OnInit {
 
   usuarios: any[] = [];
 
-  constructor(private router: Router, public auth : AuthService, private data : DataService) { }
+  constructor(private router: Router, public auth : AuthService, private data : DataService, private notification : NotificationService) { }
 
   ngOnInit(): void {
     this.cargarUsuarios();
@@ -28,13 +29,24 @@ export class PendientesPage implements OnInit {
   }
 
   aceptarCliente(cliente : any){
-    this.data.aceptarCliente(cliente);
-    this.data.mandarToast("Cliente aceptado.", "success");
+    //this.data.aceptarCliente(cliente);
+    this.notification.sendMail(true, cliente.nombre, cliente.correo).subscribe(
+      response => {
+        // Handle success response
+        this.data.mandarToast("Cliente aceptado.", "success");
+      },
+      error => {
+        // Handle error response
+        console.error('Error sending mail:', error);
+        this.data.mandarToast("Failed to accept client. Please try again.", "danger");
+      }
+    );
   }
 
-  rechazarCliente(clienteId : string)
+  rechazarCliente(cliente : any)
   {
-    this.data.rechazarCliente(clienteId);
+    this.data.rechazarCliente(cliente.id);
+    this.notification.sendMail(false, cliente.nombre, cliente.correo);
     this.data.mandarToast("Cliente rechazado.", "danger");
   }
 

@@ -10,7 +10,7 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } f
 export class AuthService {
 
   constructor(private afAuth: AngularFireAuth) {}
-  
+  isLogging : boolean = true;
   rol : string = "no logueado";
 
   async login(email: string, password: string): Promise<any> {

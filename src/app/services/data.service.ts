@@ -2,12 +2,11 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Usuario } from '../clases/usuario';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { ToastController } from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -16,16 +15,10 @@ export class DataService {
 
   constructor(
     private afAuth: AngularFireAuth,
-    private toast : ToastController,
     private firestore: AngularFirestore,
-<<<<<<< Updated upstream
     private auth : AuthService,
-    private toast : ToastController,
-    private storage: AngularFireStorage
-=======
     private storage: AngularFireStorage,
-    private toast : ToastController
->>>>>>> Stashed changes
+    private toast: ToastController
   ) { }
 
   getUsuarios(): Observable<Usuario[]> {
@@ -36,6 +29,92 @@ export class DataService {
         return { id, ...data };
       }))
     );
+  }
+
+  getProductos(): Observable<any[]> {
+    return this.firestore.collection<any>('productos').snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+  }
+  
+  getMesas(): Observable<any[]> {
+    return this.firestore.collection<any>('mesas', ref => ref.where('sentado', '==', 'nadie')).snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+  }
+
+
+  getListaEspera(): Observable<any[]> {
+    return this.firestore.collection('lista-de-espera').snapshotChanges().pipe(
+      switchMap(actions => {
+        const listaDeEspera = actions.map(a => {
+          const data = a.payload.doc.data() as any;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+  
+        // Crear una matriz de observables para obtener datos de usuario para cada entrada
+        const userObservables = listaDeEspera.map(entry =>
+          this.firestore.collection('usuarios').doc(entry.id).valueChanges().pipe(
+            map(userData => {
+              if (userData && typeof userData === 'object') {
+                return {
+                  ...entry,
+                  ...userData
+                };
+              } else {
+                return entry;
+              }
+            })
+          )
+        );
+  
+        // Combinar todos los observables en uno
+        return combineLatest(userObservables);
+      })
+    );
+  }
+
+  async ingresarAnonimo(cliente : any){
+    try {
+      if (cliente.correo) {
+        // Registrar el usuario en Firebase Authentication
+        const credential = await this.afAuth.createUserWithEmailAndPassword(cliente.correo, "anonimo");
+
+        if (credential && credential.user) {
+          // Agregar los datos del cliente a Firestore
+          const foto = await this.uploadImage(cliente.foto || "", "usuarios");
+
+          await this.firestore.collection('usuarios').doc(credential.user.uid).set({
+            nombre: cliente.nombre || '',
+            apellido: cliente.apellido || '',
+            DNI: cliente.DNI || '',
+            correo: cliente.correo,
+            foto: foto || '',
+            rol: "anonimo"
+          });
+          
+          // Retornar el ID del usuario creado
+          return credential.user.uid;
+        } else {
+          throw new Error('No se pudo crear el usuario');
+        }
+      } else {
+        throw new Error('Correo electrónico no definido');
+      }
+
+    } catch (error) {
+      console.error('Error al registrar el cliente:', error);
+      throw error;
+    }
   }
 
   async registrarCliente(cliente: Usuario, password: string) {
@@ -107,6 +186,19 @@ export class DataService {
     }
   }
 
+  async confirmarPedido(carrito : any[], mesanro: string, uid : string) {
+    try {
+      // Agregar los datos del device a Firestore
+      await this.firestore.collection('pedidosPendientes').doc(mesanro).set({
+        user: uid,
+        pedido: carrito
+      });
+    } catch (error) {
+      console.error('Error al registrar el device:', error);
+      throw error;
+    }
+  }
+
   async uploadImage(imagePath: string, tabla : string): Promise<string> {
     try {
       const fileRef = this.storage.ref(tabla).child(`${new Date().getTime()}`);
@@ -151,6 +243,10 @@ export class DataService {
     return this.firestore.collection('usuarios').doc(docId).valueChanges();
   }
 
+  getListaDeEspera(): Observable<any> {
+    return this.firestore.collection('lista-de-espera').valueChanges();
+  }
+
   getDevice(docId: string): Observable<any> {
     return this.firestore.collection('devices').doc(docId).valueChanges();
   }
@@ -165,6 +261,32 @@ export class DataService {
     });
     (await toast).present();
   }
+
+  async ingresarCliente(id : string){
+    const fecha = new Date();
+
+    console.log(fecha);
+    console.log(id);
+
+    await this.firestore.collection('lista-de-espera').doc(id).set({
+      id: id,
+      assignedTable: 0, // Use null if there's no table assigned yet
+      fecha: fecha.toISOString(), // Ensure fecha is stored as a string
+    });
+  }
+
+  async entrarMesa(mesanro : string, id : string){
+    this.firestore.collection("lista-de-espera").doc(id).delete();
+
+    return this.firestore.collection('mesas').doc(mesanro).update({
+      sentado: id,
+      pedido: "stand-by",
+    });
+  }
+
+
+
+  // Otros métodos del servicio según tus necesidades
 
   async registrarEmpleado(empleado: Usuario, password: string) {
     try {
@@ -197,6 +319,59 @@ export class DataService {
   
     } catch (error) {
       console.error('Error al registrar el empleado:', error);
+      throw error;
+    }
+  }
+
+  async crearMesa(mesa : any) {
+    try {
+      if (mesa) {
+        const foto = await this.uploadImage(mesa.foto || "", "mesas");
+        const qr = await this.uploadImage(mesa.qr || "", "mesas");
+
+        await this.firestore.collection('mesas').doc(mesa.numero).set({
+          sentado: "nadie",
+          pedido: "closed",
+          comensales: mesa.comensales || '',
+          tipo: mesa.tipo || '',
+          foto: foto,
+          qr: qr
+        });
+        
+      } else {
+        throw new Error('No se pudo crear el usuario');
+      }
+  
+    } catch (error) {
+      console.error('Error al registrar el empleado:', error);
+      throw error;
+    }
+  }
+
+  async agregarProducto(producto : any) {
+    try {
+      if (producto) {
+        const foto1 = await this.uploadImage(producto.imagenes[0] || "", "productos");
+        const foto2 = await this.uploadImage(producto.imagenes[1] || "", "productos");
+        const foto3 = await this.uploadImage(producto.imagenes[2]|| "", "productos");
+
+        await this.firestore.collection('productos').doc().set({
+          categoria: producto.categoria,
+          nombre: producto.nombre || '',
+          descripcion: producto.descripcion || '',
+          precio: producto.precio,
+          tiempoEstimado: producto.tiempoEstimado,
+          foto1: foto1,
+          foto2: foto2,
+          foto3: foto3,
+        });
+        
+      } else {
+        throw new Error('No se pudo crear el producto');
+      }
+  
+    } catch (error) {
+      console.error('Error al registrar el producto:', error);
       throw error;
     }
   }

@@ -18,7 +18,7 @@
           <h2>{{ cliente.nombre }} {{ cliente.apellido }}</h2>
           <p>DNI: {{ cliente.DNI }}</p>
           <div class="botones">
-            <button class="boton rechazar" (click)="rechazarCliente(cliente.id)">
+            <button class="boton rechazar" (click)="rechazarCliente(cliente)">
               <ion-icon name="ban-outline"></ion-icon>
             </button>
             <button class="boton aceptar" (click)="aceptarCliente(cliente)">

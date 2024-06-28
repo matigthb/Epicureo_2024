@@ -13,16 +13,14 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { provideHttpClient } from '@angular/common/http';
-<<<<<<< Updated upstream
-=======
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { register } from 'swiper/element/bundle';
 import { DateFormatPipe } from './pipes/date-format.pipe';
 import { ChatPage } from './chat/chat.page';
+import { CartService } from './services/cart.service'; 
 
 
 register();
->>>>>>> Stashed changes
 
 @NgModule({
   declarations: [AppComponent],
@@ -43,7 +41,7 @@ register();
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA], // Agregar CUSTOM_ELEMENTS_SCHEMA aquí
   providers: [provideHttpClient(),
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy  }
   ],
   bootstrap: [AppComponent],
 })

@@ -8,15 +8,6 @@ ion-content.scanner-active {
   --ion-background-color: transparent;
 }
 
-ion-content{
-  --ion-background-color: #644e3b;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-}
-
 // <uniquifier>: Use a unique and descriptive class name
 // <weight>: Use a value from 100 to 400
 .scanner-active {
@@ -49,6 +40,11 @@ ion-content {
   align-items: center;
   justify-content: center;
   position: relative;
+  padding: 50px;
+}
+
+.cosas{
+  padding: 50px;
 }
 
 .layout {
@@ -129,34 +125,70 @@ ion-toolbar {
   }
 
 
-
-    .button-main{
-      --background: #F3DFA2;
-      
-      position: relative;
-      width: 100%;
-      height: 40%;
-      h2{
-          color:#550C18;
-          font-size: 40px;
-      }
-      
-      padding: 20px;
-      overflow: hidden;
-    }
-
-.button-main {
-  --background: #f3dfa2;
-  position: relative;
-  width: 100%;
-  height: 40%;
-
-  h2 {
-    color: #550c18;
-    font-size: 40px;
+  h2{
+    color:#F3DFA2;
+    word-wrap: normal;
+    font-size: 30px;
   }
 
-  padding: 20px;
-  overflow: hidden;
-}
+  h3{
+    color:#F3DFA2;
+    word-wrap: normal;
+    font-size: 200px;
+  }
 
+
+  .nroMesa{
+    display: flex;
+    
+    align-items: center;
+    justify-content: center;
+  }
+
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    height: 88vh;
+    transition: flex-direction 0.3s ease;
+    ion-icon{
+        color:#550C18;
+        margin-left: 10px;
+        font-size: 40px;
+    }
+  }
+
+  .button-main{
+    --background: #F3DFA2;
+    flex: 1;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    h2{
+      color:#550C18;
+      font-size: 40px;
+    }
+
+    ion-icon{
+      font-size: 70px;
+    }
+    padding: 0;
+    overflow: hidden;
+  }
+
+  h4{
+    color:#550C18;
+    font-size: 18px;
+  }
+
+  .espera{
+    font-size: 60px;
+  }
+
+  .espera-container{
+    padding: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+  }

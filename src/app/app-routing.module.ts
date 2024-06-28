@@ -57,14 +57,12 @@ const routes: Routes = [
   },
   {
     path: 'mesas',
-    //loadChildren: () => import('./mesas/mesas.module').then( m => m.MesasPageModule)
+    loadChildren: () => import('./mesas/mesas.module').then( m => m.MesasPageModule)
   },
   {
     path: 'chat',
     loadChildren: () => import('./chat/chat.module').then( m => m.ChatPageModule)
   },
-
-
 
 ];
 @NgModule({
