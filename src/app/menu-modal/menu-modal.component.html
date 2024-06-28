@@ -1,8 +1,9 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Productos</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="dismissModal()">Cerrar</ion-button>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()">
+        <ion-icon class="red" name="arrow-back-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -12,18 +13,39 @@
     <ion-item *ngFor="let producto of productos">
       <ion-label>
         <h2>{{ producto.nombre }}</h2>
-        <h2>Precio: ${{ producto.precio }}</h2>
+        <h2>${{ producto.precio * producto.cantidad}}</h2>
         <p>{{ producto.descripcion }}</p>
-        <p>Tiempo de espera: {{ producto.tiempo}}</p>
+        <p>Tiempo de espera aproximado: {{ producto.tiempoEstimado}} minutos</p>
 
         <swiper-container #swiper [options]="{ autoplay: '3000', loop: true  }">
-          <swiper-slide *ngFor="let imagenes of producto.imagenes">
-            <img [src]="imagenes" />
+          <swiper-slide>
+            <img [src]="producto.foto1" />
+          </swiper-slide>
+          <swiper-slide>
+            <img [src]="producto.foto2" />
+          </swiper-slide>
+          <swiper-slide>
+            <img [src]="producto.foto3" />
           </swiper-slide>
         </swiper-container>
-        
-        <ion-button (click)="addToCart(producto)"> Añadir al carrito </ion-button>
-        <ion-button (click)="removeFromCart(producto)"> Quitar del carrito </ion-button>
+
+        <div class="quantity-controls">
+          <label>Cantidad:</label>
+          <ion-button *ngIf="producto.added == false" (click)="decreaseQuantity(producto)">
+            -
+          </ion-button>
+          <ion-input 
+            type="number" 
+            [value]="producto.cantidad" 
+            readonly 
+            style="width: 20px; text-align: center;">
+          </ion-input>
+          <ion-button *ngIf="producto.added == false" (click)="increaseQuantity(producto)">
+            +
+          </ion-button>
+        </div>
+        <ion-button *ngIf="producto.added == false" (click)="addToCart(producto)">Añadir <ion-icon name="cart-outline"></ion-icon></ion-button>
+        <ion-button *ngIf="producto.added" (click)="removeFromCart(producto)">Eliminar del carrito<ion-icon name="trash-outline"></ion-icon></ion-button>
       </ion-label>
     </ion-item>
   </ion-list>
@@ -31,7 +53,16 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-title>Total: ${{ total }}</ion-title>
-    
+    <ion-card *ngIf="mostrarCarrito" class="carrito-card">
+      <ion-item class="carrito-prod" *ngFor="let producto of carrito">{{producto.nombre}} x{{producto.cantidad}} - ${{producto.precio * producto.cantidad}}<ion-button class="cartDel" (click)="deleteProduct(producto)"><ion-icon name="trash-outline"></ion-icon></ion-button></ion-item>
+      <h3>Tiempo de espera estimado: {{this.espera}} minutos</h3>
+    </ion-card>
+    <div class="footer-content">
+      <ion-title>Total: ${{ total }}</ion-title>
+      <ion-buttons slot="end">
+        <ion-button *ngIf="total > 0 && !mostrarCarrito" class="fin" (click)="verPedido()">Finalizar pedido</ion-button>
+        <ion-button *ngIf="total > 0 && mostrarCarrito" class="fin" (click)="confirmarPedido()">Confirmar pedido</ion-button>
+      </ion-buttons>
+    </div>
   </ion-toolbar>
 </ion-footer>

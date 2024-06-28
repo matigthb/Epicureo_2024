@@ -1,39 +1,48 @@
 import { Injectable } from '@angular/core';
-import { Producto } from '../productos/productos.page';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
-  private items: Producto[] = [];
-  private total = 0;
+  private cart: any[] = [];
+  private espera: number = 0;
+  private total = new BehaviorSubject<number>(0);
 
   constructor() {}
 
-  addToCart(producto: Producto) {
-    this.items.push(producto);
-    this.total += producto.precio;
+  getCart() {
+    return this.cart;
   }
 
-  removeFromCart(producto: Producto) {
-    const index = this.items.findIndex(item => item.nombre === producto.nombre);
-    if (index !== -1) {
-      this.total -= this.items[index].precio;
-      this.items.splice(index, 1);
+  getEspera() {
+    return this.espera;
+  }
+
+  addToCart(producto: any) {
+    this.cart.push(producto);
+    if(producto.tiempoEstimado > this.espera)
+    {
+      this.espera = producto.tiempoEstimado;
     }
+    this.updateTotal();
   }
 
-  getItems(): Producto[] {
-    return this.items;
+  removeFromCart(producto: any) {
+    const index = this.cart.indexOf(producto);
+    if (index > -1) {
+      this.cart.splice(index, 1);
+    }
+    this.updateTotal();
   }
 
-  getTotal(): number {
-    return this.total;
+  getTotal() {
+    return this.total.asObservable();
   }
 
-  clearCart() {
-    this.items = [];
-    this.total = 0;
+  private updateTotal() {
+    const newTotal = this.cart.reduce((sum, item) => sum + item.precio*item.cantidad, 0);
+    this.total.next(newTotal);
   }
 }
