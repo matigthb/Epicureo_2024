@@ -1,0 +1,225 @@
+ion-content{
+    --ion-background-color: #644e3b;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+// <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 100 to 400
+.pt-serif-regular {
+    font-family: "PT Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .pt-serif-bold {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  .pt-serif-regular-italic {
+    font-family: "PT Serif", serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+  
+  .pt-serif-bold-italic {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  
+.fuente {
+    font-family: "Playwrite IE", cursive;
+    font-optical-sizing: auto;
+    font-weight: 100px;
+    font-style: normal;
+  }
+
+ion-toolbar {
+    --background: #F3DFA2;
+    --color: white;
+  
+    --border-color: #550C18;
+    --border-width: 4px 0;
+    --border-style: double;
+  
+    --min-height: 60px;
+    --padding-top: 20px;
+    --padding-bottom: 20px;
+
+    ion-icon{
+        color:#550C18
+    }
+  }
+
+  .text-container {
+    position: absolute;
+    top: 10%;
+    margin-left: 10px;
+    height: 50px; /* Ajusta la altura según tus necesidades */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .text {
+    font-size: 1.5em;
+    color:#550C18;
+    transition: opacity 0.5s;
+    }
+  
+
+
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        height: 88vh;
+        transition: flex-direction 0.3s ease;
+        ion-icon{
+            color:#550C18;
+            margin-left: 10px;
+            font-size: 40px;
+        }
+      }
+
+      .button-main{
+        --background: #F3DFA2;
+        flex: 1;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        h2{
+            color:#550C18;
+            font-size: 40px;
+        }
+        padding: 0;
+        overflow: hidden;
+      }
+
+
+      .happy{
+        margin-left: -30px;
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        padding: 20px;
+        justify-content: center;
+      }
+      
+      .card {
+        background-color: #F3DFA2;
+        border: 3px solid #550C18;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        width: 100%;
+        color: #550C18;
+        text-align: center;
+      }
+      
+      .card-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+      
+      .card-body {
+        padding: 16px;
+      }
+      
+      .card-body h2 {
+        
+        margin: 0 0 8px 0;
+        font-size: 1.25em;
+      }
+      
+      .card-body p {
+        margin: 0;
+      }
+      
+      .boton{
+        width: 20%;
+        height: 50px;
+        border-radius: 10px;
+        margin: 5px;
+        ion-icon{
+          font-size: 30px;
+        }
+
+        max-height: 200px;
+      }
+
+      .aceptar{
+        background-color: #76c258;
+      }
+
+      .rechazar{
+        background-color: #991c31;
+      }
+      
+
+      ion-modal#modal {
+        
+        --background: #644e3b;
+        --color: #F3DFA2;
+        color: #F3DFA2;
+        --width: fit-content;
+        --min-width: 250px;
+        --height: fit-content;
+        --border-radius: 6px;
+        padding: 10px;
+        --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+      }
+      
+      ion-modal#modal h1 {
+        margin: 20px 20px 10px 20px;
+      }
+      
+      ion-modal#modal ion-icon {
+        margin-right: 6px;
+      
+        width: 48px;
+        height: 48px;
+      
+        color: #aaaaaa;
+      }
+      
+      ion-modal#modal .wrapper {
+        margin-bottom: 10px;
+      }
+
+      .mesa{
+        --background: #F3DFA2;
+        color: #550C18;
+        width: 70%;
+        margin-left: 10px;
+      }
+
+      h4{
+        color:#F3DFA2;
+        font-size: 18px;
+      }
+    
+      .espera{
+        font-size: 60px;
+      }
+    
+      .espera-container{
+        padding: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 80vh;
+      }
+    

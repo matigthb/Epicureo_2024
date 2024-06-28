@@ -79,7 +79,7 @@ export class AltaEmpleadoPage implements OnInit {
         const resultado = await this.dataService.registrarEmpleado(empleado, password);
   
         this.UID = resultado;
-        this.router.navigateByUrl("/login");
+        this.router.navigateByUrl("/altas");
         this.dataService.mandarToast("Registrado correctamente", "success");
         // Aquí puedes manejar el éxito del registro, como redirigir a otra página o mostrar un mensaje
       } catch (error) {
@@ -106,7 +106,7 @@ export class AltaEmpleadoPage implements OnInit {
   }*/
 
   goBack(){
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/altas');
   }
 
   async tomarFoto() {

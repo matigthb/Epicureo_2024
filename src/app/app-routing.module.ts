@@ -30,7 +30,8 @@ const routes: Routes = [
   {
     path: 'qrs',
     loadChildren: () => import('./qrs/qrs.module').then( m => m.QrsPageModule)
-  },  {
+  },
+  {
     path: 'productos',
     loadChildren: () => import('./productos/productos.module').then( m => m.ProductosPageModule)
   },
@@ -53,6 +54,10 @@ const routes: Routes = [
   {
     path: 'alta-mesa',
     loadChildren: () => import('./alta-mesa/alta-mesa.module').then( m => m.AltaMesaPageModule)
+  },
+  {
+    path: 'mesas',
+    loadChildren: () => import('./mesas/mesas.module').then( m => m.MesasPageModule)
   },
 
 

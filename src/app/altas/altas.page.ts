@@ -34,5 +34,4 @@ export class AltasPage implements OnInit {
     this.auth.logout();
     this.router.navigateByUrl('/login')
   }
-
 }
