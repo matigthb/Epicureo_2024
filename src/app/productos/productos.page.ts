@@ -91,6 +91,10 @@ export class ProductosPage implements OnInit{
     }
   }
 
+  goChat(){
+    this.router.navigate(['/chat'], { queryParams: { mesa: this.mesa } });
+  }
+
   getBackgroundImage(categoria: string): string {
     return `url('../../assets/${categoria}.jpg')`;
   }

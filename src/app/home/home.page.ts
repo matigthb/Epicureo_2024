@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Usuario } from '../clases/usuario';
 import { DataService } from '../services/data.service';
 import { Plugins } from '@capacitor/core';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
 
   texts: string[] = [
     'Epicúreo',
@@ -28,22 +29,58 @@ export class HomePage implements OnInit {
 
   clientesPendientes : Usuario[] = [];
   listaDeEspera : any[] = [];
+  consultas: any[] = [];
 
-  constructor(private router: Router, public auth : AuthService, private data : DataService) { }
+  sentado : string = '0';
+
+  subscription1 : any;
+  subscription2 : any;
+  subscription3 : any;
+  subscription4 : any;
+  subscription5 : any;
+
+  constructor(private router: Router, public auth : AuthService, private loadingController: LoadingController, private data : DataService) { }
 
   async ngOnInit(): Promise<void> {
     const uid = await this.auth.getUserUid() || "";
     this.cargarUser(uid);
     this.startTextLoop();
     this.cargarUsuarios();
-    console.log("ASJHDASJHDJHAS");
     this.cargarClientes();
+    this.cargarConsultas();
+    this.checkearMesas(uid);
+    const loading = await this.loadingController.create();
+    await loading.present();
+    setTimeout(async () => {
+      loading.dismiss()
+      this.auth.isLogging = false
+    }, 1000);
 
-    
+
+    console.log(this.auth.rol)
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.interval);
+    this.subscription1.unsubscribe();
+    this.subscription2.unsubscribe();
+    this.subscription3.unsubscribe();
+    this.subscription4.unsubscribe();
+    this.subscription5.unsubscribe();
+  }
+
+  checkearMesas(uid : string){
+    this.subscription1 = this.data.checkearMesas(uid).subscribe(id => {
+      if (typeof id === 'string') {
+        this.sentado = id;
+      } else {
+        this.sentado = '0'; // Or handle the case where no matching document is found
+      }
+    });
   }
 
   cargarUser(uid : string){
-    this.data.getUserRole(uid).subscribe(data => {
+    this.subscription2 = this.data.getUserRole(uid).subscribe(data => {
       this.currentUser = data;
       console.log(data);
     }, error => {
@@ -52,7 +89,7 @@ export class HomePage implements OnInit {
   }
 
   cargarClientes(){
-    this.data.getListaEspera().subscribe(data => {
+    this.subscription3 = this.data.getListaEspera().subscribe(data => {
       this.listaDeEspera = data;
       console.log(data);
     }, error => {
@@ -60,8 +97,17 @@ export class HomePage implements OnInit {
     });
   }
 
+  cargarConsultas(){
+    this.subscription4 = this.data.getConsultas().subscribe(data => {
+      this.consultas = data;
+      console.log(data);
+    }, error => {
+      console.error('Error al cargar consultas:', error);
+    });
+  }
+
   cargarUsuarios(): void {
-    this.data.getUsuarios().subscribe((data: Usuario[]) => {
+    this.subscription5 = this.data.getUsuarios().subscribe((data: Usuario[]) => {
       this.clientesPendientes = data;
       console.log(data);
     }, error => {
@@ -108,15 +154,22 @@ export class HomePage implements OnInit {
     }
   }
 
-  ngOnDestroy(): void {
-    clearInterval(this.interval);
-  }
-  
   go(url : string){
     this.router.navigateByUrl(url);
   }
 
+  goQRConPedido()
+  {
+    this.router.navigate(['/qr'], { queryParams: { pedidoRealizado: true } });
+  }
+
   logout(){
+    clearInterval(this.interval);
+    this.subscription1.unsubscribe();
+    this.subscription2.unsubscribe();
+    this.subscription3.unsubscribe();
+    this.subscription4.unsubscribe();
+    this.subscription5.unsubscribe();
     this.auth.logout();
     this.router.navigateByUrl('/login')
   }

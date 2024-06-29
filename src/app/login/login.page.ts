@@ -9,6 +9,7 @@ import { DataService } from '../services/data.service';
 import { Capacitor, Plugins } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -182,7 +183,7 @@ export class LoginPage implements OnInit {
 
       if(user){
         let uid = await this.authService.getUserUid() || "";
-        this.checkUser().then(isUserUnique => {
+        this.checkUser().then(async isUserUnique => {
           if(!isUserUnique)
           {
             this.data.mandarToast("Su cuenta aún no fue aprobada.", "danger");
@@ -193,20 +194,18 @@ export class LoginPage implements OnInit {
           }
           else
           {
-            this.data.getUserRole(uid).subscribe(async user => {
-              this.authService.rol = user?.rol;
-              this.authService.isLogging = false;
-              console.log(Capacitor.isNativePlatform())
-              if (Capacitor.isNativePlatform()){
-                await this.addListeners(uid,this.authService.rol);
-                await this.registerNotifications();
-              }
-            });
-            
-            
+            const userDoc = await firstValueFrom(this.data.getUserRole(uid));
+            this.authService.rol = userDoc?.rol;
+            this.authService.isLogging = false;
+        
+            if (Capacitor.isNativePlatform()) {
+              await this.addListeners(uid, this.authService.rol);
+              await this.registerNotifications();
+            }
+        
+            await loading.dismiss();
             this.credentials.controls['email'].setValue('');
             this.credentials.controls['password'].setValue('');
-            loading.dismiss();
             this.router.navigateByUrl('/home');
           }
         });

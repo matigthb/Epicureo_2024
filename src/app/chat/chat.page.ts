@@ -13,7 +13,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit {
-
+  mesa : string = "";
   aulaSeleccionada = "mensajes"; // Default to 'mensajes'
   usuarioActual: any = {};
   listaMensajes: Array<Mensaje> = [];
@@ -22,6 +22,7 @@ export class ChatPage implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router : Router,
     public chatService: ChatService,
     private authService: AuthService,
     private dataService: DataService,
@@ -29,17 +30,14 @@ export class ChatPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.url.subscribe(async () => {
-      let aula = localStorage.getItem('aula');
-      if (aula) {
-        this.aulaSeleccionada = aula;
-      }
+    this.route.queryParams.subscribe(params => {
+      this.mesa = params['mesa'];
+    });
+    
+    this.mensaje.mesa = this.mesa;
 
-      this.chatService.listenToChatChanges(this.aulaSeleccionada);
-      this.mostrarGif = true;
-      setTimeout(() => {
-        this.mostrarGif = false;
-      }, 1000);
+    this.route.url.subscribe(async () => {
+      this.chatService.listenToChatChanges(this.mesa);
 
       this.authService.getUserUid().then(uid => {
         if (uid) {
@@ -49,7 +47,8 @@ export class ChatPage implements OnInit {
               this.usuarioActual = user;
               this.usuarioActual.uid = uid; // Asignamos el UID al usuario actual
               this.mensaje.rol = user.rol;
-              this.checkMesaAsignada(uid); // Verificar si el usuario tiene una mesa asignada
+              this.mensaje.nombre = user.nombre;
+              this.mensaje.apellido = user.apellido;
             } else {
               console.error('No se encontró el rol del usuario');
             }
@@ -63,17 +62,10 @@ export class ChatPage implements OnInit {
     });
   }
 
-  checkMesaAsignada(uid: string) {
-    this.firestore.collection('mesas', ref => ref.where('sentado', '==', uid)).valueChanges().subscribe((mesas: any[]) => {
-      if (mesas && mesas.length > 0) {
-        this.mensaje.rol = `Mesa ${mesas[0].numero || 'sin número'}`; // Asumimos que 'numero' es el campo que almacena el número de mesa
-      }
-    });
-  }
-
   async EnviarMensaje() {
     this.mensaje.fecha = new Date().getTime().toString();
-    await this.chatService.enviarMensaje(this.aulaSeleccionada, this.mensaje);
+    await this.chatService.enviarMensaje("mensajes", this.mensaje);
+    await this.dataService.updateConsulta(this.mesa, "abierta");
     this.mensaje.mensaje = '';
   }
 
@@ -83,6 +75,10 @@ export class ChatPage implements OnInit {
       this.alertMensaje('ERROR', 'El mensaje no puede tener más de 21 caracteres', 'error');
       this.mensaje.mensaje = '';
     }
+  }
+
+  goBack(){
+    this.router.navigate(['/productos'], { queryParams: { mesa: this.mesa } });
   }
 
   alertMensaje(titulo: any, mensaje: any, icon: any) {
