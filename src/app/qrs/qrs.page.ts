@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { ToastController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
@@ -20,12 +20,19 @@ export class QrsPage implements OnDestroy, OnInit {
   waitingListSubscription: Subscription | undefined;
   mesa : number = -1;
   
-  constructor(private router: Router, private auth: AuthService, private notification: NotificationService, private toast: ToastController, private data: DataService) { 
+  pedidoRealizado: boolean = false;
+  
+  constructor(private router: Router, private route : ActivatedRoute, private auth: AuthService, private notification: NotificationService, private toast: ToastController, private data: DataService) { 
     
   }
 
   async ngOnInit(): Promise<void> {
     this.uid = await this.auth.getUserUid() || "";
+
+    this.route.queryParams.subscribe(params => {
+      this.pedidoRealizado = params['pedidoRealizado'];
+    });
+
     this.subscribeToWaitingList(this.uid);
   }
 
@@ -42,7 +49,14 @@ export class QrsPage implements OnDestroy, OnInit {
           //this.data.mandarToast('You are in the waiting list, waiting for table assignment', "info");
         }
       } else {
-        this.startScan();
+        if(this.pedidoRealizado)
+        {
+          this.escanearMesa();
+        }
+        else
+        {
+          this.startScan();
+        }
         this.isScanning = true;
       }
     });
@@ -137,6 +151,11 @@ export class QrsPage implements OnDestroy, OnInit {
 
   goBack() {
     this.router.navigateByUrl('/home');
+  }
+
+  go(url: string)
+  {
+    this.router.navigateByUrl(url);
   }
 
   ngOnDestroy(): void {

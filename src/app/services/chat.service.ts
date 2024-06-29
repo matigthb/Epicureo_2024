@@ -48,23 +48,29 @@ export class ChatService {
       });
   }
 
-  listenToChatChanges(aulaSeleccionada: string) {
+  listenToChatChanges(mesa : string) {
     this.mensajes = []; // Limpia el array de mensajes
-    this.mensajesCollection = this.afs.collection<Mensaje>(aulaSeleccionada);
+    this.mensajesCollection = this.afs.collection<Mensaje>("mensajes");
     this.mensajesCollection.valueChanges().subscribe(data => {
       this.mensajes = data.sort((a, b) => Number(b.fecha) - Number(a.fecha));
     });
+
+    this.mensajes.filter(mensajes => mensajes.mesa === mesa);
   }
 
   async enviarMensaje(aulaSeleccionada: string, mensajeData: any) {
     try {
       const mensaje: Mensaje = { 
         fecha: mensajeData.fecha, 
+        nombre: mensajeData.nombre,
+        apellido: mensajeData.apellido,
         mensaje: mensajeData.mensaje, 
         usuario: mensajeData.usuario,
         perfil: mensajeData.perfil,
         rol: mensajeData.rol, // Asigna un valor para 'rol', según sea necesario
+        mesa: mensajeData.mesa
       };
+
       await this.mensajesCollection.add(mensaje);
     } catch (error) {
       console.error('Error al enviar el mensaje:', error);

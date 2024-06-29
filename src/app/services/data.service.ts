@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Usuario } from '../clases/usuario';
-import { Observable, combineLatest } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable, combineLatest, from, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { ToastController } from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
@@ -48,6 +48,54 @@ export class DataService {
         const id = a.payload.doc.id;
         return { id, ...data };
       }))
+    );
+  }
+
+  checkearMesas(uid: string): Observable<string | number> {
+    return this.firestore.collection<any>('mesas', ref => ref.where('sentado', '==', uid)).snapshotChanges().pipe(
+      map(actions => {
+        if (actions.length > 0) {
+          const data = actions[0].payload.doc.data();
+          const id = actions[0].payload.doc.id;
+          return id; // Return the ID of the first matching document
+        } else {
+          return 0; // Return 0 if no matching document is found
+        }
+      }),
+      catchError(() => of(0)) // Return 0 in case of an error
+    );
+  }
+
+  getConsultas(): Observable<any[]> {
+    return this.firestore.collection<any>('mesas', ref => ref.where('consulta', '==', 'abierta')).snapshotChanges().pipe(
+      switchMap(actions => {
+        const mesas = actions.map(a => {
+          const data = a.payload.doc.data() as any;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+
+        const mensajesObservables = mesas.map(mesa => 
+          this.firestore.collection<any>('mensajes', ref => ref.where('mesa', '==', mesa.id).where('rol', '==', 'cliente').orderBy('fecha', 'desc').limit(1))
+            .snapshotChanges().pipe(
+              map(actions => actions.map(a => {
+                const data = a.payload.doc.data() as any;
+                const id = a.payload.doc.id;
+                return { id, ...data };
+              }))
+            )
+        );
+
+        return combineLatest([from([mesas]), ...mensajesObservables]);
+      }),
+      map(([mesas, ...mensajes]) => {
+        return mesas.map((mesa, index) => {
+          return {
+            ...mesa,
+            ultimoMensaje: mensajes[index][0] || null
+          };
+        });
+      })
     );
   }
 
@@ -284,6 +332,12 @@ export class DataService {
     });
   }
 
+  async updateConsulta(mesanro : string, estado : string){
+    return this.firestore.collection('mesas').doc(mesanro).update({
+      consulta: estado
+    });
+  }
+
 
 
   // Otros métodos del servicio según tus necesidades
@@ -335,7 +389,8 @@ export class DataService {
           comensales: mesa.comensales || '',
           tipo: mesa.tipo || '',
           foto: foto,
-          qr: qr
+          qr: qr,
+          consulta: "cerrada"
         });
         
       } else {
