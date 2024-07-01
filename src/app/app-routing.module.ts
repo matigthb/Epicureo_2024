@@ -30,7 +30,8 @@ const routes: Routes = [
   {
     path: 'qrs',
     loadChildren: () => import('./qrs/qrs.module').then( m => m.QrsPageModule)
-  },  {
+  },
+  {
     path: 'productos',
     loadChildren: () => import('./productos/productos.module').then( m => m.ProductosPageModule)
   },
@@ -57,6 +58,9 @@ const routes: Routes = [
   {
     path: 'encuestas',
     loadChildren: () => import('./encuestas/encuestas.module').then( m => m.EncuestasPageModule)
+  },  {
+    path: 'graficos',
+    loadChildren: () => import('./graficos/graficos.module').then( m => m.GraficosPageModule)
   },
 
 

@@ -12,6 +12,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
   providedIn: 'root'
 })
 export class DataService {
+  toast: any;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -191,4 +192,15 @@ export class DataService {
       throw error;
     }
   }
+
+  async guardarRespuestas(respuestas: any) {
+    return this.firestore.collection('encuestas').add(respuestas);
+  }
+
+  getRespuestas(): Observable<any> {
+    return this.firestore.collection('encuestas').valueChanges();
+  }
+
+  
+  
 }

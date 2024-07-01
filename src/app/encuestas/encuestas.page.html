@@ -24,7 +24,7 @@
             </ion-item>
           </ion-radio-group>
 
-          <ion-range aria-label="Range with ticks" [ticks]="true" [snaps]="true" [min]="0" [max]="5" *ngIf="pregunta.tipo === 'scale'" [(ngModel)]="encuesta.respuestas[pregunta.id.toString()]" name="respuesta{{pregunta.id}}">
+          <ion-range aria-label="Range with ticks" [ticks]="true" [snaps]="true" [min]="1" [max]="5" *ngIf="pregunta.tipo === 'scale'" [(ngModel)]="encuesta.respuestas[pregunta.id.toString()]" name="respuesta{{pregunta.id}}">
             <ion-label slot="start">1</ion-label>
             <ion-label slot="end">5</ion-label>
           </ion-range>
