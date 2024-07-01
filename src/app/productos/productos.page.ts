@@ -39,8 +39,7 @@ export class ProductosPage implements OnInit{
 
   async ngOnInit() {
     
-    this.loading = await this.loadingController.create();
-    await this.loading.present();
+
     
     this.route.queryParams.subscribe(params => {
       this.mesa = params['mesa'];

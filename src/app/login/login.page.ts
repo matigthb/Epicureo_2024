@@ -183,7 +183,7 @@ export class LoginPage implements OnInit {
 
       if(user){
         let uid = await this.authService.getUserUid() || "";
-        this.checkUser().then(async isUserUnique => {
+        this.checkUserAp().then(async isUserUnique => {
           if(!isUserUnique)
           {
             this.data.mandarToast("Su cuenta aún no fue aprobada.", "danger");
@@ -194,6 +194,14 @@ export class LoginPage implements OnInit {
           }
           else
           {
+            const isUserInUsuarios = await this.checkUserInUsuarios(this.credentials.value.email);
+            if (!isUserInUsuarios) {
+              this.data.mandarToast("No se puede iniciar sesión porque la cuenta fue rechazada por el dueño.", "danger");
+              this.credentials.controls['email'].setValue('');
+              this.credentials.controls['password'].setValue('');
+              await loading.dismiss();
+              return;
+            }
             const userDoc = await firstValueFrom(this.data.getUserRole(uid));
             this.authService.rol = userDoc?.rol;
             this.authService.isLogging = false;
@@ -224,7 +232,7 @@ export class LoginPage implements OnInit {
     }
   }
 
-  checkUser(): Promise<boolean> {
+  checkUserAp(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.data.getUserByEmail(this.credentials.value.email).subscribe(users => {
         if (users.length > 0) {
@@ -237,6 +245,21 @@ export class LoginPage implements OnInit {
       });
     });
   }
+
+  checkUserInUsuarios(email: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.data.getUserByEmail2(email).subscribe(users => {
+        if (users.length > 0) {
+          resolve(true); // User exists in "usuarios" collection
+        } else {
+          resolve(false); // User does not exist in "usuarios" collection
+        }
+      }, error => {
+        reject(error); // Handle errors if needed
+      });
+    });
+  }
+  
 
   // Getter for easy access to form fields
   get email() {

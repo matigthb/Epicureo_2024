@@ -6,6 +6,7 @@ import { ChatService } from '../services/chat.service';
 import { Mensaje } from '../clases/mensaje';
 import { DataService } from '../services/data.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-chat',
@@ -26,6 +27,7 @@ export class ChatPage implements OnInit {
     public chatService: ChatService,
     private authService: AuthService,
     private dataService: DataService,
+    private notificationService : NotificationService,
     private firestore: AngularFirestore
   ) { }
 
@@ -66,6 +68,14 @@ export class ChatPage implements OnInit {
     this.mensaje.fecha = new Date().getTime().toString();
     await this.chatService.enviarMensaje("mensajes", this.mensaje);
     await this.dataService.updateConsulta(this.mesa, "abierta");
+    this.notificationService.sendRoleNotification(["mozo"], "Nueva consulta", "La mesa " + this.mesa + " tiene una nueva consulta, ayudalos!").subscribe(
+      (response) => {
+        //this.dataService.mandarToast('Noti sent successfully' + " " + JSON.stringify(response), "success");
+      },
+      (error) => {
+        //this.dataService.mandarToast('Noti ERROR' + " " + JSON.stringify(error),"error");
+      }
+    );
     this.mensaje.mensaje = '';
   }
 

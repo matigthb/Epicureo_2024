@@ -134,7 +134,7 @@ ion-toolbar {
   h3{
     color:#F3DFA2;
     word-wrap: normal;
-    font-size: 200px;
+    font-size: 160px;
   }
 
 
@@ -190,5 +190,23 @@ ion-toolbar {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 80vh;
+    height: 70vh;
+  }
+
+  .button-enc{
+    --background: #F3DFA2;
+    flex: 1;
+    position: relative;
+    width: 100%;
+    height: 60%;
+    h2{
+      color:#550C18;
+      font-size: 20px;
+    }
+
+    ion-icon{
+      font-size: 70px;
+    }
+    padding: 0;
+    overflow: hidden;
   }

@@ -1,0 +1,27 @@
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="container" *ngIf="tareas.length > 0">
+    <div *ngFor="let tarea of tareas; let i = index" class="card">
+      <ion-card class="carrito-card">
+        <h2>Mesa {{tarea.pedidoId}}</h2>
+        <div class="card margin">
+            <img [src]="tarea.foto1">
+            <ion-item class="carrito-prod" >{{tarea.tarea.nombre}} x{{tarea.tarea.cantidad}}</ion-item>
+            <button class="boton aceptar" (click)="aceptarProducto(tarea)">
+              <ion-icon name="checkmark-outline"></ion-icon>
+            </button>
+        </div>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>  

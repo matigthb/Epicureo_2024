@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Usuario } from '../clases/usuario';
-import { Observable, combineLatest, from, of } from 'rxjs';
+import { Observable, combineLatest, forkJoin, from, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { ToastController } from '@ionic/angular';
@@ -51,6 +51,71 @@ export class DataService {
     );
   }
 
+  getPedidosPendientes(): Observable<any[]> {
+    return this.firestore.collection<any>('pedidosPendientes').snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+  }
+
+  getTareasCocina(): Observable<any[]> {
+    return this.firestore.collection<any>('tareasCocina', ref => ref.where('realizado', '==', false)).snapshotChanges().pipe(
+      map(actions => {
+        // Mapping each document to include id and data
+        const mappedData = actions.map(a => {
+          const data = a.payload.doc.data() as any;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+  
+        // Grouping by the "pedido" field
+        const groupedData = this.groupByPedido(mappedData);
+        
+        return groupedData;
+      })
+    );
+  }
+
+  getTareasBar(): Observable<any[]> {
+    return this.firestore.collection<any>('tareasBar', ref => ref.where('realizado', '==', false)).snapshotChanges().pipe(
+      map(actions => {
+        // Mapping each document to include id and data
+        const mappedData = actions.map(a => {
+          const data = a.payload.doc.data() as any;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+  
+        // Grouping by the "pedido" field
+        const groupedData = this.groupByPedido(mappedData);
+        
+        return groupedData;
+      })
+    );
+  }
+  
+  groupByPedido(data: any[]): any[] {
+    const grouped: any = {};
+    
+    // Grouping logic
+    data.forEach(item => {
+      const pedido = item.pedido;
+      if (!grouped[pedido]) {
+        grouped[pedido] = [];
+      }
+      grouped[pedido].push(item);
+    });
+  
+    // Convert grouped object into an array of arrays
+    return Object.keys(grouped).map(pedido => ({
+      pedido,
+      items: grouped[pedido]
+    }));
+  }
+
   checkearMesas(uid: string): Observable<string | number> {
     return this.firestore.collection<any>('mesas', ref => ref.where('sentado', '==', uid)).snapshotChanges().pipe(
       map(actions => {
@@ -76,7 +141,7 @@ export class DataService {
         });
 
         const mensajesObservables = mesas.map(mesa => 
-          this.firestore.collection<any>('mensajes', ref => ref.where('mesa', '==', mesa.id).where('rol', '==', 'cliente').orderBy('fecha', 'desc').limit(1))
+          this.firestore.collection<any>('mensajes', ref => ref.where('mesa', '==', mesa.id).where('rol', '==', 'anonimo').orderBy('fecha', 'desc').limit(1))
             .snapshotChanges().pipe(
               map(actions => actions.map(a => {
                 const data = a.payload.doc.data() as any;
@@ -199,6 +264,39 @@ export class DataService {
     }
   }
 
+  async aceptarPedido(pedido: any) {
+    try {
+      // Agregar los datos del cliente a Firestore
+      await this.firestore.collection("pedidosPendientes").doc(pedido.id).delete();
+
+      await this.firestore.collection('pedidos').doc(pedido.id).set({
+        pedido: pedido.pedido || '',
+        user: pedido.user || '',
+        realizado: false,
+      });
+
+      pedido.forEach(async (element: any) => {
+        if(element.categoria == "bebidas"){
+          await this.firestore.collection('tareasBar').doc().set({
+            pedidoId: pedido.id || '',
+            tarea: element || '',
+            realizado: false,
+          });
+        }else{
+          await this.firestore.collection('tareasCocina').doc().set({
+            pedidoId: pedido.id || '',
+            tarea: element || '',
+            realizado: false,
+          });
+        }
+      });
+
+    } catch (error) {
+      console.error('Error al registrar el pedido:', error);
+      throw error;
+    }
+  }
+
   async aceptarCliente(cliente: any) {
     try {
       // Agregar los datos del cliente a Firestore
@@ -275,6 +373,10 @@ export class DataService {
   getUserByEmail(email: string): Observable<any[]> {
     return this.firestore.collection('clientesPendientes', ref => ref.where('correo', '==', email)).valueChanges();
   }
+
+  getUserByEmail2(email: string): Observable<any[]> {
+    return this.firestore.collection('usuarios', ref => ref.where('correo', '==', email)).valueChanges();
+  }
   
   private async readFile(path: string): Promise<string> {
     const response = await fetch(path);
@@ -318,13 +420,15 @@ export class DataService {
 
     await this.firestore.collection('lista-de-espera').doc(id).set({
       id: id,
-      assignedTable: 0, // Use null if there's no table assigned yet
+      assignedTable: "0", // Use null if there's no table assigned yet
       fecha: fecha.toISOString(), // Ensure fecha is stored as a string
     });
   }
 
   async entrarMesa(mesanro : string, id : string){
-    this.firestore.collection("lista-de-espera").doc(id).delete();
+    this.firestore.collection("lista-de-espera").doc(id).update({
+      assignedTable: mesanro
+    });
 
     return this.firestore.collection('mesas').doc(mesanro).update({
       sentado: id,
@@ -338,7 +442,35 @@ export class DataService {
     });
   }
 
+  async finalizarPedido(pedidoId : string){
+    return this.firestore.collection('pedidos').doc(pedidoId).update({
+      realizado: true
+    });
+  }
 
+  async finalizarProducto(id : any, tabla : string){
+    return this.firestore.collection(tabla).doc(id).update({
+      realizado: true
+    });
+  }
+
+  checkRealizadoField(pedidoId: string): Observable<boolean> {
+    // Query tareasBar collection for documents with matching pedidoId and realizado is false
+    const query1 = this.firestore.collection<any>('tareasBar', ref => 
+      ref.where('realizado', '==', false).where('pedidoId', '==', pedidoId)).get();
+    
+    // Query tareasCocina collection for documents with matching pedidoId and realizado is false
+    const query2 = this.firestore.collection<any>('tareasCocina', ref => 
+      ref.where('realizado', '==', false).where('pedidoId', '==', pedidoId)).get();
+
+    // Combine both queries using forkJoin
+    return forkJoin([query1, query2]).pipe(
+      map(([result1, result2]) => {
+        // Check if any documents with realizado === false exist in either collection
+        return result1.docs.length === 0 && result2.docs.length === 0;
+      })
+    );
+  }
 
   // Otros métodos del servicio según tus necesidades
 

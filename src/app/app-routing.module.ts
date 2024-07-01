@@ -70,6 +70,14 @@ const routes: Routes = [
     path: 'encuestas',
     loadChildren: () => import('./encuestas/encuestas.module').then( m => m.EncuestasPageModule)
   },
+  {
+    path: 'pedidos',
+    loadChildren: () => import('./pedidos/pedidos.module').then( m => m.PedidosPageModule)
+  },
+  {
+    path: 'tareas',
+    loadChildren: () => import('./tareas/tareas.module').then( m => m.TareasPageModule)
+  },
 
 
 ];
