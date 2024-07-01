@@ -3,7 +3,7 @@ import { AlertController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../services/data.service';
 
-interface Pregunta {
+export interface Pregunta {
   id: number;
   pregunta: string;
   tipo: 'multiple' | 'scale' | 'emoji' | 'radio';
@@ -22,7 +22,7 @@ export class EncuestasPage implements OnInit{
       { id: 2, pregunta: 'Califica la estética del establecimiento',tipo: 'multiple',opciones: ['Muy mala','Mala', 'Decente', 'Buena', 'Muy Buena'] },
       { id: 3, pregunta: 'Tuviste una buena atencion de los mozos?', tipo: 'radio',opciones: ['Si','No'] },
       { id: 4, pregunta: 'Califica el tiempo de espera', tipo: 'multiple', opciones: ['Muy malo','Malo', 'Decente', 'Bueno', 'Muy Bueno'] },
-      { id: 5, pregunta: 'Califica el funcionamiento de la App', tipo: 'emoji', opciones: ['1'] },
+      { id: 5, pregunta: 'Califica el funcionamiento de la App', tipo: 'emoji', opciones: ['happy','sad'] },
       { id: 6, pregunta: 'Califica los precios de los productos',tipo: 'multiple', opciones: ['Muy malos','Malos', 'Decentes', 'Buenos', 'Muy Buenos']},
       
     ] as Pregunta[],
@@ -43,8 +43,9 @@ export class EncuestasPage implements OnInit{
 
   async enviarRespuestas() {
     console.log(this.encuesta.respuestas);
-    // Aquí puedes agregar la lógica para enviar las respuestas a tu servidor o guardarlas en una base de datos
-
+    
+    await this.dataService.guardarRespuestas(this.encuesta.respuestas);
+    
     this.dataService.mandarToast("Respuestas enviadas", "success");
     this.router.navigate(['/qrs'], { queryParams: { pedidoRealizado: this.ruta } });
   }
