@@ -1,0 +1,21 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<body>
+  <div class="content-container">
+    <div class="button-container">
+      <h2 class="estado-pedido">Tu estado es: {{ estadoPedido }}</h2>
+    </div>
+    <div class="gif-container">
+      <img [src]="gifSrc" alt="Estado de espera">
+    </div>
+  </div>
+</body>
+

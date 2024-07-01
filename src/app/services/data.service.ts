@@ -375,4 +375,31 @@ export class DataService {
       throw error;
     }
   }
+
+  consultarEstadoPedido(numeroMesa: string): Observable<{ estado: string }> {
+    // Consultar primero en pedidosPendientes
+    return this.firestore.collection('pedidosPendientes').doc(numeroMesa).get()
+      .pipe(
+        switchMap(docSnapshot => {
+          if (docSnapshot.exists) {
+            return of({ estado: 'Pendiente' });
+          } else {
+            // Si no está en pedidosPendientes, consultar en pedidos
+            return this.firestore.collection('pedidos').doc(numeroMesa).get()
+              .pipe(
+                map(docSnapshot => {
+                  if (docSnapshot.exists) {
+                    const pedido = docSnapshot.data() as any; // Otra opción es usar un tipo específico si lo conoces
+                    const realizado = pedido.realizado;
+                    const estado = realizado ? 'Listo para entregar' : 'Preparando';
+                    return { estado };
+                  } else {
+                    return { estado: 'No encontrado' };
+                  }
+                })
+              );
+          }
+        })
+      );
+  }
 }
