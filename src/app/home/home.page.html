@@ -7,7 +7,15 @@
           <ng-template #space>&nbsp;</ng-template>
         </span>
       </div>
+
       <ion-buttons slot="primary">
+        <ion-chip *ngIf="this.currentUser != null">
+          <ion-avatar>
+            <img alt="Usuario" [src]="this.currentUser.foto"/>
+          </ion-avatar>
+          <ion-label class="pt-serif-regular">{{this.currentUser.nombre}} {{this.currentUser.apellido}}</ion-label>
+        </ion-chip>
+
         <ion-button (click)="logout()">
           <ion-icon name="exit-outline"></ion-icon>
         </ion-button>
@@ -16,22 +24,30 @@
   </ion-header>
   
   <ion-content [fullscreen]="true">
-    <div class="button-container">
-      <ion-button class="button-main" (click)="goAltas()" *ngIf="this.auth.rol == 'dueño' || this.auth.rol == 'supervisor'">
+    <div *ngIf="!this.auth.isLogging" class="button-container">
+      <ion-button class="button-main" (click)="go('/altas')" *ngIf="this.auth.rol == 'dueño' || this.auth.rol == 'supervisor'">
         <h2 class="pt-serif-bold">Altas</h2>
       </ion-button>
-      <ion-button class="button-main" (click)="goPendientes()" *ngIf="this.clientesPendientes.length > 0 && (this.auth.rol == 'dueño' || this.auth.rol == 'supervisor')">
+      <ion-button class="button-main" (click)="go('/pendientes')" *ngIf="this.clientesPendientes.length > 0 && (this.auth.rol == 'dueño' || this.auth.rol == 'supervisor')">
         <h2 class="pt-serif-bold">Aceptar Clientes</h2>
       </ion-button>
-      <ion-button class="button-main pt-serif-bold" (click)="goQR()">
-        <h2 class="pt-serif-bold">QR de ingreso</h2><ion-icon name="qr-code-outline" ></ion-icon>
+      <ion-button class="button-main" (click)="go('/mesas')" *ngIf="this.listaDeEspera.length > 0 && this.auth.rol == 'maitre'">
+        <h2 class="pt-serif-bold">Asignar Mesas</h2>
       </ion-button>
-      <ion-button class="button-main pt-serif-bold" (click)="goEncuestas()">
-        <h2 class="pt-serif-bold">Encuestas</h2><ion-icon name="help-circle-outline" ></ion-icon>
+      <ion-button class="button-main" (click)="go('/pedidos')" *ngIf="this.pedidosPendientes.length > 0 && this.auth.rol == 'mozo'">
+        <h2 class="pt-serif-bold">Confirmar Pedidos</h2>
       </ion-button>
-      <ion-button class="button-main pt-serif-bold" (click)="goJuegos()">
-        <h2 class="pt-serif-bold">Juegos</h2><ion-icon name="game-controller-outline" ></ion-icon>
+      <ion-button class="button-main" (click)="go('/consultas')" *ngIf="this.consultas.length > 0 && this.auth.rol == 'mozo'">
+        <h2 class="pt-serif-bold">Responder Consultas</h2>
+      </ion-button>
+      <ion-button class="button-main" (click)="go('/tareas')" *ngIf="(this.tareasBar.length > 0 && this.auth.rol == 'bartender') || ( this.tareasCocina.length > 0 && this.auth.rol == 'cocinero')">
+        <h2 class="pt-serif-bold">Realizar tareas</h2>
+      </ion-button>
+      <ion-button class="button-main pt-serif-bold" *ngIf="sentado == '0'" (click)="goQR('no')">
+          <h2 class="pt-serif-bold">Escaneá el QR de ingreso</h2><ion-icon name="qr-code-outline" ></ion-icon>
+      </ion-button>
+      <ion-button class="button-main pt-serif-bold"  *ngIf="sentado != '0'" (click)="goQR('si')">
+          <h2 class="pt-serif-bold">Seguí tu pedido</h2><ion-icon name="qr-code-outline" ></ion-icon>
       </ion-button>
     </div>
-    
-  </ion-content>  
+  </ion-content>

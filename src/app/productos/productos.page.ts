@@ -1,52 +1,101 @@
-import { Component } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { LoadingController, ModalController } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MenuModalComponent } from '../menu-modal/menu-modal.component';
-
-export interface Producto {
-  tipo: string;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-  tiempo: string;
-  imagenes: string[];
-}
+import { DataService } from '../services/data.service';
+import { CartService } from '../services/cart.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-productos',
   templateUrl: './productos.page.html',
   styleUrls: ['./productos.page.scss'],
 }) 
-export class ProductosPage {
-
-  productos: Producto[] = [
-    { tipo: 'comidas', nombre: 'Pizza', descripcion: 'Pizza de pepperoni', precio: 7000, tiempo: '30 Minutos' , imagenes: ['../assets/productos/pizza1.jpg','../assets/productos/pizza2.jpg', '../assets/productos/pizza3.jpg'] },
-    { tipo: 'comidas', nombre: 'Hamburguesa', descripcion: 'Hamburguesa con queso, lechuga y/o tomate', precio: 6000, tiempo: '15 Minutos' , imagenes: ['../assets/productos/hamburguesa1.jpg','../assets/productos/hamburguesa2.jpg','../assets/productos/hamburguesa3.jpg'] },
-    { tipo: 'comidas', nombre: 'Tostados', descripcion: 'Tostados de jamon y queso', precio: 4500, tiempo: '10 Minutos' , imagenes: ['../assets/productos/tostados1.jpg','../assets/productos/tostados2.jpg','../assets/productos/tostados3.jpg'] },
-    { tipo: 'bebidas', nombre: 'Coca Cola', descripcion: 'Un vaso de gaseosa Coca Cola', precio: 700, tiempo: '1 Minuto' , imagenes: ['../assets/productos/cocacola1.jpg','../assets/productos/cocacola2.jpg','../assets/productos/cocacola3.jpg'] },
-    { tipo: 'bebidas', nombre: 'Vino', descripcion: 'Vino tinto', precio: 4000, tiempo: '3 Minutos' , imagenes: ['../assets/productos/vino1.jpg','../assets/productos/vino2.jpg','../assets/productos/vino3.jpg'] },
-    { tipo: 'bebidas', nombre: 'Café', descripcion: 'Una taza de Café americano', precio: 1300, tiempo: '5 Minutos' , imagenes: ['../assets/productos/cafe1.jpeg','../assets/productos/cafe2.jpg','../assets/productos/cafe3.JPG'] },
-    { tipo: 'postres', nombre: 'Helado', descripcion: 'Helado de vainilla', precio: 1100, tiempo: '10 Minutos' , imagenes: ['../assets/productos/helado1.jpg','../assets/productos/helado2.jpg','../assets/productos/helado3.jpg'] },
-    { tipo: 'postres', nombre: 'Torta', descripcion: 'Porcion de torta de chocolate', precio: 4500, tiempo: '10 Minutos' , imagenes: ['../assets/productos/torta1.jpg','../assets/productos/torta2.jpg','../assets/productos/torta3.jpg'] },
-    { tipo: 'postres', nombre: 'Frutas', descripcion: 'Un plato con variedad de frutas frescas', precio: 1500, tiempo: '5 Minutos' , imagenes: ['../assets/productos/frutas1.jpg','../assets/productos/frutas2.jpg','../assets/productos/frutas3.jpg'] },
-  ];
-
+export class ProductosPage implements OnInit{
+  mesa: string = "";
+  total : number = 0;
+  productos: any[] = [];
+  loading : any;
   categorias = ['comidas', 'bebidas', 'postres'];
 
-  constructor(private router: Router,private modalController: ModalController) {}
+  carrito : any;
+  mostrarCarrito : boolean = false;
+  espera : number = 0; 
+
+  constructor(private route: ActivatedRoute, private auth : AuthService, private loadingController: LoadingController, private router: Router,private modalController: ModalController, private data : DataService, private cart : CartService) {}
 
   async openMenu(categoria: string) {
-    const productosFiltrados = this.productos.filter(producto => producto.tipo === categoria);
-
+    const productosFiltrados = this.productos.filter(producto => producto.categoria === categoria);
     const modal = await this.modalController.create({
       component: MenuModalComponent,
-      componentProps: { productos: productosFiltrados }
+      componentProps: { productos: productosFiltrados, mesa: this.mesa }
     });
     return await modal.present();
   }
 
   goBack(){
     this.router.navigateByUrl('/home');
+  }
+
+  async ngOnInit() {
+    
+
+    
+    this.route.queryParams.subscribe(params => {
+      this.mesa = params['mesa'];
+      this.data.mandarToast("mesa: " + this.mesa, "success");
+    });
+
+    this.cargarProductos();
+
+    this.cart.getTotal().subscribe(total => this.total = total);
+  }
+
+  cargarProductos(){
+    this.data.getProductos().subscribe(data => {
+      this.productos = data;
+      this.productos = this.productos.map(producto => ({
+        ...producto,
+        cantidad: 1,
+        added: false
+      }));
+
+      this.loading.dismiss();
+      console.log(data);
+    }, error => {
+      console.error('Error al cargar productos:', error);
+    });
+  }
+
+  verPedido(){
+    this.carrito = this.cart.getCart();
+    this.espera = this.cart.getEspera();
+    this.mostrarCarrito = true;
+  }
+
+  async confirmarPedido(){
+    const uid = await this.auth.getUserUid() || "";
+
+    this.data.confirmarPedido(this.carrito, this.mesa, uid);
+    this.data.mandarToast("Tu pedido fue solicitado, podés ver el estado escaneando el QR de tu mesa en la opción debajo.", "success")
+    this.router.navigateByUrl("/home");
+  }
+
+  deleteProduct(producto: any) {
+    this.cart.removeFromCart(producto)
+    this.carrito = this.cart.getCart();
+
+    if(this.carrito.length < 1){
+      this.mostrarCarrito = false;
+    }
+  }
+
+  goChat(){
+    this.router.navigate(['/chat'], { queryParams: { mesa: this.mesa } });
+  }
+
+  getBackgroundImage(categoria: string): string {
+    return `url('../../assets/${categoria}.jpg')`;
   }
 
 }

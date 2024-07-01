@@ -1,15 +1,9 @@
 import { Component, Input, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { CartService } from '../services/cart.service';
-
-interface Producto {
-  tipo: string;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-  tiempo: string;
-  imagenes: string[];
-}
+import { DataService } from '../services/data.service';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu-modal',
@@ -18,38 +12,81 @@ interface Producto {
 })
 export class MenuModalComponent implements OnInit {
 
-  @Input() productos!: Producto[];
+  @Input() productos!: any[];
+  @Input() mesa!: string;
 
   @ViewChild('swiper', { static: true }) swiperRef!: ElementRef;
 
-  total: number = 0;
+  total: number = 1;
+
+  carrito : any;
+  mostrarCarrito : boolean = false;
+  espera : number = 0;
 
   constructor(
     private modalController: ModalController,
-    private cartService: CartService
+    private cartService: CartService,
+    private data : DataService,
+    private auth : AuthService,
+    private router : Router
   ) {}
 
   ngOnInit() {
-    this.total = this.cartService.getTotal();
+    this.cartService.getTotal().subscribe(total => this.total = total);
   }
 
   dismissModal() {
     this.modalController.dismiss();
   }
 
-  addToCart(producto: Producto) {
+  addToCart(producto: any) {
+    producto.added = true;
     this.cartService.addToCart(producto);
-    this.total = this.cartService.getTotal();
   }
 
-  removeFromCart(producto: Producto) {
+  removeFromCart(producto: any) {
+    producto.added = false;
     this.cartService.removeFromCart(producto);
-    this.total = this.cartService.getTotal();
   }
   
 
   logActiveIndex() {
     console.log(this.swiperRef.nativeElement.swiper.activeIndex);
+  }
+  
+  increaseQuantity(producto: any) {
+    if (producto.cantidad < 100) {
+      producto.cantidad++;
+    }
+  }
+
+  decreaseQuantity(producto: any) {
+    if (producto.cantidad > 1) {
+      producto.cantidad--;
+    }
+  }
+
+  verPedido(){
+    this.carrito = this.cartService.getCart();
+    this.espera = this.cartService.getEspera();
+    this.mostrarCarrito = true;
+  }
+
+  async confirmarPedido(){
+    const uid = await this.auth.getUserUid() || "";
+
+    this.data.confirmarPedido(this.carrito, this.mesa, uid);
+    this.data.mandarToast("Tu pedido fue solicitado, podés ver el estado escaneando el QR de tu mesa en la opción debajo.", "success")
+    this.router.navigateByUrl("/home");
+  }
+
+  deleteProduct(producto: any) {
+    this.cartService.removeFromCart(producto)
+    this.carrito = this.cartService.getCart();
+
+    if(this.carrito.length < 1){
+      this.mostrarCarrito = false;
+    }
   }
 
 }

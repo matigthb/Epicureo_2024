@@ -1,0 +1,30 @@
+<ion-header class="navA">
+  <ion-toolbar class="navA">
+    <ion-buttons slot="start">
+      <ion-icon style="font-size: 300%;" name="arrow-back" (click)="goBack()"></ion-icon>
+    </ion-buttons>
+    <h1 style="justify-content: center; text-align: center; padding-top: 4%;">Consultá al mozo</h1>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="fondo">
+  <div class="chat-messages">
+    <div *ngFor="let mensaje of chatService.mensajes" class="message" [ngClass]="{'senderUno': mensaje.usuario === usuarioActual.uid, 'receiver': mensaje.usuario !== usuarioActual.uid}">
+      <strong>{{ mensaje.usuario === usuarioActual.uid ? 'Tú' : mensaje.nombre + ' ' + mensaje.apellido + ' (' + (mensaje.rol || 'Usuario') + ')' | titlecase}}:</strong>
+      <p>{{ mensaje.mensaje }}</p>
+      <span class="time">{{ mensaje.fecha | dateFormat }}</span>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer class="navA" *ngIf="aulaSeleccionada==='mensajes'">
+  <ion-toolbar class="navA">
+    <ion-buttons slot="start" style="width: 200%;">
+      <ion-input class="input-chat" placeholder="Escribe un mensaje aquí" [(ngModel)]="this.mensaje.mensaje"></ion-input>
+    </ion-buttons>
+    <ion-buttons slot="end" style="padding-right: 5%;">
+      <ion-icon type="submit" (click)="EnviarMensaje()" name="send" id="sendButton"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
+

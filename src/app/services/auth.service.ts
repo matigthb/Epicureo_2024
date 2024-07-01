@@ -10,7 +10,7 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } f
 export class AuthService {
 
   constructor(private afAuth: AngularFireAuth) {}
-  
+  isLogging : boolean = true;
   rol : string = "no logueado";
 
   async login(email: string, password: string): Promise<any> {
@@ -21,7 +21,6 @@ export class AuthService {
       throw error;
     }
   }
-  
 
   async register(email: string, password: string): Promise<any> {
     try {
@@ -54,5 +53,18 @@ export class AuthService {
 
   getUser() {
     return this.afAuth.authState;
+  }
+
+  getCurrentUser(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.afAuth.onAuthStateChanged(
+        (user) => {
+          resolve(user);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
   }
 }
