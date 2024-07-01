@@ -39,5 +39,10 @@ Tanto el DUEÑO como el SUPERVISOR tienen la opción de "Aceptar clientes", la c
 La app cuenta con un LECTOR DE CODIGOS QR, que facilita la entrada a la lista de espera (que sigue en desarrollo) de los ingresantes al restaurante.<br>
 ![image](https://github.com/matigthb/Epicureo_2024/assets/98900532/809cf220-2d15-4d3e-926c-a28ca5eda748)<br>
 
-Y proximamente... LA POSIBILIDAD DE REALIZAR TU PEDIDO DIRECTAMENTE DESDE LA APP! sin levantarte de tu mesa. ESTATE ATENTO!!!!!!! 😉
+Lo estaban esperando y llegó... PODEMOS PEDIR DESDE LA APP😉<br>
+![image](https://github.com/matigthb/Epicureo_2024/assets/98900532/a230bd14-7b0b-4088-b88d-4f32214fba19)<br>
 
+Tenemos un canal exclusivo mientras se pide para hacer consultas directamente a los mozos sin necesidad de levantarse!<br>
+![image](https://github.com/matigthb/Epicureo_2024/assets/98900532/8a5acca0-dd04-4f29-9439-33147f34633f)<br>
+
+Y proximamente, se vienen estados de pedido, encuestas, confirmaciones de pedido por parte de los mozos, y demás!!!!

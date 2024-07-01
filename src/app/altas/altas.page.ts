@@ -30,9 +30,7 @@ export class AltasPage implements OnInit {
     this.router.navigateByUrl('/alta-mesa');
   }
 
-  logout(){
-    this.auth.logout();
-    this.router.navigateByUrl('/login')
+  goBack(){
+    this.router.navigateByUrl('/home');
   }
-
 }

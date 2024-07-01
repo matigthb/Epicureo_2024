@@ -8,54 +8,88 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <form (ngSubmit)="agregarProducto()">
-    <ion-item>
-      <ion-label position="floating">Categoría</ion-label>
-      <ion-select [(ngModel)]="producto.categoria" name="categoria" required>
-        <ion-select-option value="comidas">Comidas</ion-select-option>
-        <ion-select-option value="postres">Postres</ion-select-option>
-      </ion-select>
-    </ion-item>
+<ion-content [fullscreen]="true">
+  <ion-card class="pt-serif-regular">
+    <ion-card-content>
+      <form class="pt-serif-regular" [formGroup]="registroForm" (ngSubmit)="agregarProducto()">
+        
+        <ion-item>
+          <ion-label position="stacked">Categoría</ion-label>
+          <ion-select formControlName="categoria" required>
+            <ion-select-option value="comidas">Comidas</ion-select-option>
+            <ion-select-option value="postres">Postres</ion-select-option>
+            <ion-select-option value="postres">Bebidas</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="registroForm.get('categoria')?.invalid && (registroForm.get('categoria')?.dirty || registroForm.get('categoria')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('categoria')?.errors?.['required']">La categoría es requerida.</ion-text>
+        </div>
 
-    <ion-item>
-      <ion-label position="floating">Nombre del Plato</ion-label>
-      <ion-input [(ngModel)]="producto.nombre" name="nombre" type="text" required></ion-input>
-    </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Nombre del Plato</ion-label>
+          <ion-input type="text" formControlName="nombre" required></ion-input>
+        </ion-item>
+        <div *ngIf="registroForm.get('nombre')?.invalid && (registroForm.get('nombre')?.dirty || registroForm.get('nombre')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('nombre')?.errors?.['required']">El nombre del plato es requerido.</ion-text>
+        </div>
 
-    <ion-item>
-      <ion-label position="floating">Descripción</ion-label>
-      <ion-textarea [(ngModel)]="producto.descripcion" name="descripcion" required></ion-textarea>
-    </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Descripción</ion-label>
+          <ion-textarea formControlName="descripcion" required></ion-textarea>
+        </ion-item>
+        <div *ngIf="registroForm.get('descripcion')?.invalid && (registroForm.get('descripcion')?.dirty || registroForm.get('descripcion')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('descripcion')?.errors?.['required']">La descripción es requerida.</ion-text>
+        </div>
 
-    <ion-item>
-      <ion-label position="floating">Precio</ion-label>
-      <ion-input [(ngModel)]="producto.precio" name="precio" type="number" required></ion-input>
-    </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Precio</ion-label>
+          <ion-input type="text" formControlName="precio" required></ion-input>
+        </ion-item>
+        <div *ngIf="registroForm.get('precio')?.invalid && (registroForm.get('precio')?.dirty || registroForm.get('precio')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('precio')?.errors?.['required']">El precio es requerido.</ion-text>
+          <ion-text color="danger" *ngIf="registroForm.get('precio')?.errors?.['pattern']">Ingrese solamente caractéres numéricos.</ion-text>
+        </div>
 
-    <ion-item>
-      <ion-label position="floating">Tiempo Estimado (min)</ion-label>
-      <ion-input [(ngModel)]="producto.tiempoEstimado" name="tiempoEstimado" type="number" required></ion-input>
-    </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Tiempo Estimado (min)</ion-label>
+          <ion-input type="text"  formControlName="tiempoEstimado" required></ion-input>
+        </ion-item>
+        <div *ngIf="registroForm.get('tiempoEstimado')?.invalid && (registroForm.get('tiempoEstimado')?.dirty || registroForm.get('tiempoEstimado')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('tiempoEstimado')?.errors?.['required']">El tiempo estimado es requerido.</ion-text>
+          <ion-text color="danger" *ngIf="registroForm.get('tiempoEstimado')?.errors?.['pattern']">Ingrese solamente caractéres numéricos.</ion-text>
+        </div>
 
-    <ion-item>
-      <ion-label>Imagen 1</ion-label>
-      <ion-button expand="block" (click)="tomarFoto(0)">Tomar Foto 1</ion-button>
-      <img *ngIf="producto.imagenes[0]" [src]="producto.imagenes[0]" />
-    </ion-item>
+        <!-- Agregar campo para subir foto -->
+        <ion-item class="foto">
+          <ion-label position="stacked">Seleccione 3 fotos del plato</ion-label>
+          <div class="fotos" *ngIf="this.producto.imagenes[0] == ''">
+            <ion-button class="button-main" (click)="seleccionarFoto()"><ion-icon name="images-outline"></ion-icon></ion-button>
+          </div>
+          <div class="tilde" *ngIf="this.producto.imagenes[0] != ''">
+            <img *ngIf="producto.imagenes[0]" [src]="producto.imagenes[0]" />
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+          </div>
+        </ion-item>
+        <div *ngIf="registroForm.get('imagen')?.invalid && (registroForm.get('imagen')?.dirty || registroForm.get('imagen')?.touched)">
+          <ion-text color="danger" *ngIf="registroForm.get('imagen')?.errors?.['required']">La imagen es requerida.</ion-text>
+        </div>
 
-    <ion-item>
-      <ion-label>Imagen 2</ion-label>
-      <ion-button expand="block" (click)="tomarFoto(1)">Tomar Foto 2</ion-button>
-      <img *ngIf="producto.imagenes[1]" [src]="producto.imagenes[1]" />
-    </ion-item>
+        <ion-item  *ngIf="this.producto.imagenes[1] != ''">
+          <div class="tilde">
+            <img *ngIf="producto.imagenes[1]" [src]="producto.imagenes[1]" />
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+          </div>
+        </ion-item>
 
-    <ion-item>
-      <ion-label>Imagen 3</ion-label>
-      <ion-button expand="block" (click)="tomarFoto(2)">Tomar Foto 3</ion-button>
-      <img *ngIf="producto.imagenes[2]" [src]="producto.imagenes[2]" />
-    </ion-item>
+        <ion-item  *ngIf="this.producto.imagenes[2] != ''">
+          <div class="tilde">
+            <img *ngIf="producto.imagenes[2]" [src]="producto.imagenes[2]" />
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+          </div>
+        </ion-item>
 
-    <ion-button expand="full" type="submit">Añadir Plato</ion-button>
-  </form>
+        <ion-button class="button-main" expand="full" type="submit">Añadir Plato</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

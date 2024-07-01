@@ -2,6 +2,97 @@
     font-family: 'Belleza', sans-serif !important;
     font-weight: bold;
   }
+
+  body#contentmodal{
+    --ion-background-color: #644e3b;
+    height: 100vh;
+    width: 100vw;
+}
+
+.anonButton{
+  color: #550C18;
+  margin-top: 15px;
+  --background: #F3DFA2;
+}
+
+.anonpic{
+  max-width: 300px;
+  max-height: 300px;
+}
+
+
+
+.anonDiv{
+  height: 100vh;
+  width: 100vw;
+  padding: 15px;
+  display: flex;
+  h2{
+    margin-top: 20px;
+    color: #F3DFA2;
+    font-size: 18px;
+  }
+
+  ion-item{
+    color: #550C18;
+    --background: #F3DFA2;
+  }
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+// <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 100 to 400
+.pt-serif-regular {
+    font-family: "PT Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .pt-serif-bold {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  .pt-serif-regular-italic {
+    font-family: "PT Serif", serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+  
+  .pt-serif-bold-italic {
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  
+.fuente {
+    font-family: "Playwrite IE", cursive;
+    font-optical-sizing: auto;
+    font-weight: 100px;
+    font-style: normal;
+  }
+
+ion-toolbar {
+    --background: #F3DFA2;
+    --color: white;
+  
+    --border-color: #550C18;
+    --border-width: 4px 0;
+    --border-style: double;
+  
+    --min-height: 60px;
+    --padding-top: 20px;
+    --padding-bottom: 20px;
+
+    ion-icon{
+        color:#550C18
+    }
+  }
+
   
   /* style.css */
 ion-content {
@@ -30,10 +121,14 @@ ion-content {
 
   ion-item {
     color: white;
-    --background: #644e3b; /* Set the background color */
+    
     border-radius: 10px; /* Add border radius for rounded corners */
   }
   
+  .marron{
+    --background: #644e3b;
+  }
+
   .iconosuperprime{
     width: 200px;
   }
@@ -297,3 +392,4 @@ ion-content {
     height: 30px;
     font-size: 1.05em;
   }
+  

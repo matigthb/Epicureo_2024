@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../services/data.service';
 
 export interface Pregunta {
@@ -15,7 +15,7 @@ export interface Pregunta {
   templateUrl: './encuestas.page.html',
   styleUrls: ['./encuestas.page.scss'],
 })
-export class EncuestasPage {
+export class EncuestasPage implements OnInit{
   encuesta = {
     preguntas: [
       { id: 1, pregunta: 'Califica la calidad de la comida', tipo: 'scale', opciones: [1, 2, 3, 4, 5] },
@@ -28,9 +28,18 @@ export class EncuestasPage {
     ] as Pregunta[],
     respuestas: {} as Record<string, any>
   };
+
+  ruta : string = "no";
   
 
-  constructor(private alertController: AlertController, private router: Router, private dataService: DataService ) {}
+  constructor(private alertController: AlertController, private route : ActivatedRoute,private router: Router, private dataService: DataService ) {}
+
+  async ngOnInit(): Promise<void> {
+    this.route.queryParams.subscribe(params => {
+      this.ruta = params['pedidoRealizado'];
+    });
+
+  }
 
   async enviarRespuestas() {
     console.log(this.encuesta.respuestas);
@@ -38,10 +47,10 @@ export class EncuestasPage {
     await this.dataService.guardarRespuestas(this.encuesta.respuestas);
     
     this.dataService.mandarToast("Respuestas enviadas", "success");
-    this.router.navigateByUrl('/home');
+    this.router.navigate(['/qrs'], { queryParams: { pedidoRealizado: this.ruta } });
   }
   
   goBack(){
-    this.router.navigateByUrl('/home');
+    this.router.navigate(['/qrs'], { queryParams: { pedidoRealizado: this.ruta } });
   }
 }

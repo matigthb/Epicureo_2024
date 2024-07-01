@@ -1,0 +1,44 @@
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="espera-container pt-serif-regular" *ngIf="lista.length > 0 && mesas.length == 0">
+    <h4 class="espera">Espere a que se desocupe una mesa.</h4>
+  </div>
+  <div class="espera-container pt-serif-regular" *ngIf="lista.length == 0">
+    <h4 class="espera">No quedan clientes en la lista de espera.</h4>
+  </div>
+  <div class="container" *ngIf="lista.length > 0 && mesas.length > 0">
+    <div *ngFor="let cliente of lista; let i = index" class="card">
+      <div class="card-content pt-serif-regular">
+        <img [src]="cliente.foto" alt="{{ cliente.nombre }}" class="card-image">
+        <div class="card-details pt-serif-regular">
+          <h2>{{ cliente.nombre }} {{ cliente.apellido }}</h2>
+          <p>Fecha de ingreso: {{ cliente.fecha | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+          <div class="botones" *ngIf="mesas.length > 0">
+            <button class="boton rechazar" (click)="openModal(cliente)">
+              Asignar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ion-modal id="modal" #modal>
+      <ng-template>
+        <div class="wrapper pt-serif-regular">
+          <h1>Mesas disponibles para {{this.cliente.nombre}} {{this.cliente.apellido}}</h1>
+  
+          <ion-button class="mesa pt-serif-regular" *ngFor="let mesa of mesas" (click)="asignarMesa(mesa.id)">Mesa N°{{mesa.id}}</ion-button>
+        </div>
+      </ng-template>
+    </ion-modal>
+  </div>
+</ion-content>  

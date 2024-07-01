@@ -60,10 +60,11 @@ ion-toolbar {
 
   .text-container {
     position: absolute;
-    top: 10%;
+    top: 15%;
     margin-left: 10px;
     height: 50px; /* Ajusta la altura según tus necesidades */
     display: flex;
+    font-size: 14px;
     justify-content: center;
     align-items: center;
     overflow: hidden;
