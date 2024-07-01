@@ -18,9 +18,9 @@ export class QrsPage implements OnDestroy, OnInit {
   listaDeEspera : boolean = false;
   uid : string = "";
   waitingListSubscription: Subscription | undefined;
-  mesa : number = -1;
+  mesa : string = "0";
   
-  pedidoRealizado: boolean = false;
+  pedidoRealizado: string = 'no';
   
   constructor(private router: Router, private route : ActivatedRoute, private auth: AuthService, private notification: NotificationService, private toast: ToastController, private data: DataService) { 
     
@@ -33,7 +33,12 @@ export class QrsPage implements OnDestroy, OnInit {
       this.pedidoRealizado = params['pedidoRealizado'];
     });
 
+    console.log(this.pedidoRealizado);
     this.subscribeToWaitingList(this.uid);
+
+    setTimeout(() =>{
+      this.data.mandarToast(this.pedidoRealizado + this.mesa + this.isScanning, "success");
+    },5000);
   }
 
   subscribeToWaitingList(uid: string) {
@@ -42,22 +47,21 @@ export class QrsPage implements OnDestroy, OnInit {
 
       if (userInList) {
         if (userInList.assignedTable) {
-          this.mesa = userInList.assignedTable
-          //this.data.mandarToast(`You have been assigned to table ${userInList.assignedTable}`, "success");
+          this.mesa = userInList.assignedTable;
+          if(this.pedidoRealizado === 'si')
+          {
+            this.escanearMesa();
+            console.log("2")
+          }
+          this.data.mandarToast(`You have been assigned to table ${userInList.assignedTable}`  + this.isScanning, "success");
         } else {
-          this.mesa = 0;
-          //this.data.mandarToast('You are in the waiting list, waiting for table assignment', "info");
+          this.mesa = "0";
+          this.stopScan();
+          this.data.mandarToast('You are in the waiting list, waiting for table assignment', "info");
         }
       } else {
-        if(this.pedidoRealizado)
-        {
-          this.escanearMesa();
-        }
-        else
-        {
-          this.startScan();
-        }
-        this.isScanning = true;
+        this.startScan();
+        console.log("1")
       }
     });
   }
@@ -102,7 +106,15 @@ export class QrsPage implements OnDestroy, OnInit {
               this.isScanning = false;
               await BarcodeScanner.showBackground();
               this.data.ingresarCliente(this.uid);
-              this.notification.sendRoleNotification(["maitre"],"Se requiere asignación!", "Un cliente ingresó a la lista de espera por una mesa.");
+              
+              this.notification.sendRoleNotification(["maitre"],"Se requiere asignación!", "Un cliente ingresó a la lista de espera por una mesa.").subscribe(
+                (response) => {
+                  //this.data.mandarToast('Notification sent successfully' + " " + JSON.stringify(response), "success");
+                },
+                (error) => {
+                  //this.data.mandarToast('Notification ERROR' + " " + JSON.stringify(error),"error");
+                }
+              )
             }
             else
             {
@@ -114,6 +126,10 @@ export class QrsPage implements OnDestroy, OnInit {
       console.error('Scan failed:', e);
       //this.stopScan();
     }
+  }
+
+  goEncuestas(){
+    this.router.navigate(['/encuestas'], { queryParams: { pedidoRealizado: this.pedidoRealizado } });
   }
 
   async escanearMesa(){
@@ -128,8 +144,12 @@ export class QrsPage implements OnDestroy, OnInit {
             {
               this.isScanning = false;
               await BarcodeScanner.showBackground();
-              this.data.entrarMesa(`${this.mesa}`, this.uid);
-              this.router.navigate(['/productos'], { queryParams: { mesa: this.mesa } });
+              
+              if(this.pedidoRealizado === 'no')
+              {
+                this.data.entrarMesa(`${this.mesa}`, this.uid);
+                this.router.navigate(['/productos'], { queryParams: { mesa: this.mesa } });
+              }
             }
             else
             {

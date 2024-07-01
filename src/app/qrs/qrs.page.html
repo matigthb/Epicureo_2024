@@ -4,7 +4,7 @@
       <ion-button (click)="goBack()">
         <ion-icon name="arrow-back-outline"></ion-icon>
       </ion-button>
-      <h4 class="pt-serif-regular" *ngIf="isScanning && mesa > 0">Escaneá el QR de la mesa {{this.mesa}}</h4>
+      <h4 class="pt-serif-regular" *ngIf="isScanning && mesa != '0'">Escaneá el QR de la mesa {{this.mesa}}</h4>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -12,20 +12,26 @@
 <ion-content [class.scanner-active]="isScanning" class="pt-serif-bold">
 
   <div [class.hide-content]="isScanning">
-      <div class="espera-container" *ngIf="!pedidoRealizado && !isScanning && mesa == 0">
+      <div class="button-container" *ngIf="pedidoRealizado === 'no' && !isScanning && mesa == '0'">
         <h2 class="espera">Estás en la lista de espera...</h2>
+        <ion-button class="button-main" (click)="go('/encuestas')" >
+          <h2 class="pt-serif-bold">Encuestas previas</h2>
+        </ion-button>
       </div>
-      <div class="button-container" *ngIf="!pedidoRealizado && !isScanning && mesa > 0">
+      <div class="button-container" *ngIf="pedidoRealizado === 'no' && !isScanning && mesa != '0'">
         <h2>Fuiste asignado a la mesa número:</h2>
         <div class="nroMesa">
           <h3>{{this.mesa}}</h3>
         </div>
         <h2>Por favor, escaneá el QR que se encuentra en la mesa.</h2>
         <ion-button class="button-main pt-serif-bold" (click)="escanearMesa()"><ion-icon name="qr-code-outline"></ion-icon></ion-button>
+        <ion-button class="button-enc" (click)="go('/encuestas')" >
+          <h2 class="pt-serif-bold">Encuestas</h2>
+        </ion-button>
       </div>
 
 
-      <div *ngIf="pedidoRealizado && mesa > 0 && !isScanning" class="button-container">
+      <div *ngIf="pedidoRealizado === 'si' && mesa != '0' && !isScanning" class="button-container">
         <ion-button class="button-main" (click)="go('/altas')" >
           <h2 class="pt-serif-bold">Estado del pedido</h2>
         </ion-button>

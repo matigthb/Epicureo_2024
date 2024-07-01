@@ -35,6 +35,7 @@ export class MesasPage implements OnInit {
   cargarUsuarios(): void {
     this.data.getListaEspera().subscribe(data => {
       this.lista = data;
+      this.lista = this.lista.filter(item => item.assignedTable === "0");
       console.log(data);
     }, error => {
       console.error('Error al cargar usuarios:', error);

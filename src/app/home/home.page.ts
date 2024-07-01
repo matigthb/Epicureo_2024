@@ -30,6 +30,9 @@ export class HomePage implements OnInit, OnDestroy {
   clientesPendientes : Usuario[] = [];
   listaDeEspera : any[] = [];
   consultas: any[] = [];
+  pedidosPendientes : any[] = [];
+  tareasCocina : any[] = [];
+  tareasBar : any[] = [];
 
   sentado : string = '0';
 
@@ -38,6 +41,9 @@ export class HomePage implements OnInit, OnDestroy {
   subscription3 : any;
   subscription4 : any;
   subscription5 : any;
+  subscription6 : any;
+  subscription7 : any;
+  subscription8 : any;
 
   constructor(private router: Router, public auth : AuthService, private loadingController: LoadingController, private data : DataService) { }
 
@@ -48,6 +54,9 @@ export class HomePage implements OnInit, OnDestroy {
     this.cargarUsuarios();
     this.cargarClientes();
     this.cargarConsultas();
+    this.cargarPedidos();
+    this.cargarTareasCocina();
+    this.cargarTareasBar();
     this.checkearMesas(uid);
     const loading = await this.loadingController.create();
     await loading.present();
@@ -60,6 +69,24 @@ export class HomePage implements OnInit, OnDestroy {
     console.log(this.auth.rol)
   }
 
+  cargarTareasCocina(): void {
+    this.subscription7 = this.data.getTareasCocina().subscribe(data => {
+      this.tareasCocina = data;
+      console.log("COCCICNA", data);
+    }, error => {
+      console.error('Error al cargar tareas:', error);
+    });
+  }
+
+  cargarTareasBar(): void {
+    this.subscription8 = this.data.getTareasBar().subscribe(data => {
+      this.tareasBar = data;
+      console.log("BAR", data);
+    }, error => {
+      console.error('Error al cargar tareas:', error);
+    });
+  }
+
   ngOnDestroy() {
     clearInterval(this.interval);
     this.subscription1.unsubscribe();
@@ -67,6 +94,9 @@ export class HomePage implements OnInit, OnDestroy {
     this.subscription3.unsubscribe();
     this.subscription4.unsubscribe();
     this.subscription5.unsubscribe();
+    this.subscription6.unsubscribe();
+    this.subscription7.unsubscribe();
+    this.subscription8.unsubscribe();
   }
 
   checkearMesas(uid : string){
@@ -97,6 +127,7 @@ export class HomePage implements OnInit, OnDestroy {
     });
   }
 
+  
   cargarConsultas(){
     this.subscription4 = this.data.getConsultas().subscribe(data => {
       this.consultas = data;
@@ -105,7 +136,7 @@ export class HomePage implements OnInit, OnDestroy {
       console.error('Error al cargar consultas:', error);
     });
   }
-
+  
   cargarUsuarios(): void {
     this.subscription5 = this.data.getUsuarios().subscribe((data: Usuario[]) => {
       this.clientesPendientes = data;
@@ -114,13 +145,22 @@ export class HomePage implements OnInit, OnDestroy {
       console.error('Error al cargar usuarios:', error);
     });
   }
+  
+  cargarPedidos(){
+    this.subscription6 = this.data.getPedidosPendientes().subscribe(data => {
+      this.pedidosPendientes = data;
+      console.log(data);
+    }, error => {
+      console.error('Error al cargar pedidos: ', error);
+    });
+  }
 
   startTextLoop(): void {
     this.interval = setInterval(() => {
       this.updateText();
     }, 100); // Ajusta la velocidad de la animación
   }
-
+  
   updateText(): void {
     const currentText = this.texts[this.currentTextIndex];
     const holdTimes = [4000, 2000]; // Tiempo en milisegundos que cada oración se mantiene completa
@@ -158,9 +198,9 @@ export class HomePage implements OnInit, OnDestroy {
     this.router.navigateByUrl(url);
   }
 
-  goQRConPedido()
+  goQR(param : string)
   {
-    this.router.navigate(['/qr'], { queryParams: { pedidoRealizado: true } });
+    this.router.navigate(['/qrs'], { queryParams: { pedidoRealizado: param } });
   }
 
   logout(){
@@ -170,6 +210,9 @@ export class HomePage implements OnInit, OnDestroy {
     this.subscription3.unsubscribe();
     this.subscription4.unsubscribe();
     this.subscription5.unsubscribe();
+    this.subscription6.unsubscribe();
+    this.subscription7.unsubscribe();
+    this.subscription8.unsubscribe();
     this.auth.logout();
     this.router.navigateByUrl('/login')
   }

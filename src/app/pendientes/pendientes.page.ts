@@ -29,7 +29,7 @@ export class PendientesPage implements OnInit {
   }
 
   aceptarCliente(cliente : any){
-    //this.data.aceptarCliente(cliente);
+    this.data.aceptarCliente(cliente);
     this.notification.sendMail(true, cliente.nombre, cliente.correo).subscribe(
       response => {
         // Handle success response
@@ -46,8 +46,17 @@ export class PendientesPage implements OnInit {
   rechazarCliente(cliente : any)
   {
     this.data.rechazarCliente(cliente.id);
-    this.notification.sendMail(false, cliente.nombre, cliente.correo);
-    this.data.mandarToast("Cliente rechazado.", "danger");
+    this.notification.sendMail(false, cliente.nombre, cliente.correo).subscribe(
+      response => {
+        // Handle success response
+        this.data.mandarToast("Cliente rechazado.", "danger");
+      },
+      error => {
+        // Handle error response
+        console.error('Error sending mail:', error);
+        this.data.mandarToast("Failed to accept client. Please try again.", "danger");
+      }
+    );
   }
 
   goBack(){

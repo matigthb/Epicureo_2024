@@ -7,7 +7,7 @@ import { ToastController } from '@ionic/angular';
   providedIn: 'root'
 })
 export class NotificationService {
-  private serverUrl = 'https://bb30-181-116-176-62.ngrok-free.app'; // Replace with your server URL
+  private serverUrl = 'https://e860-200-122-89-151.ngrok-free.app'; // Replace with your server URL
 
   constructor(private http: HttpClient, private toast : ToastController) { }
 
@@ -50,13 +50,6 @@ export class NotificationService {
   private handleError(error: any): Observable<never> {
     // Log the error to the console
     console.error('An error occurred:', error);
-    // Show a toast message for the error
-    this.toast.create({
-      message: 'An error occurred while sending the request. Please try again.',
-      duration: 3000,
-      color: 'danger'
-    }).then(toast => toast.present());
-    // Return an observable with an error message
     return throwError('Something went wrong; please try again later.');
   }
 }
