@@ -12,7 +12,6 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
   providedIn: 'root'
 })
 export class DataService {
-  toast: any;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -62,6 +61,26 @@ export class DataService {
     );
   }
 
+  getPedidosConfirmados(): Observable<any[]> {
+    return this.firestore.collection<any>('pedidos').snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+  }
+
+  /*private getTareasByPedidoId(collectionName: string, pedidoId: string): Observable<any[]> {
+    return this.firestore.collection<any>(collectionName, ref => ref.where('pedidoId', '==', pedidoId)).snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+  }
+
   getTareasCocina(): Observable<any[]> {
     return this.firestore.collection<any>('tareasCocina', ref => ref.where('realizado', '==', false)).snapshotChanges().pipe(
       map(actions => {
@@ -103,7 +122,7 @@ export class DataService {
     
     // Grouping logic
     data.forEach(item => {
-      const pedido = item.pedido;
+      const pedido = item.pedidoId;
       if (!grouped[pedido]) {
         grouped[pedido] = [];
       }
@@ -115,7 +134,7 @@ export class DataService {
       pedido,
       items: grouped[pedido]
     }));
-  }
+  }*/
 
   checkearMesas(uid: string): Observable<string | number> {
     return this.firestore.collection<any>('mesas', ref => ref.where('sentado', '==', uid)).snapshotChanges().pipe(
@@ -270,13 +289,20 @@ export class DataService {
       // Agregar los datos del cliente a Firestore
       await this.firestore.collection("pedidosPendientes").doc(pedido.id).delete();
 
+      const updatedPedido = pedido.pedido.map((element: any) => ({
+        ...element,
+        realizado: false
+      }));
+
       await this.firestore.collection('pedidos').doc(pedido.id).set({
-        pedido: pedido.pedido || '',
+        pedido: updatedPedido || '',
         user: pedido.user || '',
         realizado: false,
+        entregado: false,
+        recibido: false,
       });
 
-      pedido.forEach(async (element: any) => {
+      /*pedido.pedido.forEach(async (element: any) => {
         if(element.categoria == "bebidas"){
           await this.firestore.collection('tareasBar').doc().set({
             pedidoId: pedido.id || '',
@@ -290,13 +316,58 @@ export class DataService {
             realizado: false,
           });
         }
-      });
-
+      });*/
     } catch (error) {
       console.error('Error al registrar el pedido:', error);
       throw error;
     }
   }
+
+  actualizarPedido(pedido : any)
+  {
+    let final : boolean = true;
+
+    pedido.pedido.forEach((element: { realizado: boolean; }) => {
+      if(element.realizado == false){
+        final = false;
+      }
+    });
+
+    return this.firestore.collection('pedidos').doc(pedido.id).update({
+      pedido: pedido.pedido,
+      realizado: final,
+    });
+  }
+
+  verificarProducto(idMesa: string, producto: any, tabla: string): Observable<boolean> {
+    return this.firestore.collection(tabla, ref => 
+      ref.where('tarea.id', '==', producto.id)
+         .where('pedidoId', '==', idMesa)
+    ).snapshotChanges().pipe(
+      map(actions => {
+        if (actions.length === 0) {
+          return false;
+        }
+
+        // Suponiendo que solo debería haber un documento que coincida con los criterios
+        const data = actions[0].payload.doc.data() as any;
+        return data.realizado === true;
+      })
+    );
+  }
+  
+  async entregarPedido(pedidoId: string) {
+    return this.firestore.collection('pedidos').doc(pedidoId).update({
+      entregado: true
+    });
+  }
+
+  async recibirPedido(pedidoId: string) {
+    return this.firestore.collection('pedidos').doc(pedidoId).update({
+      recibido: true
+    });
+  }
+
 
   async aceptarCliente(cliente: any) {
     try {

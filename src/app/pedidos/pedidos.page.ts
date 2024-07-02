@@ -13,11 +13,16 @@ import { NotificationService } from '../services/notification.service';
 export class PedidosPage implements OnInit {
 
   pedidosPendientes: any[] = [];
+  pedidosConfirmados: any[] = [];
+  mostrarPedido : boolean = false;
+  pedidoActivo : any;
+  banderaPedido : boolean = true;
 
   constructor(private router: Router, public auth : AuthService, private data : DataService, private notification : NotificationService) { }
 
   ngOnInit(): void {
     this.cargarPedidos();
+    this.cargarConfirmados();
   }
 
   cargarPedidos(): void {
@@ -27,6 +32,19 @@ export class PedidosPage implements OnInit {
     }, error => {
       console.error('Error al cargar pedidos:', error);
     });
+  }
+
+  cargarConfirmados(): void {
+    this.data.getPedidosConfirmados().subscribe(data => {
+      this.pedidosConfirmados = data;
+      console.log("CONFIRMADOS");
+    }, error => {
+      console.error('Error al cargar pedidos:', error);
+    });
+  }
+
+  print(){
+    console.log(this.pedidosConfirmados);
   }
 
   aceptarPedido(pedido : any){
@@ -39,6 +57,27 @@ export class PedidosPage implements OnInit {
         this.data.mandarToast("No se encontró el token", "danger");
       }
     });
+  }
+
+  entregarPedido(pedidoId : string){
+    this.data.entregarPedido(pedidoId);
+
+  }
+
+  abrirPedido(pedido : any){
+    if(this.pedidoActivo != pedido )
+    {
+      this.pedidoActivo = pedido; 
+
+      if(this.banderaPedido)
+      {
+        this.mostrarPedido = !this.mostrarPedido;
+      }
+    }
+    else
+    {
+      this.mostrarPedido = !this.mostrarPedido;
+    }
   }
 
   goBack(){
