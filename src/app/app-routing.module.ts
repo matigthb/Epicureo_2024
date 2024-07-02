@@ -28,6 +28,10 @@ const routes: Routes = [
     loadChildren: () => import('./pendientes/pendientes.module').then( m => m.PendientesPageModule)
   },
   {
+    path: 'estado-pedido',
+    loadChildren: () => import('./estado-pedido/estado-pedido.module').then( m => m.EstadoPedidoPageModule)
+  },
+  {
     path: 'qrs',
     loadChildren: () => import('./qrs/qrs.module').then( m => m.QrsPageModule)
   },
@@ -56,14 +60,6 @@ const routes: Routes = [
     loadChildren: () => import('./alta-mesa/alta-mesa.module').then( m => m.AltaMesaPageModule)
   },
   {
-    path: 'encuestas',
-    loadChildren: () => import('./encuestas/encuestas.module').then( m => m.EncuestasPageModule)
-  },
-  {
-    path: 'graficos',
-    loadChildren: () => import('./graficos/graficos.module').then( m => m.GraficosPageModule)
-  },
-  {
     path: 'mesas',
     loadChildren: () => import('./mesas/mesas.module').then( m => m.MesasPageModule)
   },
@@ -71,29 +67,14 @@ const routes: Routes = [
     path: 'chat',
     loadChildren: () => import('./chat/chat.module').then( m => m.ChatPageModule)
   },
-  {
-    path: 'consultas',
-    loadChildren: () => import('./consultas/consultas.module').then( m => m.ConsultasPageModule)
-  },
-  {
-    path: 'encuestas',
-    loadChildren: () => import('./encuestas/encuestas.module').then( m => m.EncuestasPageModule)
-  },
-  {
-    path: 'pedidos',
-    loadChildren: () => import('./pedidos/pedidos.module').then( m => m.PedidosPageModule)
-  },
-  {
-    path: 'tareas',
-    loadChildren: () => import('./tareas/tareas.module').then( m => m.TareasPageModule)
-  },
-
 
 ];
+
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
   ],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule {}
