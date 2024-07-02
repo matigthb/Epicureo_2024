@@ -21,7 +21,6 @@ export class AuthService {
       throw error;
     }
   }
-  
 
   async register(email: string, password: string): Promise<any> {
     try {

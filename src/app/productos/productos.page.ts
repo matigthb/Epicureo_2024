@@ -39,8 +39,7 @@ export class ProductosPage implements OnInit{
 
   async ngOnInit() {
     
-    this.loading = await this.loadingController.create();
-    await this.loading.present();
+
     
     this.route.queryParams.subscribe(params => {
       this.mesa = params['mesa'];
@@ -89,6 +88,10 @@ export class ProductosPage implements OnInit{
     if(this.carrito.length < 1){
       this.mostrarCarrito = false;
     }
+  }
+
+  goChat(){
+    this.router.navigate(['/chat'], { queryParams: { mesa: this.mesa } });
   }
 
   getBackgroundImage(categoria: string): string {

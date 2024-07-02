@@ -133,7 +133,7 @@ export class RegistroPage implements OnInit {
       (error) => {
         this.dataService.mandarToast('Noti ERROR' + " " + JSON.stringify(error),"error");
       }
-    );;
+    );
   }
 
   goBack(){

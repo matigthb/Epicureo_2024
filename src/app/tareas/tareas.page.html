@@ -1,0 +1,32 @@
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="container" *ngIf="pedidos.length > 0">
+    <div [ngClass]="{'desaparece' :  ninguno(pedido)}" *ngFor="let pedido of pedidos; let i = index" class="card">
+      <ion-card class="carrito-card">
+        <h2>Mesa {{pedido.id}}</h2>
+        <div class="card margin" [ngClass]="{'desaparece' :  !this.categoria.includes(item.categoria) || item.realizado == true}" *ngFor="let item of pedido.pedido; let j = index">
+            <div *ngIf="item.realizado == false && this.categoria.includes(item.categoria)">
+              <img [src]="item.foto1">
+              <ion-item class="carrito-prod" >{{item.nombre}} x{{item.cantidad}}</ion-item>
+              <button class="boton aceptar" (click)="aceptarProducto(pedido, item, j)">
+                <ion-icon name="checkmark-outline"></ion-icon>
+              </button>
+            </div>
+        </div>
+      </ion-card>
+    </div>
+  </div>
+  <div class="container" *ngIf="pedidos.length == 0">
+    <h3>No hay tareas para realizar.</h3>
+  </div>
+</ion-content>  
