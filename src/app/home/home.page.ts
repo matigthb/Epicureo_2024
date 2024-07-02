@@ -31,6 +31,7 @@ export class HomePage implements OnInit, OnDestroy {
   listaDeEspera : any[] = [];
   consultas: any[] = [];
   pedidosPendientes : any[] = [];
+  pedidosConfirmados : any[] = [];
   tareasCocina : any[] = [];
   tareasBar : any[] = [];
 
@@ -55,8 +56,9 @@ export class HomePage implements OnInit, OnDestroy {
     this.cargarClientes();
     this.cargarConsultas();
     this.cargarPedidos();
-    this.cargarTareasCocina();
-    this.cargarTareasBar();
+    this.cargarPedidosConfirmados();
+    /**this.cargarTareasCocina();
+    this.cargarTareasBar();*/
     this.checkearMesas(uid);
     const loading = await this.loadingController.create();
     await loading.present();
@@ -69,7 +71,7 @@ export class HomePage implements OnInit, OnDestroy {
     console.log(this.auth.rol)
   }
 
-  cargarTareasCocina(): void {
+  /*cargarTareasCocina(): void {
     this.subscription7 = this.data.getTareasCocina().subscribe(data => {
       this.tareasCocina = data;
       console.log("COCCICNA", data);
@@ -85,7 +87,7 @@ export class HomePage implements OnInit, OnDestroy {
     }, error => {
       console.error('Error al cargar tareas:', error);
     });
-  }
+  }*/
 
   ngOnDestroy() {
     clearInterval(this.interval);
@@ -96,7 +98,6 @@ export class HomePage implements OnInit, OnDestroy {
     this.subscription5.unsubscribe();
     this.subscription6.unsubscribe();
     this.subscription7.unsubscribe();
-    this.subscription8.unsubscribe();
   }
 
   checkearMesas(uid : string){
@@ -149,6 +150,15 @@ export class HomePage implements OnInit, OnDestroy {
   cargarPedidos(){
     this.subscription6 = this.data.getPedidosPendientes().subscribe(data => {
       this.pedidosPendientes = data;
+      console.log(data);
+    }, error => {
+      console.error('Error al cargar pedidos: ', error);
+    });
+  }
+
+  cargarPedidosConfirmados(){
+    this.subscription7 = this.data.getPedidosConfirmados().subscribe(data => {
+      this.pedidosConfirmados = data;
       console.log(data);
     }, error => {
       console.error('Error al cargar pedidos: ', error);
@@ -212,7 +222,6 @@ export class HomePage implements OnInit, OnDestroy {
     this.subscription5.unsubscribe();
     this.subscription6.unsubscribe();
     this.subscription7.unsubscribe();
-    this.subscription8.unsubscribe();
     this.auth.logout();
     this.router.navigateByUrl('/login')
   }

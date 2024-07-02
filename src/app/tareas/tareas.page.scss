@@ -172,6 +172,15 @@ ion-toolbar {
         color: #F3DFA2;
       }
 
+      h3{
+        padding: 10px;
+        position: absolute;
+        top: 30%;
+        color:#F3DFA2;
+        word-wrap: normal;
+        font-size: 60px;
+      }
+
       .carrito-card {
         width: calc(100% - 30px); // Full width minus padding
         margin: 10px auto;

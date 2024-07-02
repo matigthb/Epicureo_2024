@@ -34,13 +34,13 @@
       <ion-button class="button-main" (click)="go('/mesas')" *ngIf="this.listaDeEspera.length > 0 && this.auth.rol == 'maitre'">
         <h2 class="pt-serif-bold">Asignar Mesas</h2>
       </ion-button>
-      <ion-button class="button-main" (click)="go('/pedidos')" *ngIf="this.pedidosPendientes.length > 0 && this.auth.rol == 'mozo'">
-        <h2 class="pt-serif-bold">Confirmar Pedidos</h2>
+      <ion-button class="button-main" (click)="go('/pedidos')" *ngIf="(this.pedidosPendientes.length > 0 || this.pedidosConfirmados.length > 0) && this.auth.rol == 'mozo'">
+        <h2 class="pt-serif-bold">Supervisar Pedidos</h2>
       </ion-button>
       <ion-button class="button-main" (click)="go('/consultas')" *ngIf="this.consultas.length > 0 && this.auth.rol == 'mozo'">
         <h2 class="pt-serif-bold">Responder Consultas</h2>
       </ion-button>
-      <ion-button class="button-main" (click)="go('/tareas')" *ngIf="(this.tareasBar.length > 0 && this.auth.rol == 'bartender') || ( this.tareasCocina.length > 0 && this.auth.rol == 'cocinero')">
+      <ion-button class="button-main" (click)="go('/tareas')" *ngIf="this.pedidosConfirmados.length > 0 && (this.auth.rol == 'bartender' || this.auth.rol == 'cocinero')">
         <h2 class="pt-serif-bold">Realizar tareas</h2>
       </ion-button>
       <ion-button class="button-main pt-serif-bold" *ngIf="sentado == '0'" (click)="goQR('no')">

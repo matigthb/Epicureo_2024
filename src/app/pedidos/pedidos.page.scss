@@ -187,3 +187,26 @@ ion-toolbar {
         --background:#F3DFA2;
         color:#550C18;
       }
+
+      .scrollable-buttons {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      
+      .button-row {
+        display: flex;
+        flex-direction: row;
+      }
+      
+      .circular-button {
+        --background: #644e3b;
+        border-radius: 50%;
+        margin: 0 5px;
+        min-width: 50px;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
