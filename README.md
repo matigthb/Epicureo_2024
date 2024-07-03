@@ -64,7 +64,7 @@ Contamos con gráficos de distintos tipos que representan los resultados de las 
 ![image](https://github.com/matigthb/Epicureo_2024/assets/98900532/bdf7f633-7aa0-4882-898c-59d5be98d7e5)<br>
 ![image](https://github.com/matigthb/Epicureo_2024/assets/98900532/b3f4dd0a-e2ff-48b0-9f8a-6b779add696e)<br>
 
-Podés revisar el estado del pedido (y sus diferentes etapas):
+Podés revisar el estado del pedido (y sus diferentes etapas):<br>
 ![image](https://github.com/matigthb/Epicureo_2024/assets/98900532/afd15643-9f52-416a-89f5-feece9e58461)<br>
 ![image](https://github.com/matigthb/Epicureo_2024/assets/98900532/12b383b9-9513-4f74-96c9-dbba8b7fc8ac)<br>
 ![image](https://github.com/matigthb/Epicureo_2024/assets/98900532/5e4450d8-fc8f-4f12-ae10-477d20bb0992)<br>
